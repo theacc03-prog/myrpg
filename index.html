@@ -3,79 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERA UNIVERSITY | Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;600&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <title>ERA SOVEREIGN | System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Montserrat:wght@300;400;600&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --navy: #050A14; --card-bg: #0D1B2A; --gold: #C5A059; --glass: rgba(255, 255, 255, 0.05); }
-        body { background: var(--navy); font-family: 'Montserrat', sans-serif; margin: 0; color: #fff; line-height: 1.6; }
-        header { background: #000; padding: 20px; text-align: center; border-bottom: 2px solid var(--gold); position: relative; }
-        header h1 { font-size: 1.5em; color: var(--gold); font-family: 'Cinzel'; margin: 0; letter-spacing: 5px; }
-        .logout-btn { position: absolute; right: 15px; top: 22px; background: none; border: 1px solid var(--gold); color: var(--gold); padding: 5px 10px; font-size: 8px; border-radius: 4px; cursor: pointer; }
-        .tabs { display: flex; overflow-x: auto; gap: 5px; padding: 12px; background: rgba(0,0,0,0.95); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--gold); }
-        .tab-btn { background: transparent; color: #fff; border: none; padding: 12px 18px; border-radius: 4px; font-size: 9px; cursor: pointer; white-space: nowrap; opacity: 0.5; }
-        .tab-btn.active { opacity: 1; color: var(--gold); border-bottom: 1px solid var(--gold); }
-        .container { max-width: 500px; margin: 0 auto; padding: 15px; display: none; }
-        .section { display: none; }
+        :root { 
+            --navy: #050A14; --card-bg: #0D1B2A; --gold: #C5A059; --silver: #E0E1DD; 
+            --glass: rgba(255, 255, 255, 0.05); --alert: #E63946; --success: #2A9D8F;
+        }
+        body { background: var(--navy); font-family: 'Montserrat', sans-serif; margin: 0; color: #fff; overflow-x: hidden; }
+        
+        /* Header & Navigation */
+        header { background: #000; padding: 20px; text-align: center; border-bottom: 2px solid var(--silver); position: sticky; top: 0; z-index: 1000; }
+        header h1 { font-family: 'Cinzel'; color: var(--silver); letter-spacing: 4px; font-size: 1.2rem; margin: 0; }
+        
+        .nav-bar { display: flex; overflow-x: auto; background: rgba(0,0,0,0.8); border-bottom: 1px solid var(--glass); scrollbar-width: none; sticky; top: 60px; z-index: 999; }
+        .nav-btn { background: none; border: none; color: var(--silver); padding: 15px 20px; font-size: 10px; font-weight: 600; cursor: pointer; white-space: nowrap; opacity: 0.5; transition: 0.3s; }
+        .nav-btn.active { opacity: 1; color: var(--gold); border-bottom: 2px solid var(--gold); }
+
+        /* UI Components */
+        .container { max-width: 600px; margin: 20px auto; padding: 0 15px; display: none; }
+        .section { display: none; animation: fadeIn 0.4s ease; }
         .section.active { display: block; }
-        .card { background: var(--card-bg); border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--glass); position: relative; }
-        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: 1px solid #1a2233; background: #000; color: #fff; font-size: 11px; box-sizing: border-box; }
-        button { background: var(--gold); color: #000; border: none; padding: 14px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 700; font-size: 9px; text-transform: uppercase; margin-top: 5px; }
-        .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; margin-bottom: 10px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card { background: var(--card-bg); border-radius: 12px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--glass); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+        .bank-card { background: linear-gradient(135deg, #0D1B2A 0%, #1B263B 100%); border: 1px solid rgba(224, 225, 221, 0.1); }
+        
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: 1px solid #1a2233; background: #000; color: #fff; font-size: 12px; box-sizing: border-box; }
+        button { background: var(--silver); color: #000; border: none; padding: 12px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 700; font-size: 10px; text-transform: uppercase; transition: 0.3s; }
+        button:hover { filter: brightness(1.2); }
+        .btn-gold { background: var(--gold); }
+        .btn-red { background: var(--alert); color: #fff; }
+
+        /* Profile & Tags */
+        .profile-img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--silver); object-fit: cover; margin-bottom: 10px; }
+        .tag { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 9px; font-weight: 700; margin: 2px; text-transform: uppercase; }
+        
+        /* Ranking */
+        .rank-item { display: flex; align-items: center; padding: 10px; margin-bottom: 5px; border-radius: 8px; cursor: pointer; background: rgba(255,255,255,0.02); }
+        .rank-elite { border: 1px solid var(--silver); background: rgba(224, 225, 221, 0.05); }
+        .rank-alert { border: 1px solid var(--alert); }
+
+        /* Modals */
+        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; padding: 20px; overflow-y: auto; }
+        
+        /* Editorial */
+        .news-img { width: 100%; border-radius: 8px; margin-bottom: 10px; max-height: 200px; object-fit: cover; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>ERA BANK</h1>
-    <button id="main-logout" class="logout-btn" style="display:none">SAIR</button>
+    <h1 id="sys-title">ERA SOVEREIGN SYSTEM</h1>
 </header>
 
-<div id="auth-screen" style="padding: 80px 20px; text-align: center;">
-    <div class="card" style="max-width:320px; margin: 0 auto;">
-        <h2 style="font-family:'Playfair Display'">Elite Access</h2>
-        <div id="reg-fields" style="display:none"><input type="text" id="reg-nome" placeholder="Nome do Personagem"></div>
-        <input type="email" id="u-email" placeholder="E-mail">
+<div id="auth-screen" style="padding: 100px 20px; text-align: center;">
+    <div class="card" style="max-width:350px; margin: 0 auto;">
+        <h2 style="font-family:'Playfair Display'; color:var(--silver)">Acesso Restrito</h2>
+        <div id="reg-box" style="display:none"><input type="text" id="reg-nome" placeholder="Nome Completo"></div>
+        <input type="email" id="u-email" placeholder="E-mail Acadêmico">
         <input type="password" id="u-pass" placeholder="Password">
-        <button id="btn-submit-auth">Entrar</button>
-        <button id="btn-toggle-reg" style="background:none; color:var(--gold); font-size:10px; margin-top:10px">Novo Registro</button>
+        <button onclick="handleAuth()" class="btn-gold" id="btn-auth">Entrar</button>
+        <button onclick="toggleAuthMode()" style="background:none; color:var(--silver); font-size:10px; margin-top:15px">Nova Matrícula</button>
     </div>
 </div>
 
-<div class="container" id="main-app">
-    <div class="tabs">
-        <button class="tab-btn active" data-tab="home">CONTA</button>
-        <button class="tab-btn" data-tab="news">EDITORIAL</button>
-        <button class="tab-btn" data-tab="loja">MERCADO</button>
-        <button class="tab-btn" id="adm-btn" style="display:none" data-tab="adm">REITORIA</button>
-    </div>
+<nav class="nav-bar" id="main-nav" style="display:none">
+    <button class="nav-btn active" data-tab="home">INÍCIO</button>
+    <button class="nav-btn" data-tab="notifs">NOTIFICAÇÕES</button>
+    <button class="nav-btn" data-tab="editorial">EDITORIAL</button>
+    <button class="nav-btn" data-tab="finance">FINANÇAS</button>
+    <button class="nav-btn" data-tab="transfer">TRANSFERIR</button>
+    <button class="nav-btn" data-tab="market">MERCADO</button>
+    <button class="nav-btn" data-tab="jobs">EMPREGOS</button>
+    <button class="nav-btn" data-tab="ranking">ELITE</button>
+    <button class="nav-btn btn-gold" id="adm-nav" style="display:none" data-tab="reitoria">REITORIA</button>
+</nav>
 
+<div class="container" id="app-container">
+    
     <div id="home" class="section active">
-        <div class="card" style="text-align: center;">
-            <button id="open-edit" style="position:absolute; right:15px; top:15px; background:none; border:none; color:var(--gold); font-size:16px; cursor:pointer">⚙️</button>
-            <img id="my-pic" src="https://placehold.co/150" class="profile-pic">
-            <h2 id="my-name">...</h2>
-            <p id="my-bio" style="font-size:10px; opacity:0.7"></p>
-            <div id="my-balance" style="font-size:2.5em; font-family:'Playfair Display';">$ 0</div>
+        <div class="card bank-card" style="text-align: center; position: relative;">
+            <div id="digital-clock" style="font-size:10px; position:absolute; left:20px; top:20px; opacity:0.6">00:00</div>
+            <button onclick="openSettings()" style="position:absolute; right:20px; top:20px; background:none; color:var(--silver); border:none; font-size:18px">⚙️</button>
+            <img id="p-img" src="" class="profile-img">
+            <h2 id="p-name" style="font-family:'Playfair Display'; margin: 5px 0;">---</h2>
+            <div id="p-balance" style="font-size: 2.2em; font-weight: 700; margin: 10px 0;">$ 0</div>
+            <p id="p-bio" style="font-size: 11px; opacity: 0.7; font-style: italic;"></p>
+        </div>
+        
+        <div class="card">
+            <h3>INVENTÁRIO ATIVO</h3>
+            <div id="p-inv" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px"></div>
+        </div>
+
+        <div class="card">
+            <h3>HISTÓRICO RECENTE</h3>
+            <div id="p-history" style="font-size:10px"></div>
         </div>
     </div>
 
-    <div id="news" class="section"><div id="news-feed"></div></div>
-    <div id="loja" class="section"><div id="shop-grid"></div></div>
+    <div id="notifs" class="section">
+        <h2 style="font-family:'Cinzel'">Central de Avisos</h2>
+        <div id="notif-list"></div>
+    </div>
 
-    <div id="adm" class="section">
+    <div id="editorial" class="section">
+        <div id="news-list"></div>
+    </div>
+
+    <div id="finance" class="section">
         <div class="card">
-            <h3>CADASTRAR ITEM</h3>
-            <input type="text" id="it-nome" placeholder="Nome">
-            <input type="number" id="it-preco" placeholder="Preço">
-            <button id="btn-add-item">Salvar Item</button>
+            <h3>FINANCIAMENTO ESTUDANTIL</h3>
+            <div style="font-size:0.8em; margin-bottom:15px">Dívida Total: <b id="debt-val" style="color:var(--alert)">$ 0</b></div>
+            <button onclick="requestLoan()" style="margin-bottom:10px">Solicitar Empréstimo</button>
+            <button onclick="amortizar()">Amortizar Dívida</button>
         </div>
+    </div>
+
+    <div id="transfer" class="section">
+        <div class="card">
+            <h3>EFETUAR PAGAMENTO</h3>
+            <select id="tr-destinatario"></select>
+            <input type="number" id="tr-valor" placeholder="Valor $">
+            <input type="text" id="tr-tag-nome" placeholder="Nome da Tag (Ex: Presente)">
+            <input type="color" id="tr-tag-cor" value="#C5A059" style="height:40px">
+            <textarea id="tr-desc" placeholder="Descrição do pagamento..."></textarea>
+            <button onclick="execTransfer()" class="btn-gold">Confirmar Envio</button>
+        </div>
+    </div>
+
+    <div id="market" class="section">
+        <div id="market-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:15px"></div>
+    </div>
+
+    <div id="jobs" class="section">
+        <div id="vagas-list"></div>
+    </div>
+
+    <div id="ranking" class="section">
+        <div id="rank-display"></div>
+    </div>
+
+    <div id="reitoria" class="section">
+        <div class="card" style="background:var(--alert); border:none">
+            <button onclick="cycleTurn()" style="background:none; color:#fff; font-weight:900">🔄 GIRAR CICLO ACADÊMICO</button>
+        </div>
+        
+        <div class="card">
+            <h3>GESTÃO DE ALUNO</h3>
+            <select id="adm-player-select" onchange="loadAdmPlayer()"></select>
+            <div id="adm-player-panel" style="display:none; margin-top:15px">
+                <button onclick="admDeleteUser()" class="btn-red" style="margin-bottom:10px">EXCLUIR CONTA DEFINITIVAMENTE</button>
+                <div id="adm-player-tags"></div>
+                <input type="text" id="adm-tag-n" placeholder="Nova Tag">
+                <input type="color" id="adm-tag-c" value="#C5A059">
+                <button onclick="admAddTag()">Adicionar Tag</button>
+                <hr style="opacity:0.1">
+                <h4>SALDOS FIXOS</h4>
+                <div id="adm-fixos-list"></div>
+                <button onclick="openModalFixo()">Add Fixo (Salário/Conta)</button>
+            </div>
+        </div>
+
+        <div class="card"><h3>AUDITORIA FISCAL</h3><div id="adm-audit-logs" style="font-size:9px; max-height:200px; overflow-y:auto"></div></div>
+        <div class="card"><h3>GESTOR EDITORIAL</h3><button onclick="openModalNews()">Nova Notícia</button></div>
+        <div class="card"><h3>GESTOR MERCADO</h3><button onclick="openModalItem()">Novo Item</button></div>
+        <div class="card"><h3>GESTOR CARREIRAS</h3><button onclick="openModalJob()">Nova Vaga</button></div>
+    </div>
+</div>
+
+<div id="modal-settings" class="modal">
+    <div class="card" style="max-width:400px; margin: 50px auto;">
+        <h3>Configurações de Perfil</h3>
+        <input type="text" id="set-nome" placeholder="Nome Completo">
+        <input type="text" id="set-foto" placeholder="URL da Foto">
+        <textarea id="set-bio" placeholder="Sua descrição..."></textarea>
+        <button onclick="saveSettings()" class="btn-gold">Salvar Alterações</button>
+        <button onclick="logout()" style="margin-top:10px">Sair da Conta</button>
+        <button onclick="deleteOwnAccount()" class="btn-red" style="margin-top:10px">Excluir Minha Conta</button>
+        <button onclick="closeModals()" style="background:none; color:var(--silver)">Cancelar</button>
+    </div>
+</div>
+
+<div id="modal-perfil-publico" class="modal">
+    <div class="card" style="max-width:400px; margin: 50px auto; text-align:center">
+        <img id="pub-img" src="" class="profile-img">
+        <h2 id="pub-name"></h2>
+        <div id="pub-title" style="color:var(--gold); font-weight:bold; margin-bottom:10px"></div>
+        <div id="pub-tags"></div>
+        <p id="pub-bio"></p>
+        <hr style="opacity:0.1">
+        <div id="pub-comments" style="text-align:left; font-size:10px"></div>
+        <input type="text" id="pub-new-comment" placeholder="Escreva um comentário...">
+        <button onclick="addComment()">Comentar</button>
+        <button onclick="closeModals()" style="margin-top:10px; background:none; color:var(--silver)">Fechar</button>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
-    import { getDatabase, ref, set, get, update, onValue, push } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+    import { getDatabase, ref, set, get, update, onValue, push, remove } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBt7zjlI1P8lN4JxnxTe_erzNbfu1AHdfE",
@@ -91,67 +220,341 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    // Seletores
-    const btnSubmit = document.getElementById('btn-submit-auth');
-    const btnToggle = document.getElementById('btn-toggle-reg');
-    const regFields = document.getElementById('reg-fields');
+    let userLogado = null;
+    let viewUserId = null;
 
-    // Troca Login/Registro
-    btnToggle.onclick = () => {
-        regFields.style.display = regFields.style.display === 'none' ? 'block' : 'none';
-        btnSubmit.innerText = regFields.style.display === 'none' ? 'Entrar' : 'Registrar';
-    };
-
-    // Ação de Auth
-    btnSubmit.onclick = async () => {
-        const email = document.getElementById('u-email').value;
-        const pass = document.getElementById('u-pass').value;
-
-        if (regFields.style.display === 'block') {
-            const nome = document.getElementById('reg-nome').value;
-            try {
-                const r = await createUserWithEmailAndPassword(auth, email, pass);
-                await set(ref(db, 'jogadores/' + r.user.uid), { nome, saldo: 1500, role: 'player', bio: "" });
-                alert("Conta criada!");
-            } catch (e) { alert("Erro: " + e.message); }
-        } else {
-            try {
-                await signInWithEmailAndPassword(auth, email, pass);
-            } catch (e) { alert("Falha no login."); }
-        }
-    };
-
-    // Monitor de Estado
-    onAuthStateChanged(auth, user => {
-        if (user) {
-            document.getElementById('auth-screen').style.display = 'none';
-            document.getElementById('main-app').style.display = 'block';
-            document.getElementById('main-logout').style.display = 'block';
-            
-            onValue(ref(db, 'jogadores/' + user.uid), s => {
-                const d = s.val();
-                if(d) {
-                    document.getElementById('my-name').innerText = d.nome;
-                    document.getElementById('my-balance').innerText = `$ ${d.saldo}`;
-                    if(d.role === 'admin') document.getElementById('adm-btn').style.display = 'block';
-                }
-            });
-        } else {
-            document.getElementById('auth-screen').style.display = 'block';
-            document.getElementById('main-app').style.display = 'none';
-        }
-    });
-
-    document.getElementById('main-logout').onclick = () => signOut(auth);
-
-    // Navegação de Tabs
-    document.querySelectorAll('.tab-btn').forEach(b => {
-        b.onclick = () => {
-            document.querySelectorAll('.section, .tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(b.dataset.tab).classList.add('active');
-            b.classList.add('active');
+    // --- SISTEMA DE NAVEGAÇÃO ---
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.onclick = () => {
+            document.querySelectorAll('.section, .nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(btn.dataset.tab).classList.add('active');
+            btn.classList.add('active');
         };
     });
+
+    window.closeModals = () => document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+
+    // --- AUTENTICAÇÃO ---
+    window.toggleAuthMode = () => {
+        const box = document.getElementById('reg-box');
+        box.style.display = box.style.display === 'none' ? 'block' : 'none';
+        document.getElementById('btn-auth').innerText = box.style.display === 'none' ? 'Entrar' : 'Matricular';
+    };
+
+    window.handleAuth = async () => {
+        const email = document.getElementById('u-email').value;
+        const pass = document.getElementById('u-pass').value;
+        const isReg = document.getElementById('reg-box').style.display === 'block';
+
+        try {
+            if(isReg) {
+                const nome = document.getElementById('reg-nome').value;
+                const r = await createUserWithEmailAndPassword(auth, email, pass);
+                await set(ref(db, 'jogadores/' + r.user.uid), {
+                    nome, email, saldo: 2000, divida: 0, role: 'aluno', foto: '', bio: '',
+                    fixos: {}, mochila: {}, notificacoes: {}, historico: {}
+                });
+            } else {
+                await signInWithEmailAndPassword(auth, email, pass);
+            }
+        } catch(e) { alert("Erro: " + e.message); }
+    };
+
+    onAuthStateChanged(auth, user => {
+        if(user) {
+            loadUserData(user.uid);
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('app-container').style.display = 'block';
+            document.getElementById('main-nav').style.display = 'flex';
+        } else {
+            document.getElementById('auth-screen').style.display = 'block';
+            document.getElementById('app-container').style.display = 'none';
+            document.getElementById('main-nav').style.display = 'none';
+        }
+    });
+
+    // --- CARREGAMENTO DE DADOS ---
+    function loadUserData(uid) {
+        onValue(ref(db, 'jogadores/' + uid), snapshot => {
+            const d = snapshot.val(); if(!d) return;
+            userLogado = { id: uid, ...d };
+            
+            // UI Update
+            document.getElementById('p-name').innerText = d.nome;
+            document.getElementById('p-balance').innerText = `$ ${d.saldo.toLocaleString()}`;
+            document.getElementById('p-img').src = d.foto || 'https://placehold.co/150?text=ERA';
+            document.getElementById('p-bio').innerText = d.bio || "Sem descrição acadêmica.";
+            document.getElementById('debt-val').innerText = `$ ${d.divida || 0}`;
+
+            if(d.role === 'admin') document.getElementById('adm-nav').style.display = 'block';
+
+            // Inventário
+            let invH = "";
+            if(d.mochila) Object.entries(d.mochila).forEach(([id, i]) => {
+                invH += `<div class="card" style="padding:10px; font-size:9px; border:1px solid var(--gold)">
+                    <b>${i.nome}</b><br>Validade: ${i.validade} semanas
+                </div>`;
+            });
+            document.getElementById('p-inv').innerHTML = invH || "Nenhum item ativo.";
+
+            // Histórico
+            let histH = "";
+            if(d.historico) Object.values(d.historico).reverse().slice(0, 10).forEach(h => {
+                histH += `<div style="border-bottom:1px solid var(--glass); padding:5px">${h}</div>`;
+            });
+            document.getElementById('p-history').innerHTML = histH || "Sem registros.";
+
+            // Sync global data
+            syncPublicData();
+        });
+    }
+
+    // --- CONFIGURAÇÕES DE PERFIL ---
+    window.openSettings = () => {
+        document.getElementById('set-nome').value = userLogado.nome;
+        document.getElementById('set-foto').value = userLogado.foto;
+        document.getElementById('set-bio').value = userLogado.bio;
+        document.getElementById('modal-settings').style.display = 'block';
+    };
+
+    window.saveSettings = async () => {
+        await update(ref(db, 'jogadores/' + userLogado.id), {
+            nome: document.getElementById('set-nome').value,
+            foto: document.getElementById('set-foto').value,
+            bio: document.getElementById('set-bio').value
+        });
+        closeModals();
+        alert("Perfil Atualizado!");
+    };
+
+    window.logout = () => signOut(auth).then(() => location.reload());
+
+    window.deleteOwnAccount = async () => {
+        if(confirm("TEM CERTEZA? Isso excluirá todos os seus dados e saldo permanentemente.")) {
+            await remove(ref(db, 'jogadores/' + userLogado.id));
+            deleteUser(auth.currentUser).then(() => location.reload());
+        }
+    };
+
+    // --- TRANSFERÊNCIAS & PAGAMENTOS ---
+    window.execTransfer = async () => {
+        const destId = document.getElementById('tr-destinatario').value;
+        const val = parseInt(document.getElementById('tr-valor').value);
+        const tNome = document.getElementById('tr-tag-nome').value;
+        const tCor = document.getElementById('tr-tag-cor').value;
+        const desc = document.getElementById('tr-desc').value;
+
+        if(!destId || val <= 0 || userLogado.saldo < val) return alert("Dados inválidos ou saldo insuficiente.");
+
+        const destSnap = await get(ref(db, 'jogadores/' + destId));
+        const destData = destSnap.val();
+
+        // 1. Descontar do remetente
+        await update(ref(db, 'jogadores/' + userLogado.id), { saldo: userLogado.saldo - val });
+        await push(ref(db, `jogadores/${userLogado.id}/historico`), `Enviou $${val} para ${destData.nome}`);
+
+        // 2. Adicionar ao destino
+        await update(ref(db, 'jogadores/' + destId), { saldo: destData.saldo + val });
+        await push(ref(db, `jogadores/${destId}/historico`), `Recebeu $${val} de ${userLogado.nome}`);
+        
+        // 3. Notificação interativa
+        await push(ref(db, `jogadores/${destId}/notificacoes`), {
+            msg: `💰 <b>PIX REALCE!</b> Você recebeu <span class="tag" style="background:${tCor}">${tNome}</span> de $${val} enviado por ${userLogado.nome}. <i>"${desc}"</i>`
+        });
+
+        // 4. Auditoria Global
+        await push(ref(db, 'auditoria'), {
+            msg: `[TRANSF] ${userLogado.nome} -> ${destData.nome} | Valor: $${val} | Tag: ${tNome}`,
+            data: new Date().toLocaleString()
+        });
+
+        alert("Transferência de Elite concluída!");
+    };
+
+    // --- SYNC GLOBAL (Ranking, Loja, Notícias) ---
+    function syncPublicData() {
+        // Lista de jogadores para select de transfer
+        onValue(ref(db, 'jogadores'), snap => {
+            const players = snap.val();
+            let opts = "<option value=''>Selecionar Aluno...</option>";
+            let rankH = "";
+            let pArray = [];
+
+            Object.entries(players).forEach(([id, p]) => {
+                if(id !== userLogado.id) opts += `<option value="${id}">${p.nome}</option>`;
+                pArray.push({ id, ...p });
+            });
+            document.getElementById('tr-destinatario').innerHTML = opts;
+            document.getElementById('adm-player-select').innerHTML = opts;
+
+            // Ranking Logic
+            pArray.sort((a,b) => b.saldo - a.saldo);
+            pArray.forEach((p, index) => {
+                let style = ""; let title = "Acadêmico";
+                if(index < 3) { style = "rank-elite"; title = "Magnata de Luxo"; }
+                if(index >= pArray.length - 3) { style = "rank-alert"; title = "Pobretão em Alerta"; }
+                
+                rankH += `<div class="rank-item ${style}" onclick="openPublicProfile('${p.id}')">
+                    <span style="width:30px">#${index+1}</span>
+                    <img src="${p.foto || 'https://placehold.co/50'}" style="width:30px; height:30px; border-radius:50%; margin: 0 10px">
+                    <div style="flex:1"><b>${p.nome}</b><br><small>${title}</small></div>
+                    <div>$ ${p.saldo.toLocaleString()}</div>
+                </div>`;
+            });
+            document.getElementById('rank-display').innerHTML = rankH;
+        });
+
+        // Notificações
+        onValue(ref(db, `jogadores/${userLogado.id}/notificacoes`), snap => {
+            let nH = "";
+            if(snap.val()) Object.values(snap.val()).reverse().forEach(n => {
+                nH += `<div class="card" style="font-size:11px; border-left:4px solid var(--gold)">${n.msg}</div>`;
+            });
+            document.getElementById('notif-list').innerHTML = nH || "Silêncio nos corredores...";
+        });
+
+        // Editorial (Notícias)
+        onValue(ref(db, 'noticias'), snap => {
+            let newsH = "";
+            if(snap.val()) Object.entries(snap.val()).reverse().forEach(([id, n]) => {
+                newsH += `<div class="card">
+                    <img src="${n.img}" class="news-img">
+                    <h2 style="font-family:'Playfair Display'; color:var(--gold)">${n.titulo}</h2>
+                    <p style="font-size:12px; opacity:0.8">${n.texto}</p>
+                    <div style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px">
+                        <small>COMENTÁRIOS:</small>
+                        <div id="comm-${id}"></div>
+                        <input type="text" id="in-comm-${id}" placeholder="Opine..." style="height:30px; font-size:10px">
+                        <button onclick="postNewsComment('${id}')" style="width:auto; padding:5px 15px">Enviar</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('news-list').innerHTML = newsH || "Sem notícias hoje.";
+        });
+        
+        // Auditoria (ADM)
+        onValue(ref(db, 'auditoria'), snap => {
+            let audH = "";
+            if(snap.val()) Object.values(snap.val()).reverse().forEach(a => {
+                audH += `<div style="padding:4px; border-bottom:1px solid #111">${a.data} - ${a.msg}</div>`;
+            });
+            document.getElementById('adm-audit-logs').innerHTML = audH;
+        });
+    }
+
+    // --- SISTEMA DE MERCADO ---
+    window.loadShop = () => {
+        onValue(ref(db, 'loja'), snap => {
+            let shopH = "";
+            if(snap.val()) Object.entries(snap.val()).forEach(([id, i]) => {
+                shopH += `<div class="card" style="text-align:center">
+                    <img src="${i.img}" style="width:100%; border-radius:5px; height:100px; object-fit:cover">
+                    <div style="font-weight:700; margin-top:5px">${i.nome}</div>
+                    <div style="color:var(--gold); font-size:14px">$ ${i.preco}</div>
+                    <div style="font-size:8px; opacity:0.6">${i.desc}</div>
+                    <div style="font-size:8px">Estoque: ${i.estoque} | Validade: ${i.duracao} sem.</div>
+                    <button onclick="comprarItem('${id}')" class="btn-gold" style="padding:5px; margin-top:5px; font-size:8px">Comprar</button>
+                </div>`;
+            });
+            document.getElementById('market-grid').innerHTML = shopH;
+        });
+    };
+    loadShop();
+
+    window.comprarItem = async (id) => {
+        const snap = await get(ref(db, 'loja/' + id));
+        const item = snap.val();
+        if(item.estoque <= 0 || userLogado.saldo < item.preco) return alert("Estoque esgotado ou saldo insuficiente.");
+
+        // Atualizar saldo e estoque
+        await update(ref(db, 'jogadores/' + userLogado.id), { saldo: userLogado.saldo - item.preco });
+        await update(ref(db, 'loja/' + id), { estoque: item.estoque - 1 });
+
+        // Adicionar na mochila (Validade começa agora)
+        await push(ref(db, `jogadores/${userLogado.id}/mochila`), {
+            nome: item.nome,
+            validade: item.duracao,
+            total: item.duracao
+        });
+
+        await push(ref(db, `jogadores/${userLogado.id}/notificacoes`), {
+            msg: `🛍️ <b>COMPRA APROVADA!</b> Você adquiriu ${item.nome}. O item já está no seu inventário e a validade de ${item.duracao} semanas começou a contar.`
+        });
+
+        alert("Item adquirido!");
+    };
+
+    // --- REITORIA: GIRO DE CICLO ---
+    window.cycleTurn = async () => {
+        if(!confirm("Deseja girar o ciclo? Isso processará salários, despesas, juros e validade de itens para TODOS os players.")) return;
+        
+        const snap = await get(ref(db, 'jogadores'));
+        const players = snap.val();
+        const updates = {};
+
+        for(let id in players) {
+            let p = players[id];
+            let saldoFinal = p.saldo || 0;
+            let logs = [];
+
+            // 1. Processar Fixos (Salários e Despesas)
+            if(p.fixos) {
+                Object.values(p.fixos).forEach(f => {
+                    saldoFinal += f.valor;
+                    logs.push(`${f.valor > 0 ? 'Recebeu' : 'Pagou'} ${f.nome}: $${Math.abs(f.valor)}`);
+                });
+            }
+
+            // 2. Processar validade da mochila
+            if(p.mochila) {
+                for(let itemId in p.mochila) {
+                    p.mochila[itemId].validade -= 1;
+                    if(p.mochila[itemId].validade <= 0) {
+                        logs.push(`⚠️ O item ${p.mochila[itemId].nome} estragou/venceu.`);
+                        delete p.mochila[itemId];
+                    }
+                }
+            }
+
+            // 3. Juros de Dívida (10% ao ciclo se houver dívida)
+            if(p.divida > 0) {
+                let juros = Math.floor(p.divida * 0.1);
+                updates[`jogadores/${id}/divida`] = p.divida + juros;
+                logs.push(`📈 Juros de financiamento: +$${juros}`);
+            }
+
+            updates[`jogadores/${id}/saldo`] = saldoFinal;
+            updates[`jogadores/${id}/mochila`] = p.mochila || {};
+            
+            // Notificar o player do resumo do ciclo
+            if(logs.length > 0) {
+                push(ref(db, `jogadores/${id}/notificacoes`), {
+                    msg: `🔔 <b>RESUMO DO CICLO:</b><br>${logs.join('<br>')}`
+                });
+            }
+        }
+
+        await update(ref(db), updates);
+        alert("Ciclo Acadêmico Girado com Sucesso!");
+    };
+
+    // Funções de ADM para criar itens/notícias (Apenas chamadas simples para você preencher)
+    window.openModalItem = () => {
+        const n = prompt("Nome do Item:");
+        const p = parseInt(prompt("Preço:"));
+        const d = parseInt(prompt("Validade (Semanas):"));
+        const e = parseInt(prompt("Estoque:"));
+        const img = prompt("URL Imagem:");
+        if(n && p) push(ref(db, 'loja'), { nome: n, preco: p, duracao: d, estoque: e, img, desc: "Item de luxo ERA." });
+    };
+
+    window.openModalNews = () => {
+        const t = prompt("Título:");
+        const txt = prompt("Texto:");
+        const img = prompt("URL Imagem:");
+        if(t && txt) push(ref(db, 'noticias'), { titulo: t, texto: txt, img });
+    };
+
 </script>
 </body>
 </html>
