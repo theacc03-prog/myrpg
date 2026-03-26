@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERA SOVEREIGN | Portal</title>
+    <title>ERA SOVEREIGN | Sovereign System</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;600&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -11,14 +11,16 @@
 
 <header><h1>ERA SOVEREIGN SYSTEM</h1></header>
 
-<div id="auth-screen" class="container" style="text-align:center; padding-top:100px;">
-    <div class="card" style="max-width:350px; margin:auto;">
-        <h2 class="title-font">Acesso Acadêmico</h2>
-        <div id="reg-box" style="display:none"><input type="text" id="reg-nome" placeholder="Nome Completo"></div>
-        <input type="email" id="u-email" placeholder="E-mail">
+<div id="auth-screen" class="container auth-area">
+    <div class="card" style="max-width:380px; margin: 80px auto; text-align:center;">
+        <h2 class="title-font" style="color:var(--gold); letter-spacing:2px;">Elite Access</h2>
+        <div id="reg-box" style="display:none">
+            <input type="text" id="reg-nome" placeholder="Nome Completo">
+        </div>
+        <input type="email" id="u-email" placeholder="E-mail Acadêmico">
         <input type="password" id="u-pass" placeholder="Senha">
-        <button id="btn-auth-action" class="btn-gold">Entrar</button>
-        <p id="toggle-auth" style="cursor:pointer; font-size:10px; text-decoration:underline; margin-top:10px">Não tem conta? Registrar</p>
+        <button id="btn-auth-action" class="btn-gold">Acessar Sistema</button>
+        <p id="toggle-auth" style="cursor:pointer; font-size:10px; text-decoration:underline; margin-top:15px; opacity:0.7">Não possui registro? Solicitar Acesso</p>
     </div>
 </div>
 
@@ -35,43 +37,45 @@
 </nav>
 
 <div class="container" id="app-wrap" style="display:none">
-    <div id="home" class="section active"></div>
-    <div id="notifs" class="section"></div>
+    <div id="home" class="section active">
+        <div id="profile-render"></div>
+        <div class="card">
+            <h4 class="title-font" style="margin-bottom:10px; border-bottom:1px solid var(--glass)">Inventário Ativo</h4>
+            <div id="my-inv-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;"></div>
+        </div>
+    </div>
+
     <div id="editorial" class="section">
         <div id="news-feed"></div>
     </div>
-    <div id="finance" class="section">
-        <div class="card" style="text-align:center">
-            <h3>Financiamento</h3>
-            <h2 id="display-divida" style="color:var(--alert)">$ 0</h2>
-            <button id="btn-loan" class="btn-gold">Solicitar Empréstimo</button>
-        </div>
-    </div>
-    <div id="transfer" class="section">
-        <div class="card">
-            <h3>Transferir</h3>
-            <select id="tr-dest"></select>
-            <input type="number" id="tr-val" placeholder="Valor $">
-            <button id="btn-send-money" class="btn-gold">Enviar</button>
-        </div>
-    </div>
-    <div id="market" class="section"><div id="market-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px"></div></div>
-    <div id="jobs" class="section"><div id="jobs-list"></div></div>
-    <div id="ranking" class="section"><div id="rank-list"></div></div>
-    
+
     <div id="reitoria" class="section">
-        <div class="card" style="background:var(--wine); text-align:center">
-            <button id="btn-cycle" style="background:none; color:white; font-weight:bold">🔄 GIRAR CICLO ACADÊMICO</button>
+        <div class="card" style="background:var(--wine); text-align:center; border: 1px solid var(--gold);">
+            <h3 class="title-font" style="color:var(--gold)">Comando Superior</h3>
+            <button id="btn-cycle" class="btn-gold" style="margin-top:10px">🔄 PROCESSAR CICLO ACADÊMICO</button>
+            <p style="font-size:8px; margin-top:8px; opacity:0.8">Calcula salários, impostos e validade de itens.</p>
         </div>
-        <div id="adm-content">
-            <div class="card">
-                <h3>Gestão de Aluno</h3>
-                <select id="adm-p-sel"></select>
-                <input type="text" id="adm-tag-n" placeholder="Nova Tag">
-                <button id="btn-add-tag">Adicionar Tag</button>
+        
+        <div class="card">
+            <h3 class="title-font">Gestão de Alunos</h3>
+            <select id="adm-p-sel"><option>Carregando alunos...</option></select>
+            <div id="adm-p-controls" style="margin-top:15px; display:none;">
+                <input type="text" id="adm-tag-n" placeholder="Nome da Tag">
+                <input type="color" id="adm-tag-c" value="#C5A059" style="height:40px">
+                <button id="btn-add-tag">Conceder Tag</button>
+                <hr style="opacity:0.1; margin:15px 0">
+                <input type="number" id="adm-saldo-val" placeholder="Ajustar Saldo ($)">
+                <button id="btn-adj-saldo">Atualizar Tesouraria</button>
             </div>
         </div>
     </div>
+
+    <div id="ranking" class="section"><div id="rank-list"></div></div>
+    <div id="notifs" class="section"><div id="notif-feed"></div></div>
+    <div id="finance" class="section"><div id="finance-ui"></div></div>
+    <div id="transfer" class="section"><div id="transfer-ui"></div></div>
+    <div id="market" class="section"><div id="market-list"></div></div>
+    <div id="jobs" class="section"><div id="jobs-list"></div></div>
 </div>
 
 <script type="module" src="app.js"></script>
