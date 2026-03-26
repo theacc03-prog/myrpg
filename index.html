@@ -1,499 +1,307 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERA SOVEREIGN | V19 Empress</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Montserrat:wght@300;400;600&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root { 
-            --navy: #050A14; --card-bg: #0D1B2A; --gold: #C5A059; --silver: #E0E1DD; 
-            --glass: rgba(255, 255, 255, 0.05); --alert: #E63946; --success: #2A9D8F; --wine: #450920;
-        }
-        body { background: var(--navy); font-family: 'Montserrat', sans-serif; margin: 0; color: #fff; overflow-x: hidden; }
-        
-        /* Layout */
-        header { background: #000; padding: 20px; text-align: center; border-bottom: 2px solid var(--silver); position: sticky; top: 0; z-index: 1000; }
-        header h1 { font-family: 'Cinzel'; color: var(--silver); letter-spacing: 4px; font-size: 1.2rem; margin: 0; }
-        
-        .nav-bar { display: flex; overflow-x: auto; background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--gold); sticky; top: 60px; z-index: 999; scrollbar-width: none; }
-        .nav-btn { background: none; border: none; color: var(--silver); padding: 15px 18px; font-size: 9px; font-weight: 700; cursor: pointer; white-space: nowrap; opacity: 0.5; text-transform: uppercase; }
-        .nav-btn.active { opacity: 1; color: var(--gold); border-bottom: 2px solid var(--gold); }
+<meta charset="UTF-8">
+<title>ERA FINANCIAL SYSTEM</title>
 
-        .container { max-width: 600px; margin: 20px auto; padding: 0 15px; display: none; }
-        .section { display: none; animation: fadeIn 0.4s ease; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Montserrat&family=Cinzel&display=swap" rel="stylesheet">
 
-        .card { background: var(--card-bg); border-radius: 12px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--glass); box-shadow: 0 8px 32px rgba(0,0,0,0.4); position: relative; }
-        
-        /* Inputs & Buttons */
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: 1px solid #1a2233; background: #000; color: #fff; font-size: 12px; box-sizing: border-box; }
-        button { background: var(--silver); color: #000; border: none; padding: 12px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 700; font-size: 10px; text-transform: uppercase; transition: 0.3s; margin: 5px 0; }
-        .btn-gold { background: var(--gold); color: #000; }
-        .btn-red { background: var(--alert); color: #fff; }
-        .btn-small { width: auto; padding: 5px 10px; font-size: 8px; display: inline-block; }
+<style>
+:root{
+--navy:#0A1F44;
+--silver:#E0E1DD;
+--card:#112D4E;
+--gold:#C5A059;
+--red:#E63946;
+}
 
-        /* Custom UI */
-        .profile-img { width: 85px; height: 85px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; margin-bottom: 10px; }
-        .tag { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 8px; font-weight: 700; margin: 2px; text-transform: uppercase; color: #000; }
-        .notif-box { border-left: 3px solid var(--gold); background: rgba(255,255,255,0.03); padding: 12px; margin-bottom: 10px; border-radius: 0 8px 8px 0; font-size: 11px; }
-        
-        /* Modals */
-        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2000; padding: 20px; overflow-y: auto; }
-        .modal-content { max-width: 450px; margin: 40px auto; }
+body{margin:0;font-family:Montserrat;background:var(--navy);color:#fff}
 
-        /* Reitoria Tabs */
-        .adm-nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 20px; }
-        .adm-btn-sub { font-size: 8px; padding: 8px; background: #111; color: var(--gold); border: 1px solid var(--gold); }
-        .adm-btn-sub.active { background: var(--gold); color: #000; }
-    </style>
+header{
+background:#000;
+padding:15px;
+text-align:center;
+font-family:Cinzel;
+letter-spacing:3px;
+border-bottom:2px solid var(--silver);
+}
+
+.card{
+background:var(--card);
+padding:15px;
+margin:10px;
+border-radius:10px;
+}
+
+button{
+background:var(--silver);
+border:none;
+padding:10px;
+margin:5px;
+border-radius:5px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.btn-gold{background:var(--gold)}
+.btn-red{background:var(--red);color:#fff}
+
+input,textarea,select{
+width:100%;
+padding:10px;
+margin:5px 0;
+background:#000;
+color:#fff;
+border:1px solid #333;
+}
+
+.section{display:none}
+.active{display:block}
+
+.nav{
+display:flex;
+overflow:auto;
+background:#000;
+}
+
+.nav button{
+background:none;
+color:#fff;
+font-size:10px;
+}
+
+.profile{
+text-align:center;
+}
+
+img{
+max-width:100%;
+border-radius:8px;
+}
+</style>
 </head>
+
 <body>
 
-<header><h1>ERA SOVEREIGN SYSTEM</h1></header>
+<header>ERA FINANCIAL SYSTEM</header>
 
-<div id="auth-screen" style="padding: 80px 20px; text-align: center;">
-    <div class="card" style="max-width:350px; margin: 0 auto;">
-        <h2 style="font-family:'Playfair Display'">Elite Access</h2>
-        <div id="reg-box" style="display:none"><input type="text" id="reg-nome" placeholder="Nome Completo"></div>
-        <input type="email" id="u-email" placeholder="E-mail">
-        <input type="password" id="u-pass" placeholder="Senha">
-        <button id="btn-login-main" class="btn-gold">Entrar</button>
-        <button id="btn-toggle-auth" style="background:none; color:var(--silver); font-size:10px; text-decoration:underline">Novo Registro</button>
-    </div>
+<div id="login" class="card">
+<h2>Login</h2>
+<input id="email" placeholder="Email">
+<input id="senha" type="password" placeholder="Senha">
+<input id="nome" placeholder="Nome (registro)">
+<button onclick="login()" class="btn-gold">Entrar / Registrar</button>
 </div>
 
-<nav class="nav-bar" id="main-nav" style="display:none">
-    <button class="nav-btn active" data-tab="home">CONTA</button>
-    <button class="nav-btn" data-tab="notifs">AVISOS</button>
-    <button class="nav-btn" data-tab="editorial">EDITORIAL</button>
-    <button class="nav-btn" data-tab="finance">FINANÇAS</button>
-    <button class="nav-btn" data-tab="transfer">PAGAR</button>
-    <button class="nav-btn" data-tab="market">MERCADO</button>
-    <button class="nav-btn" data-tab="jobs">VAGAS</button>
-    <button class="nav-btn" data-tab="ranking">ELITE</button>
-    <button class="nav-btn btn-gold" id="adm-tab-btn" style="display:none" data-tab="reitoria">REITORIA</button>
-</nav>
+<div id="app" style="display:none">
 
-<div class="container" id="app-wrap">
-    
-    <div id="home" class="section active">
-        <div class="card" style="text-align: center; background: linear-gradient(180deg, #0D1B2A 0%, #050A14 100%);">
-            <button onclick="document.getElementById('modal-settings').style.display='block'" style="position:absolute; right:15px; top:15px; background:none; border:none; color:var(--silver); font-size:18px">⚙️</button>
-            <div id="clock" style="font-size:10px; opacity:0.5; margin-bottom:10px">00:00:00</div>
-            <img id="my-pic" src="" class="profile-img">
-            <h2 id="my-name" style="font-family:'Playfair Display'; margin: 5px 0;">...</h2>
-            <div id="my-balance" style="font-size:2.5em; font-weight:700; color:var(--silver)">$ 0</div>
-            <p id="my-bio" style="font-size:11px; font-style:italic; opacity:0.8"></p>
-            <div id="my-tags"></div>
-        </div>
-        <div class="card">
-            <h3>INVENTÁRIO ATIVO</h3>
-            <div id="my-inv" style="display:grid; grid-template-columns:1fr 1fr; gap:10px"></div>
-        </div>
-        <div class="card">
-            <h3>HISTÓRICO</h3>
-            <div id="my-history" style="font-size:9px; opacity:0.6"></div>
-        </div>
-    </div>
-
-    <div id="notifs" class="section">
-        <h2 style="font-family:'Cinzel'">Notificações</h2>
-        <div id="notif-feed"></div>
-    </div>
-
-    <div id="editorial" class="section">
-        <div id="news-feed"></div>
-    </div>
-
-    <div id="finance" class="section">
-        <div class="card" style="text-align:center">
-            <h3>Financiamento</h3>
-            <h2 id="my-debt" style="color:var(--alert); font-size:2.5em">$ 0</h2>
-            <button onclick="loanRequest()" class="btn-gold">Pedir Empréstimo</button>
-            <button onclick="payDebt()">Amortizar Dívida</button>
-        </div>
-    </div>
-
-    <div id="transfer" class="section">
-        <div class="card">
-            <h3>Transferência de Luxo</h3>
-            <select id="tr-dest"></select>
-            <input type="number" id="tr-val" placeholder="Valor $">
-            <input type="text" id="tr-tag-n" placeholder="Nome da Tag">
-            <input type="color" id="tr-tag-c" value="#C5A059" style="height:40px">
-            <textarea id="tr-msg" placeholder="Mensagem..."></textarea>
-            <button onclick="transferirDinheiro()" class="btn-gold">Confirmar Envio</button>
-        </div>
-    </div>
-
-    <div id="market" class="section">
-        <div id="market-list" style="display:grid; grid-template-columns:1fr 1fr; gap:15px"></div>
-    </div>
-
-    <div id="jobs" class="section">
-        <div id="jobs-list"></div>
-    </div>
-
-    <div id="ranking" class="section">
-        <div id="rank-list"></div>
-    </div>
-
-    <div id="reitoria" class="section">
-        <div class="card" style="background:var(--wine); text-align:center">
-            <button onclick="girarCiclo()" style="background:none; color:#fff; font-weight:900">🔄 GIRAR CICLO ACADÊMICO</button>
-            <p style="font-size:8px; margin-top:5px; opacity:0.7">Processa salários, contas, validade e juros.</p>
-        </div>
-
-        <div class="adm-nav">
-            <button class="adm-btn-sub active" onclick="showAdmSec('adm-alunos', this)">ALUNOS</button>
-            <button class="adm-btn-sub" onclick="showAdmSec('adm-mercado', this)">MERCADO</button>
-            <button class="adm-btn-sub" onclick="showAdmSec('adm-editorial', this)">NOTÍCIAS</button>
-            <button class="adm-btn-sub" onclick="showAdmSec('adm-vagas', this)">VAGAS</button>
-            <button class="adm-btn-sub" onclick="showAdmSec('adm-auditoria', this)">AUDITORIA</button>
-            <button class="adm-btn-sub" onclick="showAdmSec('adm-candidatos', this)">CANDIDATOS</button>
-        </div>
-
-        <div id="adm-alunos" class="adm-section" style="display:block">
-            <div class="card">
-                <h3>Gestão de Aluno</h3>
-                <select id="adm-p-sel" onchange="loadAdmPlayerData()"></select>
-                <div id="adm-p-panel" style="display:none; margin-top:15px">
-                    <button class="btn-red btn-small" onclick="admDeleteUser()">Excluir Conta</button>
-                    <hr style="opacity:0.1">
-                    <h4>Tags</h4>
-                    <div id="adm-p-tags"></div>
-                    <input type="text" id="adm-tag-n" placeholder="Nome Tag">
-                    <input type="color" id="adm-tag-c" value="#C5A059">
-                    <button onclick="admAddTag()">Adicionar Tag</button>
-                    <hr style="opacity:0.1">
-                    <h4>Financeiro Fixo</h4>
-                    <div id="adm-p-fixos"></div>
-                    <input type="text" id="adm-f-n" placeholder="Nome (Ex: Salário)">
-                    <input type="number" id="adm-f-v" placeholder="Valor (Negativo para custo)">
-                    <button onclick="admAddFixo()">Adicionar Fixo</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="adm-mercado" class="adm-section" style="display:none">
-            <div class="card">
-                <h3>Novo Item</h3>
-                <input type="text" id="mi-n" placeholder="Nome">
-                <input type="number" id="mi-p" placeholder="Preço">
-                <input type="number" id="mi-v" placeholder="Validade (Semanas)">
-                <input type="number" id="mi-e" placeholder="Estoque">
-                <input type="text" id="mi-i" placeholder="URL Imagem">
-                <button onclick="admAddItem()">Criar Item</button>
-                <hr>
-                <div id="adm-items-list"></div>
-            </div>
-        </div>
-
-        <div id="adm-editorial" class="adm-section" style="display:none">
-            <div class="card">
-                <h3>Nova Notícia</h3>
-                <input type="text" id="en-t" placeholder="Título">
-                <textarea id="en-x" placeholder="Texto"></textarea>
-                <input type="text" id="en-i" placeholder="URL Foto">
-                <button onclick="admAddNews()">Publicar</button>
-                <hr>
-                <div id="adm-news-list"></div>
-            </div>
-        </div>
-
-        <div id="adm-vagas" class="adm-section" style="display:none">
-            <div class="card">
-                <h3>Nova Vaga</h3>
-                <input type="text" id="jv-t" placeholder="Título da Vaga">
-                <input type="number" id="jv-s" placeholder="Salário Base">
-                <textarea id="jv-d" placeholder="Descrição"></textarea>
-                <button onclick="admAddJob()">Postar Vaga</button>
-                <hr>
-                <div id="adm-jobs-list"></div>
-            </div>
-        </div>
-
-        <div id="adm-candidatos" class="adm-section" style="display:none">
-            <div id="adm-cand-list"></div>
-        </div>
-
-        <div id="adm-auditoria" class="adm-section" style="display:none">
-            <div class="card" id="adm-audit-feed" style="font-size:9px"></div>
-        </div>
-    </div>
+<div class="nav">
+<button onclick="nav('home')">Conta</button>
+<button onclick="nav('notif')">Avisos</button>
+<button onclick="nav('market')">Mercado</button>
+<button onclick="nav('rank')">Ranking</button>
+<button onclick="nav('jobs')">Empregos</button>
+<button onclick="nav('admin')" id="admBtn">Admin</button>
 </div>
 
-<div id="modal-settings" class="modal">
-    <div class="modal-content card">
-        <h3>Ajustes de Conta</h3>
-        <input type="text" id="s-nome" placeholder="Nome">
-        <input type="text" id="s-foto" placeholder="URL Foto">
-        <textarea id="s-bio" placeholder="Bio"></textarea>
-        <button onclick="saveMyProfile()" class="btn-gold">Salvar</button>
-        <button onclick="logout()">Sair</button>
-        <button onclick="deleteMe()" class="btn-red">Excluir Minha Conta</button>
-        <button onclick="closeModals()" style="background:none; color:#fff">Fechar</button>
-    </div>
+<!-- HOME -->
+<div id="home" class="section active">
+
+<div class="card profile">
+<img id="foto" width="100">
+<h2 id="nomeUser"></h2>
+<p id="saldo"></p>
+<p id="bio"></p>
+<button onclick="abrirConfig()">⚙️</button>
 </div>
 
-<div id="modal-perfil" class="modal">
-    <div class="modal-content card" style="text-align:center">
-        <img id="pub-img" src="" class="profile-img">
-        <h2 id="pub-name"></h2>
-        <div id="pub-tags"></div>
-        <p id="pub-bio" style="font-size:11px; opacity:0.8"></p>
-        <hr style="opacity:0.1">
-        <div id="pub-mural" style="text-align:left; font-size:10px"></div>
-        <input type="text" id="pub-msg" placeholder="Deixe um recado...">
-        <button onclick="postMural()">Enviar</button>
-        <button onclick="closeModals()" style="background:none; color:#fff">Fechar</button>
-    </div>
+<div class="card">
+<h3>Histórico</h3>
+<div id="hist"></div>
+</div>
+
+</div>
+
+<!-- NOTIF -->
+<div id="notif" class="section">
+<div id="notificacoes"></div>
+</div>
+
+<!-- MERCADO -->
+<div id="market" class="section">
+<div id="loja"></div>
+</div>
+
+<!-- RANK -->
+<div id="rank" class="section">
+<div id="ranking"></div>
+</div>
+
+<!-- JOBS -->
+<div id="jobs" class="section">
+<div id="vagas"></div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin" class="section">
+<div class="card">
+<h3>Reitoria</h3>
+<button onclick="giro()">Girar ciclo</button>
+</div>
+<div id="auditoria"></div>
+</div>
+
+</div>
+
+<!-- CONFIG -->
+<div id="config" class="card" style="display:none">
+<h3>Configurações</h3>
+<input id="editNome">
+<input id="editFoto">
+<textarea id="editBio"></textarea>
+<button onclick="salvarPerfil()">Salvar</button>
+<button onclick="logout()">Logout</button>
+<button onclick="deletar()" class="btn-red">Excluir Conta</button>
 </div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
-    import { getDatabase, ref, set, get, update, onValue, push, remove } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyBt7zjlI1P8lN4JxnxTe_erzNbfu1AHdfE",
-        authDomain: "universityerarpg-6a29d.firebaseapp.com",
-        databaseURL: "https://universityerarpg-6a29d-default-rtdb.firebaseio.com",
-        projectId: "universityerarpg-6a29d",
-        storageBucket: "universityerarpg-6a29d.firebasestorage.app",
-        messagingSenderId: "912095174573",
-        appId: "1:912095174573:web:e4591c65eeb9259ba9cb24"
-    };
+import {initializeApp} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,onAuthStateChanged,signOut,deleteUser} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+import {getDatabase,ref,set,get,update,onValue,push,remove} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
+const firebaseConfig={
+apiKey:"SUA_KEY",
+authDomain:"SEU.firebaseapp.com",
+databaseURL:"SEU",
+projectId:"SEU",
+appId:"SEU"
+};
 
-    let uLog = null;
-    let vId = null;
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getDatabase(app);
 
-    // Relógio
-    setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
+let user=null;
 
-    // Navegação
-    document.querySelectorAll('.nav-btn').forEach(b => {
-        b.onclick = () => {
-            document.querySelectorAll('.section, .nav-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(b.dataset.tab).classList.add('active');
-            b.classList.add('active');
-        };
-    });
+window.login=async()=>{
+let e=email.value,p=senha.value,n=nome.value;
+try{
+let u=await createUserWithEmailAndPassword(auth,e,p);
+await set(ref(db,'users/'+u.user.uid),{
+nome:n,
+saldo:1000,
+bio:"",
+role:"user"
+});
+}catch{}
+signInWithEmailAndPassword(auth,e,p);
+}
 
-    window.showAdmSec = (id, btn) => {
-        document.querySelectorAll('.adm-section, .adm-btn-sub').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.adm-section').forEach(el => el.style.display = 'none');
-        document.getElementById(id).style.display = 'block';
-        btn.classList.add('active');
-    };
+onAuthStateChanged(auth,u=>{
+if(u){
+onValue(ref(db,'users/'+u.uid),s=>{
+user={id:u.uid,...s.val()};
+UI();
+});
+login.style.display="none";
+app.style.display="block";
+}
+});
 
-    window.closeModals = () => document.querySelectorAll('.modal').forEach(m => m.style.display='none');
+function UI(){
+nomeUser.innerText=user.nome;
+saldo.innerText="Saldo: $"+user.saldo;
+bio.innerText=user.bio||"";
 
-    // Auth
-    document.getElementById('btn-toggle-auth').onclick = () => {
-        const r = document.getElementById('reg-box'); r.style.display = r.style.display==='none'?'block':'none';
-    };
+onValue(ref(db,'users/'+user.id+'/hist'),snap=>{
+let h="";
+snap.forEach(i=>{
+let t=i.val();
+h+=`<div>${t.tipo} - ${t.valor}</div>`;
+});
+hist.innerHTML=h;
+});
 
-    document.getElementById('btn-login-main').onclick = async () => {
-        const e = document.getElementById('u-email').value, p = document.getElementById('u-pass').value;
-        if(document.getElementById('reg-box').style.display === 'block') {
-            const n = document.getElementById('reg-nome').value;
-            const r = await createUserWithEmailAndPassword(auth, e, p);
-            await set(ref(db, 'jogadores/'+r.user.uid), { nome: n, saldo: 1500, role: 'aluno', divida: 0, bio: '' });
-        }
-        signInWithEmailAndPassword(auth, e, p).catch(() => alert("Falha no login."));
-    };
+onValue(ref(db,'users/'+user.id+'/notif'),snap=>{
+let h="";
+snap.forEach(i=>{
+h+=`<div>${i.val().msg}</div>`;
+});
+notificacoes.innerHTML=h;
+});
 
-    onAuthStateChanged(auth, u => {
-        if(u) {
-            onValue(ref(db, 'jogadores/'+u.uid), s => {
-                uLog = { id: u.uid, ...s.val() };
-                updateUI();
-                document.getElementById('auth-screen').style.display='none';
-                document.getElementById('main-nav').style.display='flex';
-                document.getElementById('app-wrap').style.display='block';
-                if(uLog.role === 'admin') document.getElementById('adm-tab-btn').style.display='block';
-                syncGlobal();
-            });
-        } else {
-            document.getElementById('auth-screen').style.display='block';
-            document.getElementById('app-wrap').style.display='none';
-        }
-    });
+onValue(ref(db,'users'),snap=>{
+let arr=[];
+snap.forEach(i=>arr.push(i.val()));
+arr.sort((a,b)=>b.saldo-a.saldo);
+let h="";
+arr.forEach((p,i)=>{
+h+=`<div>#${i+1} ${p.nome} - $${p.saldo}</div>`;
+});
+ranking.innerHTML=h;
+});
 
-    function updateUI() {
-        document.getElementById('my-name').innerText = uLog.nome;
-        document.getElementById('my-balance').innerText = `$ ${uLog.saldo.toLocaleString()}`;
-        document.getElementById('my-pic').src = uLog.foto || 'https://placehold.co/150';
-        document.getElementById('my-bio').innerText = uLog.bio;
-        document.getElementById('my-debt').innerText = `$ ${uLog.divida || 0}`;
+onValue(ref(db,'loja'),snap=>{
+let h="";
+snap.forEach(i=>{
+let p=i.val();
+h+=`<div class="card">
+<b>${p.nome}</b><br>$${p.preco}
+<button onclick="comprar('${i.key}')">Comprar</button>
+</div>`;
+});
+loja.innerHTML=h;
+});
 
-        let tagsH = ""; if(uLog.tags) Object.values(uLog.tags).forEach(t => tagsH += `<span class="tag" style="background:${t.cor}">${t.nome}</span>`);
-        document.getElementById('my-tags').innerHTML = tagsH;
+onValue(ref(db,'auditoria'),snap=>{
+let h="";
+snap.forEach(i=>h+=`<div>${i.val().msg}</div>`);
+auditoria.innerHTML=h;
+});
+}
 
-        let invH = ""; if(uLog.mochila) Object.values(uLog.mochila).forEach(i => {
-            invH += `<div class="card" style="padding:10px; font-size:9px; border:1px solid var(--gold)"><b>${i.nome}</b><br>Validade: ${i.validade}s</div>`;
-        });
-        document.getElementById('my-inv').innerHTML = invH;
-    }
+window.comprar=async(id)=>{
+let s=await get(ref(db,'loja/'+id));
+let i=s.val();
+if(user.saldo<i.preco)return;
 
-    // Perfil Público
-    window.openPublicProfile = async (id) => {
-        vId = id; const s = await get(ref(db, 'jogadores/'+id)); const p = s.val();
-        document.getElementById('pub-name').innerText = p.nome;
-        document.getElementById('pub-img').src = p.foto || 'https://placehold.co/150';
-        document.getElementById('pub-bio').innerText = p.bio;
-        onValue(ref(db, `jogadores/${id}/mural`), snap => {
-            let mh = ""; if(snap.val()) Object.entries(snap.val()).forEach(([cid, c]) => {
-                const canDel = uLog.id === vId || uLog.role === 'admin';
-                mh += `<div class="notif-box"><b>${c.de}:</b> ${c.msg} ${canDel?`<button onclick="admDel('jogadores/${vId}/mural/${cid}')" class="btn-red btn-small">×</button>`:''}</div>`;
-            });
-            document.getElementById('pub-mural').innerHTML = mh;
-        });
-        document.getElementById('modal-perfil').style.display='block';
-    };
+await update(ref(db,'users/'+user.id),{saldo:user.saldo-i.preco});
+await push(ref(db,'users/'+user.id+'/hist'),{tipo:"compra",valor:i.preco});
+}
 
-    window.postMural = async () => {
-        const m = document.getElementById('pub-msg').value;
-        if(m) await push(ref(db, `jogadores/${vId}/mural`), { de: uLog.nome, msg: m });
-        document.getElementById('pub-msg').value = "";
-    };
+window.giro=async()=>{
+let s=await get(ref(db,'users'));
+s.forEach(i=>{
+let p=i.val();
+update(ref(db,'users/'+i.key),{saldo:p.saldo+100});
+});
+await push(ref(db,'auditoria'),{msg:"Ciclo rodado"});
+}
 
-    // Global Sync
-    function syncGlobal() {
-        onValue(ref(db, 'jogadores'), s => {
-            let plys = s.val(); let opts = "<option value=''>Selecionar...</option>"; let rH = "";
-            let arr = []; Object.entries(plys).forEach(([id, p]) => {
-                if(id !== uLog.id) opts += `<option value="${id}">${p.nome}</option>`;
-                arr.push({id, ...p});
-            });
-            document.getElementById('tr-dest').innerHTML = opts;
-            document.getElementById('adm-p-sel').innerHTML = opts;
-            
-            arr.sort((a,b) => b.saldo - a.saldo);
-            arr.forEach((p, i) => {
-                let cl = i<3 ? 'border:1px solid var(--silver)' : (i>=arr.length-3 ? 'border:1px solid var(--alert)' : '');
-                rH += `<div class="card" onclick="openPublicProfile('${p.id}')" style="${cl}; display:flex; align-items:center; gap:10px">
-                    <b>#${i+1}</b> <img src="${p.foto||'https://placehold.co/30'}" style="width:30px; border-radius:50%"> <span>${p.nome}</span> <span style="margin-left:auto">$${p.saldo}</span>
-                </div>`;
-            });
-            document.getElementById('rank-list').innerHTML = rH;
-        });
+window.salvarPerfil=()=>{
+update(ref(db,'users/'+user.id),{
+nome:editNome.value,
+bio:editBio.value,
+foto:editFoto.value
+});
+}
 
-        onValue(ref(db, 'noticias'), s => {
-            let h = "", ah = ""; if(s.val()) Object.entries(s.val()).reverse().forEach(([id, n]) => {
-                h += `<div class="card"><img src="${n.img}" style="width:100%; border-radius:8px"><h2 style="font-family:'Playfair Display'">${n.titulo}</h2><p style="font-size:12px">${n.texto}</p></div>`;
-                ah += `<div class="notif-box">${n.titulo} <button onclick="admDel('noticias/${id}')" class="btn-red btn-small">Excluir</button></div>`;
-            });
-            document.getElementById('news-feed').innerHTML = h;
-            document.getElementById('adm-news-list').innerHTML = ah;
-        });
+window.logout=()=>signOut(auth);
 
-        onValue(ref(db, 'loja'), s => {
-            let h = "", ah = ""; if(s.val()) Object.entries(s.val()).forEach(([id, i]) => {
-                h += `<div class="card" style="text-align:center"><img src="${i.img}" style="width:100%; height:80px; object-fit:cover"><br><b>${i.nome}</b><br>$${i.preco}<br><button onclick="buyItem('${id}')" class="btn-gold btn-small">Comprar</button></div>`;
-                ah += `<div class="notif-box">${i.nome} ($${i.preco}) <button onclick="admDel('loja/${id}')" class="btn-red btn-small">Excluir</button></div>`;
-            });
-            document.getElementById('market-list').innerHTML = h;
-            document.getElementById('adm-items-list').innerHTML = ah;
-        });
+window.deletar=async()=>{
+await remove(ref(db,'users/'+user.id));
+await deleteUser(auth.currentUser);
+}
 
-        onValue(ref(db, 'vagas'), s => {
-            let h = "", ah = ""; if(s.val()) Object.entries(s.val()).forEach(([id, v]) => {
-                h += `<div class="card"><h3>${v.titulo}</h3><p>$${v.salario}</p><button onclick="candidatar('${id}')">Candidatar-se</button></div>`;
-                ah += `<div class="notif-box">${v.titulo} <button onclick="admDel('vagas/${id}')" class="btn-red btn-small">Excluir</button></div>`;
-            });
-            document.getElementById('jobs-list').innerHTML = h;
-            document.getElementById('adm-jobs-list').innerHTML = ah;
-        });
+window.nav=(id)=>{
+document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+}
 
-        onValue(ref(db, 'candidaturas'), s => {
-            let h = ""; if(s.val()) Object.entries(s.val()).forEach(([id, c]) => {
-                h += `<div class="card"><b>${c.user}</b> para <b>${c.vaga}</b><br><p>${c.texto}</p>
-                    <button class="btn-gold btn-small" onclick="admJobRes('${id}', true)">Aceitar</button>
-                    <button class="btn-red btn-small" onclick="admJobRes('${id}', false)">Negar</button>
-                </div>`;
-            });
-            document.getElementById('adm-cand-list').innerHTML = h || "Nenhuma candidatura.";
-        });
-    }
+window.abrirConfig=()=>config.style.display="block";
 
-    // Ações Aluno
-    window.transferirDinheiro = async () => {
-        const dId = document.getElementById('tr-dest').value, val = parseInt(document.getElementById('tr-val').value);
-        if(!dId || val > uLog.saldo) return alert("Erro.");
-        const dS = await get(ref(db, 'jogadores/'+dId)); const d = dS.val();
-        await update(ref(db, 'jogadores/'+uLog.id), { saldo: uLog.saldo - val });
-        await update(ref(db, 'jogadores/'+dId), { saldo: d.saldo + val });
-        await push(ref(db, `jogadores/${dId}/notificacoes`), { msg: `💸 Recebeu $${val} de ${uLog.nome}` });
-        await push(ref(db, 'auditoria'), { msg: `${uLog.nome} transferiu $${val} para ${d.nome}` });
-        alert("Enviado!");
-    };
-
-    window.buyItem = async (id) => {
-        const s = await get(ref(db, 'loja/'+id)); const i = s.val();
-        if(uLog.saldo < i.preco) return alert("Saldo insuficiente.");
-        await update(ref(db, 'jogadores/'+uLog.id), { saldo: uLog.saldo - i.preco });
-        await push(ref(db, `jogadores/${uLog.id}/mochila`), { nome: i.nome, validade: i.duracao });
-        alert("Comprado!");
-    };
-
-    window.candidatar = async (id) => {
-        const txt = prompt("Por que você quer esta vaga?");
-        const vS = await get(ref(db, 'vagas/'+id));
-        if(txt) await push(ref(db, 'candidaturas'), { uid: uLog.id, user: uLog.nome, vaga: vS.val().titulo, salario: vS.val().salario, texto: txt });
-    };
-
-    // Ações ADM
-    window.admDel = (path) => { if(confirm("Apagar?")) remove(ref(db, path)); };
-
-    window.admAddTag = async () => {
-        const id = document.getElementById('adm-p-sel').value;
-        const n = document.getElementById('adm-tag-n').value, c = document.getElementById('adm-tag-c').value;
-        if(id && n) await push(ref(db, `jogadores/${id}/tags`), { nome: n, cor: c });
-    };
-
-    window.admAddFixo = async () => {
-        const id = document.getElementById('adm-p-sel').value;
-        const n = document.getElementById('adm-f-n').value, v = parseInt(document.getElementById('adm-f-v').value);
-        if(id && n) await push(ref(db, `jogadores/${id}/fixos`), { nome: n, valor: v });
-    };
-
-    window.admAddNews = () => {
-        const t = document.getElementById('en-t').value, x = document.getElementById('en-x').value, i = document.getElementById('en-i').value;
-        if(t) push(ref(db, 'noticias'), { titulo: t, texto: x, img: i });
-    };
-
-    window.admAddItem = () => {
-        const n = document.getElementById('mi-n').value, p = parseInt(document.getElementById('mi-p').value), v = parseInt(document.getElementById('mi-v').value), e = parseInt(document.getElementById('mi-e').value), i = document.getElementById('mi-i').value;
-        if(n) push(ref(db, 'loja'), { nome: n, preco: p, duracao: v, estoque: e, img: i });
-    };
-
-    window.admAddJob = () => {
-        const t = document.getElementById('jv-t').value, s = parseInt(document.getElementById('jv-s').value), d = document.getElementById('jv-d').value;
-        if(t) push(ref(db, 'vagas'), { titulo: t, salario: s, desc: d });
-    };
-
-    window.girarCiclo = async () => {
-        if(!confirm("Girar Ciclo?")) return;
-        const s = await get(ref(db, 'jogadores')); const plys = s.val(); const batch = {};
-        for(let id in plys) {
-            let p = plys[id]; let nS = p.saldo;
-            if(p.fixos) Object.values(p.fixos).forEach(f => nS += f.valor);
-            if(p.mochila) {
-                for(let k in p.mochila) { p.mochila[k].validade -= 1; if(p.mochila[k].validade<=0) delete p.mochila[k]; }
-            }
-            batch[`jogadores/${id}/saldo`] = nS;
-            batch[`jogadores/${id}/mochila`] = p.mochila || {};
-        }
-        await update(ref(db), batch); alert("Ciclo Concluído!");
-    };
 </script>
+
 </body>
 </html>
