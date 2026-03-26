@@ -1,31 +1,44 @@
-import { db, auth } from './firebase-config.js';
-import { ref, update, get, push, remove } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+import { db } from './firebase-config.js';
+import { ref, update, get, push, remove, onValue } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
-// Função de Giro de Ciclo (O Coração da Reitoria)
-export async function girarCicloAcademico() {
-    const confirmacao = confirm("Deseja processar o Giro de Ciclo? Isso cobrará contas e pagará salários.");
-    if (!confirmacao) return;
+// Função de Giro de Ciclo
+window.girarCiclo = async () => {
+    if(!confirm("Reitora, deseja processar o Giro de Ciclo agora?")) return;
+    
+    const snap = await get(ref(db, 'jogadores'));
+    const plys = snap.val();
+    const batch = {};
 
-    const snapshot = await get(ref(db, 'jogadores'));
-    const jogadores = snapshot.val();
-    const updates = {};
+    for(let id in plys) {
+        let p = plys[id];
+        let nSaldo = p.saldo || 0;
 
-    for (let id in jogadores) {
-        let p = jogadores[id];
-        let novoSaldo = p.saldo || 0;
-
-        // Processar salários e despesas fixas
-        if (p.fixos) {
-            Object.values(p.fixos).forEach(f => {
-                novoSaldo += f.valor;
-            });
+        // Processa fixos
+        if(p.fixos) {
+            Object.values(p.fixos).forEach(f => nSaldo += f.valor);
         }
-        
-        updates[`jogadores/${id}/saldo`] = novoSaldo;
+
+        batch[`jogadores/${id}/saldo`] = nSaldo;
+        // Notifica o aluno
+        const notifRef = push(ref(db, `jogadores/${id}/notificacoes`));
+        batch[`jogadores/${id}/notificacoes/${notifRef.key}`] = {
+            msg: "🏛️ <b>Ciclo Concluído:</b> Seus salários e despesas foram processados."
+        };
     }
 
-    await update(ref(db), updates);
-    alert("Ciclo processado com sucesso, Reitora!");
-}
+    await update(ref(db), batch);
+    alert("Ciclo finalizado com sucesso!");
+};
 
-// Lógica para Adicionar Vagas, Notícias e gerenciar Itens do Mercado...
+// Carregar lista de auditoria
+onValue(ref(db, 'auditoria'), snap => {
+    const auditDiv = document.getElementById('adm-audit-feed');
+    if(!auditDiv) return;
+    let h = "";
+    if(snap.val()) {
+        Object.values(snap.val()).reverse().forEach(log => {
+            h += `<div style="border-bottom:1px solid #111; padding:5px">${log.msg}</div>`;
+        });
+    }
+    auditDiv.innerHTML = h || "Nenhuma movimentação suspeita.";
+});
