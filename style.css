@@ -1,0 +1,51 @@
+:root { 
+    --navy: #050A14; --card-bg: #0D1B2A; --gold: #C5A059; --silver: #E0E1DD; 
+    --glass: rgba(255, 255, 255, 0.05); --alert: #E63946; --success: #2A9D8F;
+}
+
+body { 
+    background: var(--navy); color: #fff; font-family: 'Montserrat', sans-serif; 
+    margin: 0; overflow-x: hidden; 
+}
+
+.title-font { font-family: 'Playfair Display', serif; }
+header { 
+    background: #000; padding: 20px; text-align: center; 
+    border-bottom: 2px solid var(--silver); position: sticky; top: 0; z-index: 1000; 
+}
+
+.nav-bar { 
+    display: flex; overflow-x: auto; background: rgba(0,0,0,0.9); 
+    border-bottom: 1px solid var(--gold); scrollbar-width: none; 
+}
+
+.nav-btn { 
+    background: none; border: none; color: var(--silver); padding: 15px 18px; 
+    font-size: 9px; font-weight: 700; cursor: pointer; white-space: nowrap; opacity: 0.5; 
+}
+
+.nav-btn.active { opacity: 1; color: var(--gold); border-bottom: 2px solid var(--gold); }
+
+.card { 
+    background: var(--card-bg); border-radius: 12px; padding: 20px; 
+    margin-bottom: 15px; border: 1px solid var(--glass); 
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4); 
+}
+
+input, select, textarea { 
+    width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; 
+    border: 1px solid #1a2233; background: #000; color: #fff; font-size: 12px; 
+}
+
+button { 
+    background: var(--silver); color: #000; border: none; padding: 12px; 
+    border-radius: 6px; cursor: pointer; width: 100%; font-weight: 700; 
+}
+
+.btn-gold { background: var(--gold); }
+.btn-red { background: var(--alert); color: #fff; }
+
+.tag { 
+    display: inline-block; padding: 3px 8px; border-radius: 4px; 
+    font-size: 8px; font-weight: 700; margin: 2px; color: #000; 
+}
