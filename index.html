@@ -3,201 +3,252 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERA SOVEREIGN | System</title>
+    <title>ERA SOVEREIGN | V19 Empress</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Montserrat:wght@300;400;600&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { 
             --navy: #050A14; --card-bg: #0D1B2A; --gold: #C5A059; --silver: #E0E1DD; 
-            --glass: rgba(255, 255, 255, 0.05); --alert: #E63946; --success: #2A9D8F;
+            --glass: rgba(255, 255, 255, 0.05); --alert: #E63946; --success: #2A9D8F; --wine: #450920;
         }
         body { background: var(--navy); font-family: 'Montserrat', sans-serif; margin: 0; color: #fff; overflow-x: hidden; }
         
-        /* Header & Navigation */
+        /* Layout */
         header { background: #000; padding: 20px; text-align: center; border-bottom: 2px solid var(--silver); position: sticky; top: 0; z-index: 1000; }
         header h1 { font-family: 'Cinzel'; color: var(--silver); letter-spacing: 4px; font-size: 1.2rem; margin: 0; }
         
-        .nav-bar { display: flex; overflow-x: auto; background: rgba(0,0,0,0.8); border-bottom: 1px solid var(--glass); scrollbar-width: none; sticky; top: 60px; z-index: 999; }
-        .nav-btn { background: none; border: none; color: var(--silver); padding: 15px 20px; font-size: 10px; font-weight: 600; cursor: pointer; white-space: nowrap; opacity: 0.5; transition: 0.3s; }
+        .nav-bar { display: flex; overflow-x: auto; background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--gold); sticky; top: 60px; z-index: 999; scrollbar-width: none; }
+        .nav-btn { background: none; border: none; color: var(--silver); padding: 15px 18px; font-size: 9px; font-weight: 700; cursor: pointer; white-space: nowrap; opacity: 0.5; text-transform: uppercase; }
         .nav-btn.active { opacity: 1; color: var(--gold); border-bottom: 2px solid var(--gold); }
 
-        /* UI Components */
         .container { max-width: 600px; margin: 20px auto; padding: 0 15px; display: none; }
         .section { display: none; animation: fadeIn 0.4s ease; }
         .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .card { background: var(--card-bg); border-radius: 12px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--glass); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
-        .bank-card { background: linear-gradient(135deg, #0D1B2A 0%, #1B263B 100%); border: 1px solid rgba(224, 225, 221, 0.1); }
+        .card { background: var(--card-bg); border-radius: 12px; padding: 20px; margin-bottom: 15px; border: 1px solid var(--glass); box-shadow: 0 8px 32px rgba(0,0,0,0.4); position: relative; }
         
+        /* Inputs & Buttons */
         input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: 1px solid #1a2233; background: #000; color: #fff; font-size: 12px; box-sizing: border-box; }
-        button { background: var(--silver); color: #000; border: none; padding: 12px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 700; font-size: 10px; text-transform: uppercase; transition: 0.3s; }
-        button:hover { filter: brightness(1.2); }
-        .btn-gold { background: var(--gold); }
+        button { background: var(--silver); color: #000; border: none; padding: 12px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 700; font-size: 10px; text-transform: uppercase; transition: 0.3s; margin: 5px 0; }
+        .btn-gold { background: var(--gold); color: #000; }
         .btn-red { background: var(--alert); color: #fff; }
+        .btn-small { width: auto; padding: 5px 10px; font-size: 8px; display: inline-block; }
 
-        /* Profile & Tags */
-        .profile-img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--silver); object-fit: cover; margin-bottom: 10px; }
-        .tag { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 9px; font-weight: 700; margin: 2px; text-transform: uppercase; }
+        /* Custom UI */
+        .profile-img { width: 85px; height: 85px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; margin-bottom: 10px; }
+        .tag { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 8px; font-weight: 700; margin: 2px; text-transform: uppercase; color: #000; }
+        .notif-box { border-left: 3px solid var(--gold); background: rgba(255,255,255,0.03); padding: 12px; margin-bottom: 10px; border-radius: 0 8px 8px 0; font-size: 11px; }
         
-        /* Ranking */
-        .rank-item { display: flex; align-items: center; padding: 10px; margin-bottom: 5px; border-radius: 8px; cursor: pointer; background: rgba(255,255,255,0.02); }
-        .rank-elite { border: 1px solid var(--silver); background: rgba(224, 225, 221, 0.05); }
-        .rank-alert { border: 1px solid var(--alert); }
-
         /* Modals */
-        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; padding: 20px; overflow-y: auto; }
-        
-        /* Editorial */
-        .news-img { width: 100%; border-radius: 8px; margin-bottom: 10px; max-height: 200px; object-fit: cover; }
+        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2000; padding: 20px; overflow-y: auto; }
+        .modal-content { max-width: 450px; margin: 40px auto; }
+
+        /* Reitoria Tabs */
+        .adm-nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 20px; }
+        .adm-btn-sub { font-size: 8px; padding: 8px; background: #111; color: var(--gold); border: 1px solid var(--gold); }
+        .adm-btn-sub.active { background: var(--gold); color: #000; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1 id="sys-title">ERA SOVEREIGN SYSTEM</h1>
-</header>
+<header><h1>ERA SOVEREIGN SYSTEM</h1></header>
 
-<div id="auth-screen" style="padding: 100px 20px; text-align: center;">
+<div id="auth-screen" style="padding: 80px 20px; text-align: center;">
     <div class="card" style="max-width:350px; margin: 0 auto;">
-        <h2 style="font-family:'Playfair Display'; color:var(--silver)">Acesso Restrito</h2>
+        <h2 style="font-family:'Playfair Display'">Elite Access</h2>
         <div id="reg-box" style="display:none"><input type="text" id="reg-nome" placeholder="Nome Completo"></div>
-        <input type="email" id="u-email" placeholder="E-mail Acadêmico">
-        <input type="password" id="u-pass" placeholder="Password">
-        <button onclick="handleAuth()" class="btn-gold" id="btn-auth">Entrar</button>
-        <button onclick="toggleAuthMode()" style="background:none; color:var(--silver); font-size:10px; margin-top:15px">Nova Matrícula</button>
+        <input type="email" id="u-email" placeholder="E-mail">
+        <input type="password" id="u-pass" placeholder="Senha">
+        <button id="btn-login-main" class="btn-gold">Entrar</button>
+        <button id="btn-toggle-auth" style="background:none; color:var(--silver); font-size:10px; text-decoration:underline">Novo Registro</button>
     </div>
 </div>
 
 <nav class="nav-bar" id="main-nav" style="display:none">
-    <button class="nav-btn active" data-tab="home">INÍCIO</button>
-    <button class="nav-btn" data-tab="notifs">NOTIFICAÇÕES</button>
+    <button class="nav-btn active" data-tab="home">CONTA</button>
+    <button class="nav-btn" data-tab="notifs">AVISOS</button>
     <button class="nav-btn" data-tab="editorial">EDITORIAL</button>
     <button class="nav-btn" data-tab="finance">FINANÇAS</button>
-    <button class="nav-btn" data-tab="transfer">TRANSFERIR</button>
+    <button class="nav-btn" data-tab="transfer">PAGAR</button>
     <button class="nav-btn" data-tab="market">MERCADO</button>
-    <button class="nav-btn" data-tab="jobs">EMPREGOS</button>
+    <button class="nav-btn" data-tab="jobs">VAGAS</button>
     <button class="nav-btn" data-tab="ranking">ELITE</button>
-    <button class="nav-btn btn-gold" id="adm-nav" style="display:none" data-tab="reitoria">REITORIA</button>
+    <button class="nav-btn btn-gold" id="adm-tab-btn" style="display:none" data-tab="reitoria">REITORIA</button>
 </nav>
 
-<div class="container" id="app-container">
+<div class="container" id="app-wrap">
     
     <div id="home" class="section active">
-        <div class="card bank-card" style="text-align: center; position: relative;">
-            <div id="digital-clock" style="font-size:10px; position:absolute; left:20px; top:20px; opacity:0.6">00:00</div>
-            <button onclick="openSettings()" style="position:absolute; right:20px; top:20px; background:none; color:var(--silver); border:none; font-size:18px">⚙️</button>
-            <img id="p-img" src="" class="profile-img">
-            <h2 id="p-name" style="font-family:'Playfair Display'; margin: 5px 0;">---</h2>
-            <div id="p-balance" style="font-size: 2.2em; font-weight: 700; margin: 10px 0;">$ 0</div>
-            <p id="p-bio" style="font-size: 11px; opacity: 0.7; font-style: italic;"></p>
+        <div class="card" style="text-align: center; background: linear-gradient(180deg, #0D1B2A 0%, #050A14 100%);">
+            <button onclick="document.getElementById('modal-settings').style.display='block'" style="position:absolute; right:15px; top:15px; background:none; border:none; color:var(--silver); font-size:18px">⚙️</button>
+            <div id="clock" style="font-size:10px; opacity:0.5; margin-bottom:10px">00:00:00</div>
+            <img id="my-pic" src="" class="profile-img">
+            <h2 id="my-name" style="font-family:'Playfair Display'; margin: 5px 0;">...</h2>
+            <div id="my-balance" style="font-size:2.5em; font-weight:700; color:var(--silver)">$ 0</div>
+            <p id="my-bio" style="font-size:11px; font-style:italic; opacity:0.8"></p>
+            <div id="my-tags"></div>
         </div>
-        
         <div class="card">
             <h3>INVENTÁRIO ATIVO</h3>
-            <div id="p-inv" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px"></div>
+            <div id="my-inv" style="display:grid; grid-template-columns:1fr 1fr; gap:10px"></div>
         </div>
-
         <div class="card">
-            <h3>HISTÓRICO RECENTE</h3>
-            <div id="p-history" style="font-size:10px"></div>
+            <h3>HISTÓRICO</h3>
+            <div id="my-history" style="font-size:9px; opacity:0.6"></div>
         </div>
     </div>
 
     <div id="notifs" class="section">
-        <h2 style="font-family:'Cinzel'">Central de Avisos</h2>
-        <div id="notif-list"></div>
+        <h2 style="font-family:'Cinzel'">Notificações</h2>
+        <div id="notif-feed"></div>
     </div>
 
     <div id="editorial" class="section">
-        <div id="news-list"></div>
+        <div id="news-feed"></div>
     </div>
 
     <div id="finance" class="section">
-        <div class="card">
-            <h3>FINANCIAMENTO ESTUDANTIL</h3>
-            <div style="font-size:0.8em; margin-bottom:15px">Dívida Total: <b id="debt-val" style="color:var(--alert)">$ 0</b></div>
-            <button onclick="requestLoan()" style="margin-bottom:10px">Solicitar Empréstimo</button>
-            <button onclick="amortizar()">Amortizar Dívida</button>
+        <div class="card" style="text-align:center">
+            <h3>Financiamento</h3>
+            <h2 id="my-debt" style="color:var(--alert); font-size:2.5em">$ 0</h2>
+            <button onclick="loanRequest()" class="btn-gold">Pedir Empréstimo</button>
+            <button onclick="payDebt()">Amortizar Dívida</button>
         </div>
     </div>
 
     <div id="transfer" class="section">
         <div class="card">
-            <h3>EFETUAR PAGAMENTO</h3>
-            <select id="tr-destinatario"></select>
-            <input type="number" id="tr-valor" placeholder="Valor $">
-            <input type="text" id="tr-tag-nome" placeholder="Nome da Tag (Ex: Presente)">
-            <input type="color" id="tr-tag-cor" value="#C5A059" style="height:40px">
-            <textarea id="tr-desc" placeholder="Descrição do pagamento..."></textarea>
-            <button onclick="execTransfer()" class="btn-gold">Confirmar Envio</button>
+            <h3>Transferência de Luxo</h3>
+            <select id="tr-dest"></select>
+            <input type="number" id="tr-val" placeholder="Valor $">
+            <input type="text" id="tr-tag-n" placeholder="Nome da Tag">
+            <input type="color" id="tr-tag-c" value="#C5A059" style="height:40px">
+            <textarea id="tr-msg" placeholder="Mensagem..."></textarea>
+            <button onclick="transferirDinheiro()" class="btn-gold">Confirmar Envio</button>
         </div>
     </div>
 
     <div id="market" class="section">
-        <div id="market-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:15px"></div>
+        <div id="market-list" style="display:grid; grid-template-columns:1fr 1fr; gap:15px"></div>
     </div>
 
     <div id="jobs" class="section">
-        <div id="vagas-list"></div>
+        <div id="jobs-list"></div>
     </div>
 
     <div id="ranking" class="section">
-        <div id="rank-display"></div>
+        <div id="rank-list"></div>
     </div>
 
     <div id="reitoria" class="section">
-        <div class="card" style="background:var(--alert); border:none">
-            <button onclick="cycleTurn()" style="background:none; color:#fff; font-weight:900">🔄 GIRAR CICLO ACADÊMICO</button>
+        <div class="card" style="background:var(--wine); text-align:center">
+            <button onclick="girarCiclo()" style="background:none; color:#fff; font-weight:900">🔄 GIRAR CICLO ACADÊMICO</button>
+            <p style="font-size:8px; margin-top:5px; opacity:0.7">Processa salários, contas, validade e juros.</p>
         </div>
-        
-        <div class="card">
-            <h3>GESTÃO DE ALUNO</h3>
-            <select id="adm-player-select" onchange="loadAdmPlayer()"></select>
-            <div id="adm-player-panel" style="display:none; margin-top:15px">
-                <button onclick="admDeleteUser()" class="btn-red" style="margin-bottom:10px">EXCLUIR CONTA DEFINITIVAMENTE</button>
-                <div id="adm-player-tags"></div>
-                <input type="text" id="adm-tag-n" placeholder="Nova Tag">
-                <input type="color" id="adm-tag-c" value="#C5A059">
-                <button onclick="admAddTag()">Adicionar Tag</button>
-                <hr style="opacity:0.1">
-                <h4>SALDOS FIXOS</h4>
-                <div id="adm-fixos-list"></div>
-                <button onclick="openModalFixo()">Add Fixo (Salário/Conta)</button>
+
+        <div class="adm-nav">
+            <button class="adm-btn-sub active" onclick="showAdmSec('adm-alunos', this)">ALUNOS</button>
+            <button class="adm-btn-sub" onclick="showAdmSec('adm-mercado', this)">MERCADO</button>
+            <button class="adm-btn-sub" onclick="showAdmSec('adm-editorial', this)">NOTÍCIAS</button>
+            <button class="adm-btn-sub" onclick="showAdmSec('adm-vagas', this)">VAGAS</button>
+            <button class="adm-btn-sub" onclick="showAdmSec('adm-auditoria', this)">AUDITORIA</button>
+            <button class="adm-btn-sub" onclick="showAdmSec('adm-candidatos', this)">CANDIDATOS</button>
+        </div>
+
+        <div id="adm-alunos" class="adm-section" style="display:block">
+            <div class="card">
+                <h3>Gestão de Aluno</h3>
+                <select id="adm-p-sel" onchange="loadAdmPlayerData()"></select>
+                <div id="adm-p-panel" style="display:none; margin-top:15px">
+                    <button class="btn-red btn-small" onclick="admDeleteUser()">Excluir Conta</button>
+                    <hr style="opacity:0.1">
+                    <h4>Tags</h4>
+                    <div id="adm-p-tags"></div>
+                    <input type="text" id="adm-tag-n" placeholder="Nome Tag">
+                    <input type="color" id="adm-tag-c" value="#C5A059">
+                    <button onclick="admAddTag()">Adicionar Tag</button>
+                    <hr style="opacity:0.1">
+                    <h4>Financeiro Fixo</h4>
+                    <div id="adm-p-fixos"></div>
+                    <input type="text" id="adm-f-n" placeholder="Nome (Ex: Salário)">
+                    <input type="number" id="adm-f-v" placeholder="Valor (Negativo para custo)">
+                    <button onclick="admAddFixo()">Adicionar Fixo</button>
+                </div>
             </div>
         </div>
 
-        <div class="card"><h3>AUDITORIA FISCAL</h3><div id="adm-audit-logs" style="font-size:9px; max-height:200px; overflow-y:auto"></div></div>
-        <div class="card"><h3>GESTOR EDITORIAL</h3><button onclick="openModalNews()">Nova Notícia</button></div>
-        <div class="card"><h3>GESTOR MERCADO</h3><button onclick="openModalItem()">Novo Item</button></div>
-        <div class="card"><h3>GESTOR CARREIRAS</h3><button onclick="openModalJob()">Nova Vaga</button></div>
+        <div id="adm-mercado" class="adm-section" style="display:none">
+            <div class="card">
+                <h3>Novo Item</h3>
+                <input type="text" id="mi-n" placeholder="Nome">
+                <input type="number" id="mi-p" placeholder="Preço">
+                <input type="number" id="mi-v" placeholder="Validade (Semanas)">
+                <input type="number" id="mi-e" placeholder="Estoque">
+                <input type="text" id="mi-i" placeholder="URL Imagem">
+                <button onclick="admAddItem()">Criar Item</button>
+                <hr>
+                <div id="adm-items-list"></div>
+            </div>
+        </div>
+
+        <div id="adm-editorial" class="adm-section" style="display:none">
+            <div class="card">
+                <h3>Nova Notícia</h3>
+                <input type="text" id="en-t" placeholder="Título">
+                <textarea id="en-x" placeholder="Texto"></textarea>
+                <input type="text" id="en-i" placeholder="URL Foto">
+                <button onclick="admAddNews()">Publicar</button>
+                <hr>
+                <div id="adm-news-list"></div>
+            </div>
+        </div>
+
+        <div id="adm-vagas" class="adm-section" style="display:none">
+            <div class="card">
+                <h3>Nova Vaga</h3>
+                <input type="text" id="jv-t" placeholder="Título da Vaga">
+                <input type="number" id="jv-s" placeholder="Salário Base">
+                <textarea id="jv-d" placeholder="Descrição"></textarea>
+                <button onclick="admAddJob()">Postar Vaga</button>
+                <hr>
+                <div id="adm-jobs-list"></div>
+            </div>
+        </div>
+
+        <div id="adm-candidatos" class="adm-section" style="display:none">
+            <div id="adm-cand-list"></div>
+        </div>
+
+        <div id="adm-auditoria" class="adm-section" style="display:none">
+            <div class="card" id="adm-audit-feed" style="font-size:9px"></div>
+        </div>
     </div>
 </div>
 
 <div id="modal-settings" class="modal">
-    <div class="card" style="max-width:400px; margin: 50px auto;">
-        <h3>Configurações de Perfil</h3>
-        <input type="text" id="set-nome" placeholder="Nome Completo">
-        <input type="text" id="set-foto" placeholder="URL da Foto">
-        <textarea id="set-bio" placeholder="Sua descrição..."></textarea>
-        <button onclick="saveSettings()" class="btn-gold">Salvar Alterações</button>
-        <button onclick="logout()" style="margin-top:10px">Sair da Conta</button>
-        <button onclick="deleteOwnAccount()" class="btn-red" style="margin-top:10px">Excluir Minha Conta</button>
-        <button onclick="closeModals()" style="background:none; color:var(--silver)">Cancelar</button>
+    <div class="modal-content card">
+        <h3>Ajustes de Conta</h3>
+        <input type="text" id="s-nome" placeholder="Nome">
+        <input type="text" id="s-foto" placeholder="URL Foto">
+        <textarea id="s-bio" placeholder="Bio"></textarea>
+        <button onclick="saveMyProfile()" class="btn-gold">Salvar</button>
+        <button onclick="logout()">Sair</button>
+        <button onclick="deleteMe()" class="btn-red">Excluir Minha Conta</button>
+        <button onclick="closeModals()" style="background:none; color:#fff">Fechar</button>
     </div>
 </div>
 
-<div id="modal-perfil-publico" class="modal">
-    <div class="card" style="max-width:400px; margin: 50px auto; text-align:center">
+<div id="modal-perfil" class="modal">
+    <div class="modal-content card" style="text-align:center">
         <img id="pub-img" src="" class="profile-img">
         <h2 id="pub-name"></h2>
-        <div id="pub-title" style="color:var(--gold); font-weight:bold; margin-bottom:10px"></div>
         <div id="pub-tags"></div>
-        <p id="pub-bio"></p>
+        <p id="pub-bio" style="font-size:11px; opacity:0.8"></p>
         <hr style="opacity:0.1">
-        <div id="pub-comments" style="text-align:left; font-size:10px"></div>
-        <input type="text" id="pub-new-comment" placeholder="Escreva um comentário...">
-        <button onclick="addComment()">Comentar</button>
-        <button onclick="closeModals()" style="margin-top:10px; background:none; color:var(--silver)">Fechar</button>
+        <div id="pub-mural" style="text-align:left; font-size:10px"></div>
+        <input type="text" id="pub-msg" placeholder="Deixe um recado...">
+        <button onclick="postMural()">Enviar</button>
+        <button onclick="closeModals()" style="background:none; color:#fff">Fechar</button>
     </div>
 </div>
 
@@ -220,341 +271,229 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    let userLogado = null;
-    let viewUserId = null;
+    let uLog = null;
+    let vId = null;
 
-    // --- SISTEMA DE NAVEGAÇÃO ---
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.onclick = () => {
+    // Relógio
+    setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
+
+    // Navegação
+    document.querySelectorAll('.nav-btn').forEach(b => {
+        b.onclick = () => {
             document.querySelectorAll('.section, .nav-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(btn.dataset.tab).classList.add('active');
-            btn.classList.add('active');
+            document.getElementById(b.dataset.tab).classList.add('active');
+            b.classList.add('active');
         };
     });
 
-    window.closeModals = () => document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
-
-    // --- AUTENTICAÇÃO ---
-    window.toggleAuthMode = () => {
-        const box = document.getElementById('reg-box');
-        box.style.display = box.style.display === 'none' ? 'block' : 'none';
-        document.getElementById('btn-auth').innerText = box.style.display === 'none' ? 'Entrar' : 'Matricular';
+    window.showAdmSec = (id, btn) => {
+        document.querySelectorAll('.adm-section, .adm-btn-sub').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.adm-section').forEach(el => el.style.display = 'none');
+        document.getElementById(id).style.display = 'block';
+        btn.classList.add('active');
     };
 
-    window.handleAuth = async () => {
-        const email = document.getElementById('u-email').value;
-        const pass = document.getElementById('u-pass').value;
-        const isReg = document.getElementById('reg-box').style.display === 'block';
+    window.closeModals = () => document.querySelectorAll('.modal').forEach(m => m.style.display='none');
 
-        try {
-            if(isReg) {
-                const nome = document.getElementById('reg-nome').value;
-                const r = await createUserWithEmailAndPassword(auth, email, pass);
-                await set(ref(db, 'jogadores/' + r.user.uid), {
-                    nome, email, saldo: 2000, divida: 0, role: 'aluno', foto: '', bio: '',
-                    fixos: {}, mochila: {}, notificacoes: {}, historico: {}
-                });
-            } else {
-                await signInWithEmailAndPassword(auth, email, pass);
-            }
-        } catch(e) { alert("Erro: " + e.message); }
+    // Auth
+    document.getElementById('btn-toggle-auth').onclick = () => {
+        const r = document.getElementById('reg-box'); r.style.display = r.style.display==='none'?'block':'none';
     };
 
-    onAuthStateChanged(auth, user => {
-        if(user) {
-            loadUserData(user.uid);
-            document.getElementById('auth-screen').style.display = 'none';
-            document.getElementById('app-container').style.display = 'block';
-            document.getElementById('main-nav').style.display = 'flex';
+    document.getElementById('btn-login-main').onclick = async () => {
+        const e = document.getElementById('u-email').value, p = document.getElementById('u-pass').value;
+        if(document.getElementById('reg-box').style.display === 'block') {
+            const n = document.getElementById('reg-nome').value;
+            const r = await createUserWithEmailAndPassword(auth, e, p);
+            await set(ref(db, 'jogadores/'+r.user.uid), { nome: n, saldo: 1500, role: 'aluno', divida: 0, bio: '' });
+        }
+        signInWithEmailAndPassword(auth, e, p).catch(() => alert("Falha no login."));
+    };
+
+    onAuthStateChanged(auth, u => {
+        if(u) {
+            onValue(ref(db, 'jogadores/'+u.uid), s => {
+                uLog = { id: u.uid, ...s.val() };
+                updateUI();
+                document.getElementById('auth-screen').style.display='none';
+                document.getElementById('main-nav').style.display='flex';
+                document.getElementById('app-wrap').style.display='block';
+                if(uLog.role === 'admin') document.getElementById('adm-tab-btn').style.display='block';
+                syncGlobal();
+            });
         } else {
-            document.getElementById('auth-screen').style.display = 'block';
-            document.getElementById('app-container').style.display = 'none';
-            document.getElementById('main-nav').style.display = 'none';
+            document.getElementById('auth-screen').style.display='block';
+            document.getElementById('app-wrap').style.display='none';
         }
     });
 
-    // --- CARREGAMENTO DE DADOS ---
-    function loadUserData(uid) {
-        onValue(ref(db, 'jogadores/' + uid), snapshot => {
-            const d = snapshot.val(); if(!d) return;
-            userLogado = { id: uid, ...d };
+    function updateUI() {
+        document.getElementById('my-name').innerText = uLog.nome;
+        document.getElementById('my-balance').innerText = `$ ${uLog.saldo.toLocaleString()}`;
+        document.getElementById('my-pic').src = uLog.foto || 'https://placehold.co/150';
+        document.getElementById('my-bio').innerText = uLog.bio;
+        document.getElementById('my-debt').innerText = `$ ${uLog.divida || 0}`;
+
+        let tagsH = ""; if(uLog.tags) Object.values(uLog.tags).forEach(t => tagsH += `<span class="tag" style="background:${t.cor}">${t.nome}</span>`);
+        document.getElementById('my-tags').innerHTML = tagsH;
+
+        let invH = ""; if(uLog.mochila) Object.values(uLog.mochila).forEach(i => {
+            invH += `<div class="card" style="padding:10px; font-size:9px; border:1px solid var(--gold)"><b>${i.nome}</b><br>Validade: ${i.validade}s</div>`;
+        });
+        document.getElementById('my-inv').innerHTML = invH;
+    }
+
+    // Perfil Público
+    window.openPublicProfile = async (id) => {
+        vId = id; const s = await get(ref(db, 'jogadores/'+id)); const p = s.val();
+        document.getElementById('pub-name').innerText = p.nome;
+        document.getElementById('pub-img').src = p.foto || 'https://placehold.co/150';
+        document.getElementById('pub-bio').innerText = p.bio;
+        onValue(ref(db, `jogadores/${id}/mural`), snap => {
+            let mh = ""; if(snap.val()) Object.entries(snap.val()).forEach(([cid, c]) => {
+                const canDel = uLog.id === vId || uLog.role === 'admin';
+                mh += `<div class="notif-box"><b>${c.de}:</b> ${c.msg} ${canDel?`<button onclick="admDel('jogadores/${vId}/mural/${cid}')" class="btn-red btn-small">×</button>`:''}</div>`;
+            });
+            document.getElementById('pub-mural').innerHTML = mh;
+        });
+        document.getElementById('modal-perfil').style.display='block';
+    };
+
+    window.postMural = async () => {
+        const m = document.getElementById('pub-msg').value;
+        if(m) await push(ref(db, `jogadores/${vId}/mural`), { de: uLog.nome, msg: m });
+        document.getElementById('pub-msg').value = "";
+    };
+
+    // Global Sync
+    function syncGlobal() {
+        onValue(ref(db, 'jogadores'), s => {
+            let plys = s.val(); let opts = "<option value=''>Selecionar...</option>"; let rH = "";
+            let arr = []; Object.entries(plys).forEach(([id, p]) => {
+                if(id !== uLog.id) opts += `<option value="${id}">${p.nome}</option>`;
+                arr.push({id, ...p});
+            });
+            document.getElementById('tr-dest').innerHTML = opts;
+            document.getElementById('adm-p-sel').innerHTML = opts;
             
-            // UI Update
-            document.getElementById('p-name').innerText = d.nome;
-            document.getElementById('p-balance').innerText = `$ ${d.saldo.toLocaleString()}`;
-            document.getElementById('p-img').src = d.foto || 'https://placehold.co/150?text=ERA';
-            document.getElementById('p-bio').innerText = d.bio || "Sem descrição acadêmica.";
-            document.getElementById('debt-val').innerText = `$ ${d.divida || 0}`;
-
-            if(d.role === 'admin') document.getElementById('adm-nav').style.display = 'block';
-
-            // Inventário
-            let invH = "";
-            if(d.mochila) Object.entries(d.mochila).forEach(([id, i]) => {
-                invH += `<div class="card" style="padding:10px; font-size:9px; border:1px solid var(--gold)">
-                    <b>${i.nome}</b><br>Validade: ${i.validade} semanas
+            arr.sort((a,b) => b.saldo - a.saldo);
+            arr.forEach((p, i) => {
+                let cl = i<3 ? 'border:1px solid var(--silver)' : (i>=arr.length-3 ? 'border:1px solid var(--alert)' : '');
+                rH += `<div class="card" onclick="openPublicProfile('${p.id}')" style="${cl}; display:flex; align-items:center; gap:10px">
+                    <b>#${i+1}</b> <img src="${p.foto||'https://placehold.co/30'}" style="width:30px; border-radius:50%"> <span>${p.nome}</span> <span style="margin-left:auto">$${p.saldo}</span>
                 </div>`;
             });
-            document.getElementById('p-inv').innerHTML = invH || "Nenhum item ativo.";
+            document.getElementById('rank-list').innerHTML = rH;
+        });
 
-            // Histórico
-            let histH = "";
-            if(d.historico) Object.values(d.historico).reverse().slice(0, 10).forEach(h => {
-                histH += `<div style="border-bottom:1px solid var(--glass); padding:5px">${h}</div>`;
+        onValue(ref(db, 'noticias'), s => {
+            let h = "", ah = ""; if(s.val()) Object.entries(s.val()).reverse().forEach(([id, n]) => {
+                h += `<div class="card"><img src="${n.img}" style="width:100%; border-radius:8px"><h2 style="font-family:'Playfair Display'">${n.titulo}</h2><p style="font-size:12px">${n.texto}</p></div>`;
+                ah += `<div class="notif-box">${n.titulo} <button onclick="admDel('noticias/${id}')" class="btn-red btn-small">Excluir</button></div>`;
             });
-            document.getElementById('p-history').innerHTML = histH || "Sem registros.";
+            document.getElementById('news-feed').innerHTML = h;
+            document.getElementById('adm-news-list').innerHTML = ah;
+        });
 
-            // Sync global data
-            syncPublicData();
+        onValue(ref(db, 'loja'), s => {
+            let h = "", ah = ""; if(s.val()) Object.entries(s.val()).forEach(([id, i]) => {
+                h += `<div class="card" style="text-align:center"><img src="${i.img}" style="width:100%; height:80px; object-fit:cover"><br><b>${i.nome}</b><br>$${i.preco}<br><button onclick="buyItem('${id}')" class="btn-gold btn-small">Comprar</button></div>`;
+                ah += `<div class="notif-box">${i.nome} ($${i.preco}) <button onclick="admDel('loja/${id}')" class="btn-red btn-small">Excluir</button></div>`;
+            });
+            document.getElementById('market-list').innerHTML = h;
+            document.getElementById('adm-items-list').innerHTML = ah;
+        });
+
+        onValue(ref(db, 'vagas'), s => {
+            let h = "", ah = ""; if(s.val()) Object.entries(s.val()).forEach(([id, v]) => {
+                h += `<div class="card"><h3>${v.titulo}</h3><p>$${v.salario}</p><button onclick="candidatar('${id}')">Candidatar-se</button></div>`;
+                ah += `<div class="notif-box">${v.titulo} <button onclick="admDel('vagas/${id}')" class="btn-red btn-small">Excluir</button></div>`;
+            });
+            document.getElementById('jobs-list').innerHTML = h;
+            document.getElementById('adm-jobs-list').innerHTML = ah;
+        });
+
+        onValue(ref(db, 'candidaturas'), s => {
+            let h = ""; if(s.val()) Object.entries(s.val()).forEach(([id, c]) => {
+                h += `<div class="card"><b>${c.user}</b> para <b>${c.vaga}</b><br><p>${c.texto}</p>
+                    <button class="btn-gold btn-small" onclick="admJobRes('${id}', true)">Aceitar</button>
+                    <button class="btn-red btn-small" onclick="admJobRes('${id}', false)">Negar</button>
+                </div>`;
+            });
+            document.getElementById('adm-cand-list').innerHTML = h || "Nenhuma candidatura.";
         });
     }
 
-    // --- CONFIGURAÇÕES DE PERFIL ---
-    window.openSettings = () => {
-        document.getElementById('set-nome').value = userLogado.nome;
-        document.getElementById('set-foto').value = userLogado.foto;
-        document.getElementById('set-bio').value = userLogado.bio;
-        document.getElementById('modal-settings').style.display = 'block';
+    // Ações Aluno
+    window.transferirDinheiro = async () => {
+        const dId = document.getElementById('tr-dest').value, val = parseInt(document.getElementById('tr-val').value);
+        if(!dId || val > uLog.saldo) return alert("Erro.");
+        const dS = await get(ref(db, 'jogadores/'+dId)); const d = dS.val();
+        await update(ref(db, 'jogadores/'+uLog.id), { saldo: uLog.saldo - val });
+        await update(ref(db, 'jogadores/'+dId), { saldo: d.saldo + val });
+        await push(ref(db, `jogadores/${dId}/notificacoes`), { msg: `💸 Recebeu $${val} de ${uLog.nome}` });
+        await push(ref(db, 'auditoria'), { msg: `${uLog.nome} transferiu $${val} para ${d.nome}` });
+        alert("Enviado!");
     };
 
-    window.saveSettings = async () => {
-        await update(ref(db, 'jogadores/' + userLogado.id), {
-            nome: document.getElementById('set-nome').value,
-            foto: document.getElementById('set-foto').value,
-            bio: document.getElementById('set-bio').value
-        });
-        closeModals();
-        alert("Perfil Atualizado!");
+    window.buyItem = async (id) => {
+        const s = await get(ref(db, 'loja/'+id)); const i = s.val();
+        if(uLog.saldo < i.preco) return alert("Saldo insuficiente.");
+        await update(ref(db, 'jogadores/'+uLog.id), { saldo: uLog.saldo - i.preco });
+        await push(ref(db, `jogadores/${uLog.id}/mochila`), { nome: i.nome, validade: i.duracao });
+        alert("Comprado!");
     };
 
-    window.logout = () => signOut(auth).then(() => location.reload());
-
-    window.deleteOwnAccount = async () => {
-        if(confirm("TEM CERTEZA? Isso excluirá todos os seus dados e saldo permanentemente.")) {
-            await remove(ref(db, 'jogadores/' + userLogado.id));
-            deleteUser(auth.currentUser).then(() => location.reload());
-        }
+    window.candidatar = async (id) => {
+        const txt = prompt("Por que você quer esta vaga?");
+        const vS = await get(ref(db, 'vagas/'+id));
+        if(txt) await push(ref(db, 'candidaturas'), { uid: uLog.id, user: uLog.nome, vaga: vS.val().titulo, salario: vS.val().salario, texto: txt });
     };
 
-    // --- TRANSFERÊNCIAS & PAGAMENTOS ---
-    window.execTransfer = async () => {
-        const destId = document.getElementById('tr-destinatario').value;
-        const val = parseInt(document.getElementById('tr-valor').value);
-        const tNome = document.getElementById('tr-tag-nome').value;
-        const tCor = document.getElementById('tr-tag-cor').value;
-        const desc = document.getElementById('tr-desc').value;
+    // Ações ADM
+    window.admDel = (path) => { if(confirm("Apagar?")) remove(ref(db, path)); };
 
-        if(!destId || val <= 0 || userLogado.saldo < val) return alert("Dados inválidos ou saldo insuficiente.");
-
-        const destSnap = await get(ref(db, 'jogadores/' + destId));
-        const destData = destSnap.val();
-
-        // 1. Descontar do remetente
-        await update(ref(db, 'jogadores/' + userLogado.id), { saldo: userLogado.saldo - val });
-        await push(ref(db, `jogadores/${userLogado.id}/historico`), `Enviou $${val} para ${destData.nome}`);
-
-        // 2. Adicionar ao destino
-        await update(ref(db, 'jogadores/' + destId), { saldo: destData.saldo + val });
-        await push(ref(db, `jogadores/${destId}/historico`), `Recebeu $${val} de ${userLogado.nome}`);
-        
-        // 3. Notificação interativa
-        await push(ref(db, `jogadores/${destId}/notificacoes`), {
-            msg: `💰 <b>PIX REALCE!</b> Você recebeu <span class="tag" style="background:${tCor}">${tNome}</span> de $${val} enviado por ${userLogado.nome}. <i>"${desc}"</i>`
-        });
-
-        // 4. Auditoria Global
-        await push(ref(db, 'auditoria'), {
-            msg: `[TRANSF] ${userLogado.nome} -> ${destData.nome} | Valor: $${val} | Tag: ${tNome}`,
-            data: new Date().toLocaleString()
-        });
-
-        alert("Transferência de Elite concluída!");
+    window.admAddTag = async () => {
+        const id = document.getElementById('adm-p-sel').value;
+        const n = document.getElementById('adm-tag-n').value, c = document.getElementById('adm-tag-c').value;
+        if(id && n) await push(ref(db, `jogadores/${id}/tags`), { nome: n, cor: c });
     };
 
-    // --- SYNC GLOBAL (Ranking, Loja, Notícias) ---
-    function syncPublicData() {
-        // Lista de jogadores para select de transfer
-        onValue(ref(db, 'jogadores'), snap => {
-            const players = snap.val();
-            let opts = "<option value=''>Selecionar Aluno...</option>";
-            let rankH = "";
-            let pArray = [];
-
-            Object.entries(players).forEach(([id, p]) => {
-                if(id !== userLogado.id) opts += `<option value="${id}">${p.nome}</option>`;
-                pArray.push({ id, ...p });
-            });
-            document.getElementById('tr-destinatario').innerHTML = opts;
-            document.getElementById('adm-player-select').innerHTML = opts;
-
-            // Ranking Logic
-            pArray.sort((a,b) => b.saldo - a.saldo);
-            pArray.forEach((p, index) => {
-                let style = ""; let title = "Acadêmico";
-                if(index < 3) { style = "rank-elite"; title = "Magnata de Luxo"; }
-                if(index >= pArray.length - 3) { style = "rank-alert"; title = "Pobretão em Alerta"; }
-                
-                rankH += `<div class="rank-item ${style}" onclick="openPublicProfile('${p.id}')">
-                    <span style="width:30px">#${index+1}</span>
-                    <img src="${p.foto || 'https://placehold.co/50'}" style="width:30px; height:30px; border-radius:50%; margin: 0 10px">
-                    <div style="flex:1"><b>${p.nome}</b><br><small>${title}</small></div>
-                    <div>$ ${p.saldo.toLocaleString()}</div>
-                </div>`;
-            });
-            document.getElementById('rank-display').innerHTML = rankH;
-        });
-
-        // Notificações
-        onValue(ref(db, `jogadores/${userLogado.id}/notificacoes`), snap => {
-            let nH = "";
-            if(snap.val()) Object.values(snap.val()).reverse().forEach(n => {
-                nH += `<div class="card" style="font-size:11px; border-left:4px solid var(--gold)">${n.msg}</div>`;
-            });
-            document.getElementById('notif-list').innerHTML = nH || "Silêncio nos corredores...";
-        });
-
-        // Editorial (Notícias)
-        onValue(ref(db, 'noticias'), snap => {
-            let newsH = "";
-            if(snap.val()) Object.entries(snap.val()).reverse().forEach(([id, n]) => {
-                newsH += `<div class="card">
-                    <img src="${n.img}" class="news-img">
-                    <h2 style="font-family:'Playfair Display'; color:var(--gold)">${n.titulo}</h2>
-                    <p style="font-size:12px; opacity:0.8">${n.texto}</p>
-                    <div style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px">
-                        <small>COMENTÁRIOS:</small>
-                        <div id="comm-${id}"></div>
-                        <input type="text" id="in-comm-${id}" placeholder="Opine..." style="height:30px; font-size:10px">
-                        <button onclick="postNewsComment('${id}')" style="width:auto; padding:5px 15px">Enviar</button>
-                    </div>
-                </div>`;
-            });
-            document.getElementById('news-list').innerHTML = newsH || "Sem notícias hoje.";
-        });
-        
-        // Auditoria (ADM)
-        onValue(ref(db, 'auditoria'), snap => {
-            let audH = "";
-            if(snap.val()) Object.values(snap.val()).reverse().forEach(a => {
-                audH += `<div style="padding:4px; border-bottom:1px solid #111">${a.data} - ${a.msg}</div>`;
-            });
-            document.getElementById('adm-audit-logs').innerHTML = audH;
-        });
-    }
-
-    // --- SISTEMA DE MERCADO ---
-    window.loadShop = () => {
-        onValue(ref(db, 'loja'), snap => {
-            let shopH = "";
-            if(snap.val()) Object.entries(snap.val()).forEach(([id, i]) => {
-                shopH += `<div class="card" style="text-align:center">
-                    <img src="${i.img}" style="width:100%; border-radius:5px; height:100px; object-fit:cover">
-                    <div style="font-weight:700; margin-top:5px">${i.nome}</div>
-                    <div style="color:var(--gold); font-size:14px">$ ${i.preco}</div>
-                    <div style="font-size:8px; opacity:0.6">${i.desc}</div>
-                    <div style="font-size:8px">Estoque: ${i.estoque} | Validade: ${i.duracao} sem.</div>
-                    <button onclick="comprarItem('${id}')" class="btn-gold" style="padding:5px; margin-top:5px; font-size:8px">Comprar</button>
-                </div>`;
-            });
-            document.getElementById('market-grid').innerHTML = shopH;
-        });
-    };
-    loadShop();
-
-    window.comprarItem = async (id) => {
-        const snap = await get(ref(db, 'loja/' + id));
-        const item = snap.val();
-        if(item.estoque <= 0 || userLogado.saldo < item.preco) return alert("Estoque esgotado ou saldo insuficiente.");
-
-        // Atualizar saldo e estoque
-        await update(ref(db, 'jogadores/' + userLogado.id), { saldo: userLogado.saldo - item.preco });
-        await update(ref(db, 'loja/' + id), { estoque: item.estoque - 1 });
-
-        // Adicionar na mochila (Validade começa agora)
-        await push(ref(db, `jogadores/${userLogado.id}/mochila`), {
-            nome: item.nome,
-            validade: item.duracao,
-            total: item.duracao
-        });
-
-        await push(ref(db, `jogadores/${userLogado.id}/notificacoes`), {
-            msg: `🛍️ <b>COMPRA APROVADA!</b> Você adquiriu ${item.nome}. O item já está no seu inventário e a validade de ${item.duracao} semanas começou a contar.`
-        });
-
-        alert("Item adquirido!");
+    window.admAddFixo = async () => {
+        const id = document.getElementById('adm-p-sel').value;
+        const n = document.getElementById('adm-f-n').value, v = parseInt(document.getElementById('adm-f-v').value);
+        if(id && n) await push(ref(db, `jogadores/${id}/fixos`), { nome: n, valor: v });
     };
 
-    // --- REITORIA: GIRO DE CICLO ---
-    window.cycleTurn = async () => {
-        if(!confirm("Deseja girar o ciclo? Isso processará salários, despesas, juros e validade de itens para TODOS os players.")) return;
-        
-        const snap = await get(ref(db, 'jogadores'));
-        const players = snap.val();
-        const updates = {};
+    window.admAddNews = () => {
+        const t = document.getElementById('en-t').value, x = document.getElementById('en-x').value, i = document.getElementById('en-i').value;
+        if(t) push(ref(db, 'noticias'), { titulo: t, texto: x, img: i });
+    };
 
-        for(let id in players) {
-            let p = players[id];
-            let saldoFinal = p.saldo || 0;
-            let logs = [];
+    window.admAddItem = () => {
+        const n = document.getElementById('mi-n').value, p = parseInt(document.getElementById('mi-p').value), v = parseInt(document.getElementById('mi-v').value), e = parseInt(document.getElementById('mi-e').value), i = document.getElementById('mi-i').value;
+        if(n) push(ref(db, 'loja'), { nome: n, preco: p, duracao: v, estoque: e, img: i });
+    };
 
-            // 1. Processar Fixos (Salários e Despesas)
-            if(p.fixos) {
-                Object.values(p.fixos).forEach(f => {
-                    saldoFinal += f.valor;
-                    logs.push(`${f.valor > 0 ? 'Recebeu' : 'Pagou'} ${f.nome}: $${Math.abs(f.valor)}`);
-                });
-            }
+    window.admAddJob = () => {
+        const t = document.getElementById('jv-t').value, s = parseInt(document.getElementById('jv-s').value), d = document.getElementById('jv-d').value;
+        if(t) push(ref(db, 'vagas'), { titulo: t, salario: s, desc: d });
+    };
 
-            // 2. Processar validade da mochila
+    window.girarCiclo = async () => {
+        if(!confirm("Girar Ciclo?")) return;
+        const s = await get(ref(db, 'jogadores')); const plys = s.val(); const batch = {};
+        for(let id in plys) {
+            let p = plys[id]; let nS = p.saldo;
+            if(p.fixos) Object.values(p.fixos).forEach(f => nS += f.valor);
             if(p.mochila) {
-                for(let itemId in p.mochila) {
-                    p.mochila[itemId].validade -= 1;
-                    if(p.mochila[itemId].validade <= 0) {
-                        logs.push(`⚠️ O item ${p.mochila[itemId].nome} estragou/venceu.`);
-                        delete p.mochila[itemId];
-                    }
-                }
+                for(let k in p.mochila) { p.mochila[k].validade -= 1; if(p.mochila[k].validade<=0) delete p.mochila[k]; }
             }
-
-            // 3. Juros de Dívida (10% ao ciclo se houver dívida)
-            if(p.divida > 0) {
-                let juros = Math.floor(p.divida * 0.1);
-                updates[`jogadores/${id}/divida`] = p.divida + juros;
-                logs.push(`📈 Juros de financiamento: +$${juros}`);
-            }
-
-            updates[`jogadores/${id}/saldo`] = saldoFinal;
-            updates[`jogadores/${id}/mochila`] = p.mochila || {};
-            
-            // Notificar o player do resumo do ciclo
-            if(logs.length > 0) {
-                push(ref(db, `jogadores/${id}/notificacoes`), {
-                    msg: `🔔 <b>RESUMO DO CICLO:</b><br>${logs.join('<br>')}`
-                });
-            }
+            batch[`jogadores/${id}/saldo`] = nS;
+            batch[`jogadores/${id}/mochila`] = p.mochila || {};
         }
-
-        await update(ref(db), updates);
-        alert("Ciclo Acadêmico Girado com Sucesso!");
+        await update(ref(db), batch); alert("Ciclo Concluído!");
     };
-
-    // Funções de ADM para criar itens/notícias (Apenas chamadas simples para você preencher)
-    window.openModalItem = () => {
-        const n = prompt("Nome do Item:");
-        const p = parseInt(prompt("Preço:"));
-        const d = parseInt(prompt("Validade (Semanas):"));
-        const e = parseInt(prompt("Estoque:"));
-        const img = prompt("URL Imagem:");
-        if(n && p) push(ref(db, 'loja'), { nome: n, preco: p, duracao: d, estoque: e, img, desc: "Item de luxo ERA." });
-    };
-
-    window.openModalNews = () => {
-        const t = prompt("Título:");
-        const txt = prompt("Texto:");
-        const img = prompt("URL Imagem:");
-        if(t && txt) push(ref(db, 'noticias'), { titulo: t, texto: txt, img });
-    };
-
 </script>
 </body>
 </html>
