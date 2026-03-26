@@ -1,307 +1,54 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<title>ERA FINANCIAL SYSTEM</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Montserrat&family=Cinzel&display=swap" rel="stylesheet">
-
-<style>
-:root{
---navy:#0A1F44;
---silver:#E0E1DD;
---card:#112D4E;
---gold:#C5A059;
---red:#E63946;
-}
-
-body{margin:0;font-family:Montserrat;background:var(--navy);color:#fff}
-
-header{
-background:#000;
-padding:15px;
-text-align:center;
-font-family:Cinzel;
-letter-spacing:3px;
-border-bottom:2px solid var(--silver);
-}
-
-.card{
-background:var(--card);
-padding:15px;
-margin:10px;
-border-radius:10px;
-}
-
-button{
-background:var(--silver);
-border:none;
-padding:10px;
-margin:5px;
-border-radius:5px;
-cursor:pointer;
-font-weight:bold;
-}
-
-.btn-gold{background:var(--gold)}
-.btn-red{background:var(--red);color:#fff}
-
-input,textarea,select{
-width:100%;
-padding:10px;
-margin:5px 0;
-background:#000;
-color:#fff;
-border:1px solid #333;
-}
-
-.section{display:none}
-.active{display:block}
-
-.nav{
-display:flex;
-overflow:auto;
-background:#000;
-}
-
-.nav button{
-background:none;
-color:#fff;
-font-size:10px;
-}
-
-.profile{
-text-align:center;
-}
-
-img{
-max-width:100%;
-border-radius:8px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERA SOVEREIGN | Portal Acadêmico</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;600&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
-<header>ERA FINANCIAL SYSTEM</header>
+<header><h1>ERA SOVEREIGN SYSTEM</h1></header>
 
-<div id="login" class="card">
-<h2>Login</h2>
-<input id="email" placeholder="Email">
-<input id="senha" type="password" placeholder="Senha">
-<input id="nome" placeholder="Nome (registro)">
-<button onclick="login()" class="btn-gold">Entrar / Registrar</button>
+<div id="auth-screen" class="auth-container">
+    <div class="card auth-card">
+        <h2 class="title-font">Elite Access</h2>
+        <div id="reg-box" style="display:none"><input type="text" id="reg-nome" placeholder="Nome Completo"></div>
+        <input type="email" id="u-email" placeholder="E-mail Acadêmico">
+        <input type="password" id="u-pass" placeholder="Senha">
+        <button id="btn-auth-action" class="btn-gold">Entrar</button>
+        <p id="toggle-auth" class="link-text">Não tem conta? Registrar-se</p>
+    </div>
 </div>
 
-<div id="app" style="display:none">
+<nav class="nav-bar" id="main-nav" style="display:none">
+    <button class="nav-btn active" data-tab="home">CONTA</button>
+    <button class="nav-btn" data-tab="notifs">AVISOS</button>
+    <button class="nav-btn" data-tab="editorial">EDITORIAL</button>
+    <button class="nav-btn" data-tab="finance">FINANÇAS</button>
+    <button class="nav-btn" data-tab="transfer">PAGAR</button>
+    <button class="nav-btn" data-tab="market">MERCADO</button>
+    <button class="nav-btn" data-tab="jobs">VAGAS</button>
+    <button class="nav-btn" data-tab="ranking">ELITE</button>
+    <button class="nav-btn btn-gold-nav" id="adm-tab-btn" style="display:none" data-tab="reitoria">REITORIA</button>
+</nav>
 
-<div class="nav">
-<button onclick="nav('home')">Conta</button>
-<button onclick="nav('notif')">Avisos</button>
-<button onclick="nav('market')">Mercado</button>
-<button onclick="nav('rank')">Ranking</button>
-<button onclick="nav('jobs')">Empregos</button>
-<button onclick="nav('admin')" id="admBtn">Admin</button>
+<div class="container" id="app-wrap" style="display:none">
+    <div id="home" class="section active"></div>
+    <div id="notifs" class="section"></div>
+    <div id="editorial" class="section"></div>
+    <div id="finance" class="section"></div>
+    <div id="transfer" class="section"></div>
+    <div id="market" class="section"></div>
+    <div id="jobs" class="section"></div>
+    <div id="ranking" class="section"></div>
+    <div id="reitoria" class="section"></div>
 </div>
 
-<!-- HOME -->
-<div id="home" class="section active">
-
-<div class="card profile">
-<img id="foto" width="100">
-<h2 id="nomeUser"></h2>
-<p id="saldo"></p>
-<p id="bio"></p>
-<button onclick="abrirConfig()">⚙️</button>
-</div>
-
-<div class="card">
-<h3>Histórico</h3>
-<div id="hist"></div>
-</div>
-
-</div>
-
-<!-- NOTIF -->
-<div id="notif" class="section">
-<div id="notificacoes"></div>
-</div>
-
-<!-- MERCADO -->
-<div id="market" class="section">
-<div id="loja"></div>
-</div>
-
-<!-- RANK -->
-<div id="rank" class="section">
-<div id="ranking"></div>
-</div>
-
-<!-- JOBS -->
-<div id="jobs" class="section">
-<div id="vagas"></div>
-</div>
-
-<!-- ADMIN -->
-<div id="admin" class="section">
-<div class="card">
-<h3>Reitoria</h3>
-<button onclick="giro()">Girar ciclo</button>
-</div>
-<div id="auditoria"></div>
-</div>
-
-</div>
-
-<!-- CONFIG -->
-<div id="config" class="card" style="display:none">
-<h3>Configurações</h3>
-<input id="editNome">
-<input id="editFoto">
-<textarea id="editBio"></textarea>
-<button onclick="salvarPerfil()">Salvar</button>
-<button onclick="logout()">Logout</button>
-<button onclick="deletar()" class="btn-red">Excluir Conta</button>
-</div>
-
-<script type="module">
-
-import {initializeApp} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,onAuthStateChanged,signOut,deleteUser} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
-import {getDatabase,ref,set,get,update,onValue,push,remove} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
-
-const firebaseConfig={
-apiKey:"SUA_KEY",
-authDomain:"SEU.firebaseapp.com",
-databaseURL:"SEU",
-projectId:"SEU",
-appId:"SEU"
-};
-
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
-const db=getDatabase(app);
-
-let user=null;
-
-window.login=async()=>{
-let e=email.value,p=senha.value,n=nome.value;
-try{
-let u=await createUserWithEmailAndPassword(auth,e,p);
-await set(ref(db,'users/'+u.user.uid),{
-nome:n,
-saldo:1000,
-bio:"",
-role:"user"
-});
-}catch{}
-signInWithEmailAndPassword(auth,e,p);
-}
-
-onAuthStateChanged(auth,u=>{
-if(u){
-onValue(ref(db,'users/'+u.uid),s=>{
-user={id:u.uid,...s.val()};
-UI();
-});
-login.style.display="none";
-app.style.display="block";
-}
-});
-
-function UI(){
-nomeUser.innerText=user.nome;
-saldo.innerText="Saldo: $"+user.saldo;
-bio.innerText=user.bio||"";
-
-onValue(ref(db,'users/'+user.id+'/hist'),snap=>{
-let h="";
-snap.forEach(i=>{
-let t=i.val();
-h+=`<div>${t.tipo} - ${t.valor}</div>`;
-});
-hist.innerHTML=h;
-});
-
-onValue(ref(db,'users/'+user.id+'/notif'),snap=>{
-let h="";
-snap.forEach(i=>{
-h+=`<div>${i.val().msg}</div>`;
-});
-notificacoes.innerHTML=h;
-});
-
-onValue(ref(db,'users'),snap=>{
-let arr=[];
-snap.forEach(i=>arr.push(i.val()));
-arr.sort((a,b)=>b.saldo-a.saldo);
-let h="";
-arr.forEach((p,i)=>{
-h+=`<div>#${i+1} ${p.nome} - $${p.saldo}</div>`;
-});
-ranking.innerHTML=h;
-});
-
-onValue(ref(db,'loja'),snap=>{
-let h="";
-snap.forEach(i=>{
-let p=i.val();
-h+=`<div class="card">
-<b>${p.nome}</b><br>$${p.preco}
-<button onclick="comprar('${i.key}')">Comprar</button>
-</div>`;
-});
-loja.innerHTML=h;
-});
-
-onValue(ref(db,'auditoria'),snap=>{
-let h="";
-snap.forEach(i=>h+=`<div>${i.val().msg}</div>`);
-auditoria.innerHTML=h;
-});
-}
-
-window.comprar=async(id)=>{
-let s=await get(ref(db,'loja/'+id));
-let i=s.val();
-if(user.saldo<i.preco)return;
-
-await update(ref(db,'users/'+user.id),{saldo:user.saldo-i.preco});
-await push(ref(db,'users/'+user.id+'/hist'),{tipo:"compra",valor:i.preco});
-}
-
-window.giro=async()=>{
-let s=await get(ref(db,'users'));
-s.forEach(i=>{
-let p=i.val();
-update(ref(db,'users/'+i.key),{saldo:p.saldo+100});
-});
-await push(ref(db,'auditoria'),{msg:"Ciclo rodado"});
-}
-
-window.salvarPerfil=()=>{
-update(ref(db,'users/'+user.id),{
-nome:editNome.value,
-bio:editBio.value,
-foto:editFoto.value
-});
-}
-
-window.logout=()=>signOut(auth);
-
-window.deletar=async()=>{
-await remove(ref(db,'users/'+user.id));
-await deleteUser(auth.currentUser);
-}
-
-window.nav=(id)=>{
-document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-}
-
-window.abrirConfig=()=>config.style.display="block";
-
-</script>
+<script type="module" src="firebase-config.js"></script>
+<script type="module" src="app.js"></script>
+<script type="module" src="admin.js"></script>
 
 </body>
 </html>
