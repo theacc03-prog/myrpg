@@ -475,7 +475,6 @@
                 <div class="subtle" style="font-size:10px; margin-top:4px">
                     Dica: abra a imagem em uma aba nova, copie o endereço que termina em .jpg, .png ou .webp e cole aqui.
                 </div>
-                <img id="foto-preview" src="" class="profile-photo hidden" style="margin:10px auto 0">
                 <textarea id="set-bio" placeholder="Bio do Personagem"></textarea>
                 <button onclick="app.updateProfile()">Salvar Perfil</button>
                 <button class="btn-sec" onclick="app.handleLogout()">Sair</button>
@@ -770,6 +769,7 @@
     let sessionBootstrapped = false;
     let playerStreamsBound = false;
     let profileMuralUnsub = null;
+    let admSelectedPlayerId = "";
 
     const esc = (s = "") => String(s)
         .replaceAll("&", "&amp;")
@@ -1082,9 +1082,33 @@
         `).join("");
     }
 
+    async function refreshEditorialOnce() {
+        const snap = await get(ref(db, 'editorial'));
+        const data = snap.val() || {};
+
+        const newsEl = document.getElementById('news-list');
+        if (newsEl) newsEl.innerHTML = renderNews(data);
+
+        const admNewsEl = document.getElementById('adm-news-list');
+        if (admNewsEl) {
+            admNewsEl.innerHTML = Object.entries(data).reverse().map(([id, n]) => `
+                <div class="list-item">
+                    <strong>${esc(n.titulo || '')}</strong><br>
+                    <span class="subtle">${esc(n.texto || '').slice(0, 120)}</span>
+                    <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                        <button class="btn-sec small-btn" onclick="app.editNews('${id}')">Editar</button>
+                        <button class="btn-red small-btn" onclick="app.deleteNews('${id}')">Excluir</button>
+                    </div>
+                </div>
+            `).join("");
+        }
+    }
+
     function renderAdmLists() {
-        const pId = document.getElementById('adm-p-sel').value;
+        const pId = admSelectedPlayerId || document.getElementById('adm-p-sel').value;
         if (!pId) return;
+
+        admSelectedPlayerId = pId;
 
         const playerRef = ref(db, `jogadores/${pId}`);
         get(playerRef).then(snap => {
@@ -1139,11 +1163,21 @@
     }
 
     function fillAdmPlayers(playersObj) {
+        const selectEl = document.getElementById('adm-p-sel');
+        if (!selectEl) return;
+
+        const keep = admSelectedPlayerId || selectEl.value || "";
+
         let options = "<option value=''>Selecionar Jogador...</option>";
         Object.entries(playersObj || {}).forEach(([uid, p]) => {
             options += `<option value="${uid}">${esc(p.nome || 'Sem nome')}</option>`;
         });
-        document.getElementById('adm-p-sel').innerHTML = options;
+
+        selectEl.innerHTML = options;
+
+        if (keep && playersObj && playersObj[keep]) {
+            selectEl.value = keep;
+        }
     }
 
     function renderGlobalData() {
@@ -1796,6 +1830,8 @@
                 noticia: postId,
                 msg: 'Notícia editada'
             });
+
+            await refreshEditorialOnce();
         },
 
         deleteNews: async (postId) => {
@@ -1807,6 +1843,7 @@
                     noticia: postId,
                     msg: 'Notícia excluída'
                 });
+                await refreshEditorialOnce();
             }
         },
 
@@ -1883,8 +1920,8 @@
         },
 
         loadAdmPlayerData: () => {
-            const pId = document.getElementById('adm-p-sel').value;
-            if (!pId) {
+            admSelectedPlayerId = document.getElementById('adm-p-sel').value;
+            if (!admSelectedPlayerId) {
                 document.getElementById('adm-p-panel').classList.add('hidden');
                 return;
             }
@@ -1892,6 +1929,7 @@
         },
 
         selectAdmRecord: (type, id) => {
+            admSelectedPlayerId = document.getElementById('adm-p-sel').value;
             document.getElementById('adm-p-sel').dataset.selectedType = type;
             document.getElementById('adm-p-sel').dataset.selectedId = id;
             alert(`Selecionado: ${type} / ${id}`);
@@ -2188,6 +2226,7 @@
                 msg: `Notícia publicada: ${titulo}`
             });
 
+            await refreshEditorialOnce();
             alert("Notícia publicada.");
         },
 
