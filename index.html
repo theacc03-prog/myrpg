@@ -8,246 +8,152 @@
     <style>
         :root {
             --prata: #C0C0C0;
-            --prata-brilho: #E8E8E8;
-            --azul-escuro: #0A192F;
+            --azul-royal: #0A192F;
             --azul-card: #112240;
-            --azul-hover: #1D3557;
-            --glass: rgba(192, 192, 192, 0.1);
             --white: #F8F9FA;
-            --red: #A00000;
-            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            --gold-soft: #D4AF37; /* Apenas para detalhes mínimos */
+            --red: #8B0000;
         }
 
         body {
-            background: var(--azul-escuro);
+            background: var(--azul-royal);
             color: var(--white);
             font-family: 'Montserrat', sans-serif;
             margin: 0;
-            display: flex;
-            flex-direction: column;
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        /* --- Header & Logo --- */
         header {
-            padding: 30px 20px;
+            padding: 30px;
             text-align: center;
-            background: linear-gradient(to bottom, #02060C, var(--azul-escuro));
+            background: #02060C;
             border-bottom: 2px solid var(--prata);
         }
 
-        .logo-top {
-            max-height: 100px;
-            margin-bottom: 10px;
-            filter: drop-shadow(0 0 5px var(--prata));
-        }
+        .logo-img { max-height: 80px; margin-bottom: 10px; }
 
-        h1 {
-            font-family: 'Cinzel', serif;
-            letter-spacing: 4px;
-            font-size: 1.6rem;
-            margin: 0;
-            color: var(--prata);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
+        h1 { font-family: 'Cinzel', serif; color: var(--prata); letter-spacing: 4px; margin: 0; }
 
-        /* --- Navegação Estilo Navbar --- */
+        /* Navegação */
         nav {
             display: none;
-            background: #02060C;
-            padding: 5px;
-            border-bottom: 1px solid var(--glass);
+            background: #050A14;
             overflow-x: auto;
             white-space: nowrap;
+            border-bottom: 1px solid rgba(192,192,192,0.2);
             justify-content: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
         .nav-btn {
-            background: none;
-            color: var(--prata);
-            border: none;
-            padding: 12px 18px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            letter-spacing: 1px;
-            transition: 0.3s;
-            opacity: 0.6;
+            background: none; border: none; color: var(--prata);
+            padding: 15px 20px; font-size: 10px; font-weight: bold;
+            cursor: pointer; opacity: 0.6; transition: 0.3s;
         }
 
-        .nav-btn.active {
-            opacity: 1;
-            color: var(--white);
-            border-bottom: 2px solid var(--prata);
-        }
+        .nav-btn.active { opacity: 1; border-bottom: 2px solid var(--prata); color: white; }
 
-        /* --- Containers e Cards --- */
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 0 20px 100px;
-        }
-
+        /* Containers */
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; }
+        
         .card {
             background: var(--azul-card);
-            border: 1px solid var(--glass);
+            border: 1px solid rgba(192,192,192,0.1);
             border-radius: 12px;
             padding: 25px;
             margin-bottom: 20px;
-            box-shadow: var(--shadow);
-        }
-
-        .balance-box {
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, var(--azul-card), #1a365d);
-            border: 1px solid var(--prata);
-        }
-
-        .balance-value {
-            font-family: 'Cinzel';
-            font-size: 3.5rem;
-            color: var(--prata-brilho);
-            margin: 10px 0;
-        }
-
-        /* --- Formulários --- */
-        .auth-container {
-            max-width: 380px;
-            margin: 60px auto;
-            padding: 40px;
-            background: var(--azul-card);
-            border-radius: 15px;
-            border: 1px solid var(--glass);
             text-align: center;
         }
 
+        .balance { font-family: 'Cinzel'; font-size: 3rem; color: var(--prata); margin: 15px 0; }
+
+        /* Inputs e Botões */
         input, textarea, select {
-            width: 100%;
-            padding: 14px;
-            margin: 10px 0;
-            background: #050A14;
-            border: 1px solid var(--azul-hover);
-            color: white;
-            border-radius: 6px;
-            box-sizing: border-box;
+            width: 100%; padding: 12px; margin: 8px 0;
+            background: #02060C; border: 1px solid #1d3557;
+            color: white; border-radius: 5px; box-sizing: border-box;
         }
 
         button {
-            width: 100%;
-            padding: 15px;
-            background: var(--prata);
-            color: var(--azul-escuro);
-            border: none;
-            font-weight: 700;
-            border-radius: 6px;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: 0.3s;
+            width: 100%; padding: 15px; background: var(--prata);
+            color: var(--azul-royal); border: none; font-weight: bold;
+            border-radius: 5px; cursor: pointer; text-transform: uppercase;
         }
 
-        button:hover { background: var(--prata-brilho); transform: translateY(-2px); }
-        .btn-danger { background: var(--red); color: white; margin-top: 10px; }
-        .btn-secondary { background: transparent; border: 1px solid var(--prata); color: var(--prata); font-size: 10px; }
-
+        .btn-outline { background: none; border: 1px solid var(--prata); color: var(--prata); margin-top: 10px; }
+        
         .hidden { display: none; }
-        .status-tag { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 10px; background: var(--prata); color: #000; font-weight: bold; }
-
     </style>
 </head>
 <body>
 
 <header>
-    <img id="header-logo" src="era.png" alt="ERA Logo" class="logo-top">
+    <img src="era.png" alt="" class="logo-img" onerror="this.style.display='none'">
     <h1>ERA ACADEMY</h1>
-    <p style="font-size: 10px; opacity: 0.7; letter-spacing: 3px; color: var(--prata);">SOVEREIGN SYSTEM</p>
+    <p style="font-size: 10px; letter-spacing: 2px; opacity: 0.6;">SOVEREIGN SYSTEM</p>
 </header>
 
-<div id="auth-screen">
-    <div class="auth-container">
-        <div id="login-box">
-            <h2 style="font-family: 'Cinzel'; color: var(--prata);">Login Acadêmico</h2>
-            <input type="email" id="email" placeholder="E-mail">
-            <input type="password" id="pass" placeholder="Senha">
-            <button onclick="authAction('login')">Acessar Sistema</button>
-            <p style="font-size: 11px; margin-top: 15px; cursor: pointer;" onclick="toggleAuth()">Solicitar Nova Matrícula</p>
-            <p style="font-size: 10px; opacity: 0.5;">Esqueceu a senha? Contate a Reitoria.</p>
-        </div>
+<div id="auth-screen" class="container">
+    <div class="card" id="login-box" style="max-width: 400px; margin: auto;">
+        <h2 style="font-family: 'Cinzel';">Login Acadêmico</h2>
+        <input type="email" id="email" placeholder="E-mail">
+        <input type="password" id="pass" placeholder="Senha">
+        <button onclick="authAction('login')">Acessar Sistema</button>
+        <button class="btn-outline" onclick="toggleAuth()">Solicitar Matrícula</button>
+    </div>
 
-        <div id="register-box" class="hidden">
-            <h2 style="font-family: 'Cinzel'; color: var(--prata);">Matrícula</h2>
-            <input type="text" id="reg-name" placeholder="Nome do Personagem">
-            <input type="email" id="reg-email" placeholder="E-mail">
-            <input type="password" id="reg-pass" placeholder="Senha">
-            <button onclick="authAction('register')">Registrar</button>
-            <p style="font-size: 11px; margin-top: 15px; cursor: pointer;" onclick="toggleAuth()">Já possui conta? Entrar</p>
-        </div>
+    <div class="card hidden" id="register-box" style="max-width: 400px; margin: auto;">
+        <h2 style="font-family: 'Cinzel';">Nova Matrícula</h2>
+        <input type="text" id="reg-name" placeholder="Nome do Personagem">
+        <input type="email" id="reg-email" placeholder="E-mail">
+        <input type="password" id="reg-pass" placeholder="Senha">
+        <button onclick="authAction('register')">Concluir Registro</button>
+        <button class="btn-outline" onclick="toggleAuth()">Voltar ao Login</button>
     </div>
 </div>
 
 <nav id="main-nav">
     <button class="nav-btn active" onclick="showTab('tab-dash', this)">DASHBOARD</button>
-    <button class="nav-btn" onclick="showTab('tab-editorial', this)">EDITORIAL</button>
-    <button class="nav-btn" onclick="showTab('tab-transf', this)">TRANSFERIR</button>
+    <button class="nav-btn" onclick="showTab('tab-notif', this)">NOTIFICAÇÕES</button>
+    <button class="nav-btn" onclick="showTab('tab-news', this)">EDITORIAL</button>
     <button class="nav-btn" onclick="showTab('tab-finan', this)">FINANÇAS</button>
     <button class="nav-btn" onclick="showTab('tab-mercado', this)">MERCADO</button>
-    <button class="nav-btn" onclick="showTab('tab-vagas', this)">VAGAS</button>
+    <button class="nav-btn" onclick="showTab('tab-transf', this)">TRANSFERIR</button>
     <button class="nav-btn" onclick="showTab('tab-rank', this)">RANKING</button>
-    <button class="nav-btn" id="btn-admin" style="color: var(--prata); border: 1px solid var(--glass); display: none;" onclick="showTab('tab-admin', this)">REITORIA</button>
+    <button class="nav-btn" id="btn-adm" style="color: var(--gold-soft); display:none" onclick="showTab('tab-adm', this)">REITORIA</button>
 </nav>
 
-<div id="app-wrap" class="container hidden">
+<div id="app-content" class="container hidden">
     
-    <div id="tab-dash" class="tab-content">
-        <div class="card balance-box">
-            <img id="user-avatar" src="" style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--prata); object-fit: cover; margin-bottom: 15px;">
-            <h2 id="user-name" style="margin:0; font-family: 'Cinzel';">---</h2>
-            <div id="user-status" style="margin-bottom: 15px;"></div>
-            <div class="balance-value" id="user-balance">$ 0</div>
-            <p style="font-size: 10px; opacity: 0.5;">DATA DO SISTEMA: <span id="sys-date">27/03/2026</span></p>
+    <div id="tab-dash" class="tab">
+        <div class="card">
+            <img id="u-foto" src="" style="width:100px; height:100px; border-radius:50%; border:2px solid var(--prata); object-fit:cover; margin-bottom:15px">
+            <h2 id="u-nome" style="font-family:'Cinzel'; margin:0">---</h2>
+            <div class="balance" id="u-saldo">$ 0</div>
+            <p id="u-bio" style="font-size: 12px; opacity:0.7">Sem biografia definida.</p>
         </div>
 
         <div class="card">
-            <h3 style="font-family: 'Cinzel'; font-size: 14px; border-bottom: 1px solid var(--glass); padding-bottom: 10px;">CONFIGURAÇÕES DE PERFIL</h3>
-            <input type="text" id="edit-name" placeholder="Alterar Nome">
-            <input type="text" id="edit-pic" placeholder="URL da Foto">
-            <textarea id="edit-bio" placeholder="Sua biografia..."></textarea>
-            <button onclick="updateProfile()" class="btn-secondary">Salvar Alterações</button>
-            <hr style="opacity: 0.1; margin: 20px 0;">
-            <button onclick="authAction('logout')" class="btn-secondary">Sair da Conta</button>
-            <button onclick="deleteAccount()" class="btn-danger" style="font-size: 9px; padding: 10px;">Excluir Matrícula</button>
+            <h3>Configurações de Conta</h3>
+            <input type="text" id="edit-nome" placeholder="Alterar Nome">
+            <input type="text" id="edit-foto" placeholder="URL da Foto">
+            <textarea id="edit-bio" placeholder="Alterar Bio"></textarea>
+            <button onclick="saveProfile()" class="btn-outline">Atualizar Perfil</button>
+            <button onclick="authAction('logout')" style="background:#222; color:white; margin-top:10px">Sair do Sistema</button>
+            <button onclick="delAccount()" style="background:var(--red); color:white; margin-top:10px">Excluir Conta</button>
         </div>
     </div>
 
-    <div id="tab-editorial" class="tab-content hidden">
-        <h2 style="font-family: 'Cinzel';">Mural Editorial</h2>
-        <div id="news-feed"></div>
-    </div>
-
-    <div id="tab-finan" class="tab-content hidden">
-        <div class="card">
-            <h2 style="font-family: 'Cinzel';">Financiamento Estudantil</h2>
-            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px;">
-                <p>Dívida Total: <b id="user-debt" style="color: var(--red);">$ 0</b></p>
-                <button onclick="alert('Funcionalidade em desenvolvimento pela Reitoria')">Solicitar Empréstimo</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="tab-admin" class="tab-content hidden">
-        <div class="card" style="border: 1px solid var(--prata);">
-            <h2 style="font-family: 'Cinzel'; color: var(--prata);">Painel da Reitoria</h2>
-            <button onclick="girarCiclo()" style="background: #112240; color: var(--prata); border: 1px solid var(--prata); margin-bottom: 20px;">⏩ GIRAR CICLO (7 DIAS)</button>
-            
-            <h3 style="font-size: 14px;">Postar Notícia</h3>
-            <input type="text" id="news-title" placeholder="Título">
-            <input type="text" id="news-img" placeholder="URL da Imagem">
-            <textarea id="news-text" placeholder="Conteúdo da notícia..."></textarea>
-            <button onclick="postNews()">Publicar no Editorial</button>
+    <div id="tab-notif" class="tab hidden"><div class="card"><h2>Notificações</h2><div id="list-notif">Nenhuma nova notificação.</div></div></div>
+    <div id="tab-news" class="tab hidden"><div class="card"><h2>Editorial Academy</h2><div id="list-news">Aguardando notícias oficiais...</div></div></div>
+    <div id="tab-finan" class="tab hidden"><div class="card"><h2>Financiamento</h2><p>Dívida Atual: <span id="u-divida" style="color:var(--red)">$ 0</span></p></div></div>
+    <div id="tab-mercado" class="tab hidden"><div class="card"><h2>Mercado de Itens</h2><div id="list-market"></div></div></div>
+    <div id="tab-transf" class="tab hidden"><div class="card"><h2>Transferências</h2><input type="text" placeholder="ID do Destinatário"><input type="number" placeholder="Valor"><button>Enviar Sovereign</button></div></div>
+    <div id="tab-rank" class="tab hidden"><div class="card"><h2>Ranking de Elite</h2><div id="list-rank"></div></div></div>
+    
+    <div id="tab-adm" class="tab hidden">
+        <div class="card" style="border-color: var(--gold-soft)">
+            <h2 style="color: var(--gold-soft)">Comando Superior</h2>
+            <button onclick="girarCiclo()" style="background:var(--azul-royal); color:var(--prata); border:1px solid var(--prata)">Girar Ciclo (1 Semana)</button>
         </div>
     </div>
 
@@ -271,126 +177,77 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getDatabase(app);
-    let currentUserData = null;
 
     // --- NAVEGAÇÃO ---
     window.toggleAuth = () => {
         document.getElementById('login-box').classList.toggle('hidden');
         document.getElementById('register-box').classList.toggle('hidden');
-    }
+    };
 
-    window.showTab = (tabId, btn) => {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+    window.showTab = (id, btn) => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.add('hidden'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).classList.remove('hidden');
+        document.getElementById(id).classList.remove('hidden');
         btn.classList.add('active');
-    }
+    };
 
-    // --- AUTENTICAÇÃO ---
+    // --- AUTH ---
     window.authAction = async (type) => {
         try {
-            if(type === 'login') {
-                const e = document.getElementById('email').value;
-                const p = document.getElementById('pass').value;
-                await signInWithEmailAndPassword(auth, e, p);
-            } else if (type === 'register') {
+            if(type === 'login'){
+                await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('pass').value);
+            } else if(type === 'register'){
                 const n = document.getElementById('reg-name').value;
                 const e = document.getElementById('reg-email').value;
                 const p = document.getElementById('reg-pass').value;
-                if(!n) return alert("Nome do personagem é obrigatório.");
                 const res = await createUserWithEmailAndPassword(auth, e, p);
                 await set(ref(db, `jogadores/${res.user.uid}`), {
-                    nome: n, e-mail: e, saldo: 1500, divida: 0, role: 'aluno', foto: '', bio: '', status: 'Ativo'
+                    nome: n, email: e, saldo: 1500, divida: 0, role: 'aluno', foto: '', bio: ''
                 });
-            } else if (type === 'logout') {
+            } else {
                 await signOut(auth);
                 location.reload();
             }
-        } catch (err) { alert("Erro: " + err.message); }
-    }
+        } catch(e) { alert("Erro: " + e.message); }
+    };
 
     onAuthStateChanged(auth, user => {
         if(user) {
             document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('main-nav').style.display = 'flex';
-            document.getElementById('app-wrap').classList.remove('hidden');
+            document.getElementById('app-content').classList.remove('hidden');
             
-            // Ouvinte de dados do usuário
             onValue(ref(db, `jogadores/${user.uid}`), snap => {
-                if(snap.exists()) {
-                    const d = snap.val();
-                    currentUserData = { id: user.uid, ...d };
-                    document.getElementById('user-name').innerText = d.nome;
-                    document.getElementById('user-balance').innerText = `$ ${d.saldo.toLocaleString()}`;
-                    document.getElementById('user-debt').innerText = `$ ${d.divida.toLocaleString()}`;
-                    document.getElementById('user-avatar').src = d.foto || "https://placehold.co/200/0A192F/C0C0C0?text=SOVEREIGN";
-                    document.getElementById('user-status').innerHTML = `<span class="status-tag">${d.role.toUpperCase()}</span>`;
-                    
-                    // Mostrar Reitoria se for admin
-                    if(d.role === 'admin' || d.role === 'reitora') {
-                        document.getElementById('btn-admin').style.display = 'inline-block';
-                    }
+                const d = snap.val();
+                if(d){
+                    document.getElementById('u-nome').innerText = d.nome;
+                    document.getElementById('u-saldo').innerText = `$ ${d.saldo.toLocaleString()}`;
+                    document.getElementById('u-foto').src = d.foto || "https://placehold.co/100?text=ERA";
+                    document.getElementById('u-bio').innerText = d.bio || "Membro da Sovereign Society.";
+                    if(d.role === 'reitora' || d.role === 'admin') document.getElementById('btn-adm').style.display = 'block';
                 }
             });
-            loadNews();
         }
     });
 
-    // --- FUNÇÕES DE PERFIL ---
-    window.updateProfile = async () => {
-        const n = document.getElementById('edit-name').value;
-        const f = document.getElementById('edit-pic').value;
-        const b = document.getElementById('edit-bio').value;
+    // --- PERFIL ---
+    window.saveProfile = async () => {
         const up = {};
-        if(n) up.nome = n;
-        if(f) up.foto = f;
-        if(b) up.bio = b;
+        const n = document.getElementById('edit-nome').value;
+        const f = document.getElementById('edit-foto').value;
+        const b = document.getElementById('edit-bio').value;
+        if(n) up.nome = n; if(f) up.foto = f; if(b) up.bio = b;
         await update(ref(db, `jogadores/${auth.currentUser.uid}`), up);
-        alert("Perfil atualizado nas crônicas da ERA.");
-    }
+        alert("Perfil Atualizado!");
+    };
 
-    window.deleteAccount = async () => {
-        if(confirm("Deseja apagar sua existência neste sistema? Esta ação é definitiva.")){
+    window.delAccount = async () => {
+        if(confirm("Excluir sua matrícula permanentemente?")){
             await remove(ref(db, `jogadores/${auth.currentUser.uid}`));
-            deleteUser(auth.currentUser).then(() => location.reload());
+            await deleteUser(auth.currentUser);
+            location.reload();
         }
-    }
-
-    // --- REITORIA E EDITORIAL ---
-    window.postNews = async () => {
-        const t = document.getElementById('news-title').value;
-        const i = document.getElementById('news-img').value;
-        const x = document.getElementById('news-text').value;
-        if(!t || !x) return alert("Título e texto obrigatórios.");
-        await push(ref(db, 'editorial'), {
-            titulo: t, imagem: i, texto: x, data: new Date().toLocaleDateString(), autor: "Reitoria"
-        });
-        alert("Notícia publicada!");
-    }
-
-    function loadNews() {
-        onValue(ref(db, 'editorial'), snap => {
-            let h = "";
-            snap.forEach(child => {
-                const n = child.val();
-                h += `
-                <div class="card">
-                    ${n.imagem ? `<img src="${n.imagem}" style="width:100%; border-radius:8px; margin-bottom:15px;">` : ''}
-                    <h3 style="font-family:'Cinzel'; color:var(--prata);">${n.titulo}</h3>
-                    <p style="font-size:13px; line-height:1.6; opacity:0.8;">${n.texto}</p>
-                    <small style="opacity:0.4;">Publicado em: ${n.data}</small>
-                </div>`;
-            });
-            document.getElementById('news-feed').innerHTML = h || "<p>Nenhuma notícia oficial no momento.</p>";
-        });
-    }
-
-    window.girarCiclo = async () => {
-        if(!confirm("Isso irá processar salários e cobranças de todos os jogadores. Confirmar?")) return;
-        // Lógica de loop para processamento em massa (Placeholder para implementação futura)
-        alert("Ciclo processado com sucesso!");
-    }
-
+    };
 </script>
 </body>
 </html>
