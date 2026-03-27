@@ -3,326 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERA SOVEREIGN | Sovereign Portal v20</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Montserrat:wght@300;400;600&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <title>ERA ACADEMY | Sovereign System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* --- CSS PREMIUM SOVEREIGN --- */
-        :root { 
-            --navy: #050A14; --card-bg: #0D1B2A; --gold: #C5A059; --silver: #E0E1DD; 
-            --glass: rgba(255, 255, 255, 0.03); --alert: #E63946; --success: #2A9D8F; --wine: #2D0505;
+        :root {
+            --gold: #D4AF37;
+            --navy: #050A14;
+            --glass: rgba(255, 255, 255, 0.03);
+            --white: #E0E1DD;
+            --red: #8B0000;
         }
-        body { background: var(--navy); color: var(--silver); font-family: 'Montserrat', sans-serif; margin: 0; overflow-x: hidden; line-height: 1.6; }
-        
-        /* Layout & Header */
-        header { background: linear-gradient(to bottom, #000, var(--navy)); padding: 25px; text-align: center; border-bottom: 2px solid var(--gold); position: sticky; top: 0; z-index: 1000; box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
-        header h1 { font-family: 'Cinzel'; color: var(--silver); letter-spacing: 4px; font-size: 1.3rem; margin: 0; text-shadow: 0 0 10px rgba(224, 225, 221, 0.3); }
-        
-        /* Navigation */
-        .nav-bar { display: flex; overflow-x: auto; background: #000; border-bottom: 1px solid var(--glass); sticky; top: 75px; z-index: 999; scrollbar-width: none; }
-        .nav-btn { background: none; border: none; color: var(--silver); padding: 18px 22px; font-size: 10px; font-weight: 700; cursor: pointer; white-space: nowrap; opacity: 0.4; text-transform: uppercase; transition: 0.3s; letter-spacing: 1px; }
-        .nav-btn:hover { opacity: 0.8; color: var(--gold); }
-        .nav-btn.active { opacity: 1; color: var(--gold); border-bottom: 2px solid var(--gold); text-shadow: 0 0 5px rgba(197, 160, 89, 0.5); }
 
-        /* Containers & Cards */
-        .container { max-width: 600px; margin: 25px auto; padding: 0 15px; display: none; }
-        .section { display: none; animation: fadeIn 0.5s ease; }
-        .section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        body {
+            background: var(--navy);
+            color: var(--white);
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-        .card { background: var(--card-bg); border-radius: 10px; padding: 25px; margin-bottom: 20px; border: 1px solid rgba(197, 160, 89, 0.08); box-shadow: 0 12px 40px rgba(0,0,0,0.6); position: relative; overflow: hidden; }
-        .card::after { content:''; position:absolute; top:0; left:0; width:100%; height:3px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.5; }
-        
-        /* Inputs & Buttons */
-        input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; border-radius: 6px; border: 1px solid #1a2233; background: rgba(0,0,0,0.3); color: #fff; font-size: 13px; box-sizing: border-box; font-family: 'Montserrat', sans-serif; transition: 0.3s; }
-        input:focus, select:focus, textarea:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 10px rgba(197, 160, 89, 0.2); }
-        
-        button { background: var(--silver); color: #000; border: none; padding: 14px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 700; font-size: 11px; text-transform: uppercase; transition: 0.3s; margin: 8px 0; letter-spacing: 1px; }
-        button:hover { filter: brightness(1.2); transform: translateY(-1px); }
-        .btn-gold { background: linear-gradient(135deg, #C5A059 0%, #A38045 100%); color: #000; }
-        .btn-red { background: linear-gradient(135deg, #E63946 0%, #B02A35 100%); color: #fff; }
-        .btn-small { width: auto; padding: 6px 12px; font-size: 9px; display: inline-block; margin: 2px; }
+        /* --- Header & Branding --- */
+        header {
+            padding: 40px 20px;
+            text-align: center;
+            background: linear-gradient(to bottom, #000, var(--navy));
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
 
-        /* Custom UI */
-        .profile-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--gold); object-fit: cover; margin-bottom: 15px; box-shadow: 0 0 20px rgba(197, 160, 89, 0.3); }
-        .tag { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 9px; font-weight: 800; margin: 3px; text-transform: uppercase; color: #000; letter-spacing: 0.5px; }
-        
-        /* Editorial & Mercado */
-        .news-img { width: 100%; border-radius: 8px; margin-bottom: 15px; max-height: 250px; object-fit: cover; border: 1px solid var(--glass); }
-        .comment-box { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; margin-top: 10px; font-size: 12px; border: 1px solid var(--glass); }
-        
-        /* Ranking */
-        .rank-item { display: flex; align-items: center; padding: 15px; margin-bottom: 8px; border-radius: 8px; cursor: pointer; background: rgba(255,255,255,0.01); transition: 0.3s; border: 1px solid transparent; }
-        .rank-item:hover { background: rgba(197, 160, 89, 0.05); border-color: rgba(197, 160, 89, 0.2); }
-        .rank-elite { border: 1px solid var(--silver); background: rgba(224, 225, 221, 0.05); box-shadow: 0 0 15px rgba(224, 225, 221, 0.1); }
-        .rank-alert { border: 1px solid var(--alert); background: rgba(230, 57, 70, 0.05); }
+        .logo-top {
+            max-height: 120px; /* Tamanho médio da logo */
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3)); /* Sombra dourada suave */
+        }
 
-        /* Modals */
-        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.96); z-index:2000; padding: 20px; overflow-y: auto; backdrop-filter: blur(5px); }
-        .modal-content { max-width: 480px; margin: 50px auto; animation: modalFade 0.3s ease; }
-        @keyframes modalFade { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        h1 {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 5px;
+            font-size: 1.5rem;
+            margin: 0;
+            color: var(--gold);
+        }
 
-        /* Reitoria Tabs */
-        .adm-nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 25px; }
-        .adm-btn-sub { font-size: 9px; padding: 10px; background: rgba(0,0,0,0.3); color: var(--gold); border: 1px solid rgba(197, 160, 89, 0.3); }
-        .adm-btn-sub.active { background: var(--gold); color: #000; box-shadow: 0 0 10px rgba(197, 160, 89, 0.3); }
-        
-        /* Utilities */
-        .hr-opacity { opacity: 0.1; margin: 20px 0; }
-        .title-cinzel { font-family: 'Cinzel', serif; letter-spacing: 1px; }
-        .notif-box { border-left: 3px solid var(--gold); background: rgba(255,255,255,0.02); padding: 15px; margin-bottom: 12px; border-radius: 0 8px 8px 0; font-size: 12px; color: var(--silver); }
+        /* --- Telas de Acesso --- */
+        .auth-container {
+            max-width: 350px;
+            margin: 50px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #1a2233;
+            color: white;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: var(--gold);
+            color: black;
+            border: none;
+            font-weight: 700;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        button:hover { filter: brightness(1.2); }
+
+        .btn-outline {
+            background: none;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            font-size: 10px;
+            margin-top: 20px;
+        }
+
+        /* --- Sistema Principal --- */
+        nav {
+            display: none;
+            justify-content: center;
+            background: #000;
+            padding: 10px;
+            border-bottom: 1px solid var(--glass);
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: none;
+            color: var(--white);
+            font-size: 10px;
+            width: auto;
+            padding: 10px 15px;
+            opacity: 0.6;
+        }
+
+        .nav-btn.active {
+            opacity: 1;
+            color: var(--gold);
+            border-bottom: 1px solid var(--gold);
+        }
+
+        .content {
+            display: none;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.02);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--glass);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .balance-text {
+            font-size: 3rem;
+            font-family: 'Cinzel';
+            color: var(--gold);
+            margin: 10px 0;
+        }
+
+        .btn-danger { background: var(--red); color: white; margin-top: 20px; }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-<header><h1>ERA SOVEREIGN SYSTEM</h1></header>
+<header>
+    <img id="header-logo" src="" alt="ERA Logo" class="logo-top hidden">
+    <h1 id="main-title">ERA ACADEMY</h1>
+    <p style="font-size: 9px; opacity: 0.5; letter-spacing: 2px;">SOVEREIGN MANAGEMENT SYSTEM</p>
+</header>
 
-<div id="auth-screen" style="padding: 100px 20px; text-align: center;">
-    <div class="card" style="max-width:380px; margin: 0 auto; border: 1px solid var(--gold);">
-        <h2 class="title-cinzel" style="color:var(--gold);">Elite Access Protocol</h2>
-        <div id="reg-box" style="display:none"><input type="text" id="reg-nome" placeholder="Nome Completo Acadêmico"></div>
-        <input type="email" id="u-email" placeholder="E-mail da Universidade">
-        <input type="password" id="u-pass" placeholder="Password">
-        <button id="btn-login-main" class="btn-gold">Confirmar Identidade</button>
-        <button id="btn-toggle-auth" style="background:none; color:var(--silver); font-size:10px; text-decoration:underline; margin-top:15px">Solicitar Nova Matrícula</button>
+<div id="auth-box" class="auth-container">
+    <div id="login-fields">
+        <h2 style="font-family: 'Cinzel'; font-size: 18px;">Acesso de Elite</h2>
+        <input type="email" id="email" placeholder="E-mail Acadêmico">
+        <input type="password" id="pass" placeholder="Senha">
+        <button onclick="handleAuth('login')">Entrar no Sistema</button>
     </div>
+
+    <div id="register-fields" class="hidden">
+        <h2 style="font-family: 'Cinzel'; font-size: 18px;">Nova Matrícula</h2>
+        <input type="text" id="reg-nome" placeholder="Nome Completo">
+        <input type="email" id="reg-email" placeholder="E-mail para Registro">
+        <input type="password" id="reg-pass" placeholder="Senha">
+        <button onclick="handleAuth('register')">Concluir Matrícula</button>
+    </div>
+
+    <button class="btn-outline" id="toggle-auth" onclick="toggleAuthMode()">Não possui conta? Solicite aqui</button>
 </div>
 
-<nav class="nav-bar" id="main-nav" style="display:none">
-    <button class="nav-btn active" data-tab="home">CONTA</button>
-    <button class="nav-btn" data-tab="notifs">AVISOS</button>
-    <button class="nav-btn" data-tab="editorial">EDITORIAL</button>
-    <button class="nav-btn" data-tab="finance">FINANÇAS</button>
-    <button class="nav-btn" data-tab="transfer">PAGAR</button>
-    <button class="nav-btn" data-tab="market">MERCADO</button>
-    <button class="nav-btn" data-tab="jobs">VAGAS</button>
-    <button class="nav-btn" data-tab="ranking">ELITE</button>
-    <button class="nav-btn btn-gold-nav" id="adm-tab-btn" style="display:none; color:var(--gold)" data-tab="reitoria">REITORIA</button>
+<nav id="main-nav">
+    <button class="nav-btn active" onclick="showTab('tab-conta', this)">CONTA</button>
+    <button class="nav-btn" onclick="showTab('tab-elite', this)">ELITE</button>
+    <button class="nav-btn" onclick="showTab('tab-mercado', this)">MERCADO</button>
+    <button class="nav-btn" id="reitoria-btn" style="display:none; color: var(--gold)" onclick="showTab('tab-reitoria', this)">REITORIA</button>
 </nav>
 
-<div class="container" id="app-wrap" style="display:none">
-    
-    <div id="home" class="section active">
-        <div class="card" style="text-align: center; background: linear-gradient(180deg, #0D1B2A 0%, #050A14 100%); border:1px solid rgba(197,160,89,0.2)">
-            <button onclick="document.getElementById('modal-settings').style.display='block'" style="position:absolute; right:20px; top:20px; background:none; border:none; color:var(--silver); font-size:20px; cursor:pointer">⚙️</button>
-            <div id="clock" style="font-size:11px; opacity:0.5; margin-bottom:15px; letter-spacing:1px">00:00:00</div>
-            <img id="my-pic" src="" class="profile-img">
-            <h2 id="my-name" class="title-cinzel" style="margin: 5px 0; color:var(--silver)">...</h2>
-            <div id="my-balance" style="font-size:3em; font-weight:700; color:var(--silver); text-shadow: 0 0 15px rgba(224,225,221,0.2)">$ 0</div>
-            <p id="my-bio" style="font-size:12px; font-style:italic; opacity:0.8; margin: 15px 0; max-width:80%; margin-left:auto; margin-right:auto;"></p>
-            <div id="my-tags"></div>
-        </div>
+<div id="app-content">
+    <div id="tab-conta" class="content">
         <div class="card">
-            <h3 class="title-cinzel">Inventário Ativo (com Validade)</h3>
-            <div id="my-inv" style="display:grid; grid-template-columns:1fr 1fr; gap:12px"></div>
-        </div>
-        <div class="card">
-            <h3 class="title-cinzel">Histórico de Ações</h3>
-            <div id="my-history" style="font-size:10px; opacity:0.7; max-height:150px; overflow-y:auto;"></div>
-        </div>
-    </div>
-
-    <div id="notifs" class="section">
-        <h2 class="title-cinzel">Central de Comunicados</h2>
-        <div id="notif-feed"></div>
-    </div>
-
-    <div id="editorial" class="section">
-        <div id="news-feed"></div>
-    </div>
-
-    <div id="finance" class="section">
-        <div class="card" style="text-align:center; border:1px solid var(--alert)">
-            <h3 class="title-cinzel" style="color:var(--alert)">Financiamento Estudantil</h3>
-            <p style="font-size:11px; opacity:0.7">Valor total a ser quitado (sujeito a juros de ciclo):</p>
-            <h2 id="my-debt" style="color:var(--alert); font-size:3em; margin: 10px 0">$ 0</h2>
-            <button onclick="requestLoan()" class="btn-gold">Solicitar Empréstimo à Reitoria</button>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px">
-                <button onclick="payDebt()">Amortizar Dívida</button>
-                <button onclick="alert('Funcionalidade de parcelamento em negociação com a Reitoria.')" style="opacity:0.5">Parcelar</button>
+            <div id="profile-pic" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--gold); margin: 0 auto 15px; background: #000; overflow: hidden;">
+                <img id="my-avatar" src="" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
-        </div>
-    </div>
-
-    <div id="transfer" class="section">
-        <div class="card">
-            <h3 class="title-cinzel">Efetuar Pagamento de Elite</h3>
-            <label style="font-size:10px; opacity:0.6">Selecione o Acadêmico:</label>
-            <select id="tr-dest"></select>
-            <input type="number" id="tr-val" placeholder="Valor Sovereign $">
-            <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px">
-                <input type="text" id="tr-tag-n" placeholder="Nome da Tag (Ex: Presente)">
-                <input type="color" id="tr-tag-c" value="#C5A059" style="height:45px; cursor:pointer">
+            <h2 id="my-name" class="title-font" style="margin:0">Carregando...</h2>
+            <div id="my-balance" class="balance-text">$ 0</div>
+            
+            <div id="edit-mode" class="hidden">
+                <input type="text" id="new-name" placeholder="Novo Nome">
+                <input type="text" id="new-pic" placeholder="URL da Foto">
+                <button onclick="saveProfile()" class="btn-outline">Confirmar Alterações</button>
             </div>
-            <textarea id="tr-msg" placeholder="Adicionar descrição/mensagem do pagamento..." rows="3"></textarea>
-            <button onclick="transferirDinheiro()" class="btn-gold">Confirmar Envio Protocolado</button>
+            
+            <button onclick="document.getElementById('edit-mode').classList.toggle('hidden')" class="btn-outline">Editar Perfil</button>
+            <button onclick="handleAuth('logout')" style="background: #222; color: white;">Encerrar Sessão</button>
+            <button onclick="deleteAccount()" class="btn-danger">Excluir Matrícula Permanentemente</button>
         </div>
     </div>
 
-    <div id="market" class="section">
-        <div id="market-list" style="display:grid; grid-template-columns:1fr 1fr; gap:15px"></div>
+    <div id="tab-elite" class="content">
+        <h2 style="font-family: 'Cinzel'; text-align: center;">Sociedade de Elite</h2>
+        <div id="ranking-list"></div>
     </div>
 
-    <div id="jobs" class="section">
-        <div id="jobs-list"></div>
-    </div>
-
-    <div id="ranking" class="section">
-        <h2 class="title-cinzel" style="text-align:center">Sociedade de Elite</h2>
-        <div id="rank-list"></div>
-    </div>
-
-    <div id="reitoria" class="section">
-        <div class="card" style="background:var(--wine); text-align:center; border: 2px solid var(--gold);">
-            <button onclick="girarCiclo()" style="background:none; color:#fff; font-weight:900; font-size:12px; letter-spacing:1px">🔄 GIRAR CICLO ACADÊMICO GLOBAL</button>
-            <p style="font-size:9px; margin-top:8px; opacity:0.7">Processa salários, contas fixas, juros de dívida e validade de inventários.</p>
-        </div>
-
-        <div class="adm-nav">
-            <button class="adm-btn-sub active" onclick="showAdmSec('adm-alunos', this)">ALUNOS</button>
-            <button class="adm-btn-sub" onclick="showAdmSec('adm-mercado', this)">MERCADO</button>
-            <button class="adm-btn-sub" onclick="showAdmSec('adm-editorial', this)">EDITORIAL</button>
-            <button class="adm-btn-sub" onclick="showAdmSec('adm-vagas', this)">VAGAS</button>
-            <button class="adm-btn-sub" onclick="showAdmSec('adm-auditoria', this)">AUDITORIA</button>
-            <button class="adm-btn-sub" onclick="showAdmSec('adm-candidatos', this)">CANDIDATOS</button>
-        </div>
-
-        <div id="adm-alunos" class="adm-section" style="display:block">
-            <div class="card">
-                <h3 class="title-cinzel">Gestão Integral de Aluno</h3>
-                <select id="adm-p-sel" onchange="loadAdmPlayerData()"></select>
-                <div id="adm-p-panel" style="display:none; margin-top:20px; border-top:1px solid var(--glass); padding-top:15px">
-                    <button class="btn-red btn-small" onclick="admDeleteUser()">Excluir Conta Permanentemente</button>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:10px 0">
-                        <button onclick="admAdjustBalance(true)" class="btn-small btn-gold">Add Saldo Variável</button>
-                        <button onclick="admAdjustBalance(false)" class="btn-small btn-red">Remover Saldo</button>
-                    </div>
-                    <hr class="hr-opacity">
-                    <h4>Tags (Nome e Cor)</h4>
-                    <div id="adm-p-tags" style="margin-bottom:10px"></div>
-                    <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px">
-                        <input type="text" id="adm-tag-n" placeholder="Nome Tag">
-                        <input type="color" id="adm-tag-c" value="#C5A059" style="height:45px">
-                    </div>
-                    <button onclick="admAddTag()">Conceder Tag</button>
-                    <hr class="hr-opacity">
-                    <h4>Financeiro Fixo (Giro de Ciclo)</h4>
-                    <div id="adm-p-fixos" style="font-size:11px; margin-bottom:10px"></div>
-                    <input type="text" id="adm-f-n" placeholder="Nome (Ex: Salário Professor)">
-                    <input type="number" id="adm-f-v" placeholder="Valor (Negativo para Despesa)">
-                    <textarea id="adm-f-d" placeholder="Descrição do fixo..."></textarea>
-                    <button onclick="admAddFixo()">Adicionar Fixo</button>
-                    <hr class="hr-opacity">
-                    <h4>Inventário ADM</h4>
-                    <div id="adm-p-inv" style="font-size:11px"></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="adm-mercado" class="adm-section" style="display:none">
-            <div class="card">
-                <h3 class="title-cinzel">Gestão do Mercado Sovereign</h3>
-                <h4>Novo Item</h4>
-                <input type="text" id="mi-n" placeholder="Nome do Item">
-                <input type="number" id="mi-p" placeholder="Preço $">
-                <input type="number" id="mi-v" placeholder="Durabilidade (Semanas)">
-                <input type="number" id="mi-e" placeholder="Quantidade Disponível">
-                <input type="text" id="mi-i" placeholder="URL da Foto do Item">
-                <textarea id="mi-d" placeholder="Descrição do item..."></textarea>
-                <button onclick="admAddItem()" class="btn-gold">Criar Item no Mercado</button>
-                <hr class="hr-opacity">
-                <h4>Itens Ativos (Clique para Excluir)</h4>
-                <div id="adm-items-list"></div>
-            </div>
-        </div>
-
-        <div id="adm-editorial" class="adm-section" style="display:none">
-            <div class="card">
-                <h3 class="title-cinzel">Gerenciamento Editorial</h3>
-                <h4>Nova Notícia</h4>
-                <input type="text" id="en-t" placeholder="Título da Notícia">
-                <textarea id="en-x" placeholder="Texto da notícia..." rows="5"></textarea>
-                <input type="text" id="en-i" placeholder="URL da Imagem de Destaque">
-                <button onclick="admAddNews()" class="btn-gold">Publicar Matéria</button>
-                <hr class="hr-opacity">
-                <h4>Matérias Publicadas (Gestão de Comentários)</h4>
-                <div id="adm-news-list"></div>
-            </div>
-        </div>
-
-        <div id="adm-vagas" class="adm-section" style="display:none">
-            <div class="card">
-                <h3 class="title-cinzel">Gestor de Carreiras</h3>
-                <h4>Nova Vaga</h4>
-                <input type="text" id="jv-t" placeholder="Título da Vaga">
-                <input type="number" id="jv-s" placeholder="Salário Base do Ciclo">
-                <input type="text" id="jv-i" placeholder="URL Imagem/Logo da Vaga">
-                <textarea id="jv-d" placeholder="Descrição e requisitos..."></textarea>
-                <button onclick="admAddJob()" class="btn-gold">Postar Oportunidade</button>
-                <hr class="hr-opacity">
-                <div id="adm-jobs-list"></div>
-            </div>
-        </div>
-
-        <div id="adm-candidatos" class="adm-section" style="display:none">
-            <div class="card"><h3 class="title-cinzel">Avaliação de Candidaturas</h3></div>
-            <div id="adm-cand-list"></div>
-        </div>
-
-        <div id="adm-auditoria" class="adm-section" style="display:none">
-            <div class="card"><h3 class="title-cinzel">Auditoria Fiscal Global</h3><p style="font-size:10px; opacity:0.6">Monitoramento de TODAS as transferências e movimentações.</p></div>
-            <div class="card" id="adm-audit-feed" style="font-size:10px; max-height:400px; overflow-y:auto; font-family:monospace"></div>
-        </div>
-    </div>
-</div>
-
-<div id="modal-settings" class="modal">
-    <div class="modal-content card">
-        <h3 class="title-cinzel">Ajustes de Perfil Acadêmico</h3>
-        <input type="text" id="s-nome" placeholder="Nome Completo">
-        <input type="text" id="s-foto" placeholder="URL da Foto de Perfil">
-        <textarea id="s-bio" placeholder="Sua descrição/bio acadêmica..." rows="4"></textarea>
-        <button onclick="saveMyProfile()" class="btn-gold">Salvar Alterações</button>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px">
-            <button onclick="logout()">Sair da Conta</button>
-            <button onclick="deleteMe()" class="btn-red">Excluir Minha Conta</button>
-        </div>
-        <button onclick="closeModals()" style="background:none; color:#fff; margin-top:10px">Cancelar</button>
-    </div>
-</div>
-
-<div id="modal-perfil" class="modal">
-    <div class="modal-content card" style="text-align:center">
-        <img id="pub-img" src="" class="profile-img">
-        <h2 id="pub-name" class="title-cinzel"></h2>
-        <div id="pub-title" style="color:var(--gold); font-weight:bold; font-size:11px; margin-bottom:10px"></div>
-        <div id="pub-tags"></div>
-        <p id="pub-bio" style="font-size:12px; opacity:0.8; margin: 15px 0"></p>
-        <hr class="hr-opacity">
-        <h4 class="title-cinzel" style="text-align:left; font-size:11px">Mural de Recados</h4>
-        <div id="pub-mural" style="text-align:left; font-size:11px; max-height:150px; overflow-y:auto"></div>
-        <input type="text" id="pub-msg" placeholder="Deixe um recado protocolado...">
-        <button onclick="postMural()">Enviar Recado</button>
-        <button onclick="closeModals()" style="background:none; color:#fff; margin-top:10px">Fechar Perfil</button>
-    </div>
-</div>
-
-<div id="modal-item" class="modal">
-    <div class="modal-content card" style="text-align:center">
-        <img id="view-item-img" src="" style="width:100%; border-radius:8px; height:150px; object-fit:cover">
-        <h2 id="view-item-nome" class="title-cinzel" style="margin: 10px 0"></h2>
-        <div id="view-item-preco" style="font-size:2em; color:var(--gold); font-weight:bold"></div>
-        <p id="view-item-desc" style="font-size:12px; opacity:0.8; margin: 15px 0"></p>
-        <div style="font-size:10px; opacity:0.6; margin-bottom:15px">Validade: <span id="view-item-val"></span> semanas | Estoque: <span id="view-item-est"></span></div>
-        <button id="btn-comprar-final" class="btn-gold">Confirmar Aquisição</button>
-        <button onclick="closeModals()" style="background:none; color:#fff; margin-top:10px">Cancelar</button>
+    <div id="tab-mercado" class="content">
+        <h2 style="font-family: 'Cinzel'; text-align: center;">Mercado Acadêmico</h2>
+        <div id="store-list"></div>
     </div>
 </div>
 
 <script type="module">
-    // --- CONEXÃO FIREBASE (Blindada) ---
+    // --- LÓGICA DA LOGO ---
+    // Força o caminho relativo correto para o GitHub Pages
+    const logoImg = document.getElementById('header-logo');
+    logoImg.src = window.location.origin + window.location.pathname.replace('index.html', '') + 'era.png';
+    logoImg.classList.remove('hidden'); // Mostra a logo após carregar o caminho
+
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
-    import { getDatabase, ref, set, get, update, onValue, push, remove } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+    import { getDatabase, ref, set, get, update, onValue, remove } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBt7zjlI1P8lN4JxnxTe_erzNbfu1AHdfE",
@@ -337,49 +236,101 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getDatabase(app);
+    let uLog = null;
 
-    // Variáveis Globais de Estado
-    let uLog = null; // Usuário Logado Completo
-    let vId = null;  // ID do Perfil sendo visualizado
-    let selJobId = null; // ID da vaga selecionada
+    // --- FUNÇÕES DE NAVEGAÇÃO ---
+    window.toggleAuthMode = () => {
+        const isLogin = document.getElementById('login-fields').classList.toggle('hidden');
+        document.getElementById('register-fields').classList.toggle('hidden');
+        document.getElementById('toggle-auth').innerText = isLogin ? "Já possui conta? Acessar" : "Não possui conta? Solicite aqui";
+    }
 
-    // --- SISTEMA DE RELÓGIO E UI BÁSICA ---
-    setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('pt-BR'); }, 1000);
-    
-    window.closeModals = () => document.querySelectorAll('.modal').forEach(m => m.style.display='none');
+    window.showTab = (tabId, btn) => {
+        document.querySelectorAll('.content').forEach(c => c.style.display = 'none');
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).style.display = 'block';
+        if(btn) btn.classList.add('active');
+    }
 
-    // Navegação Principal
-    document.querySelectorAll('.nav-btn').forEach(b => {
-        b.onclick = () => {
-            document.querySelectorAll('.section, .nav-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(b.dataset.tab).classList.add('active');
-            b.classList.add('active');
-        };
+    // --- AUTENTICAÇÃO ---
+    window.handleAuth = async (mode) => {
+        try {
+            if (mode === 'login') {
+                const e = document.getElementById('email').value;
+                const p = document.getElementById('pass').value;
+                await signInWithEmailAndPassword(auth, e, p);
+            } 
+            else if (mode === 'register') {
+                const n = document.getElementById('reg-nome').value;
+                const e = document.getElementById('reg-email').value;
+                const p = document.getElementById('reg-pass').value;
+                if(!n) return alert("Nome é obrigatório.");
+                const res = await createUserWithEmailAndPassword(auth, e, p);
+                await set(ref(db, `jogadores/${res.user.uid}`), {
+                    nome: n, saldo: 1500, role: 'aluno', bio: '', foto: ''
+                });
+            } 
+            else if (mode === 'logout') {
+                await signOut(auth);
+                location.reload();
+            }
+        } catch (err) {
+            alert("Erro no Sistema: " + err.message);
+        }
+    }
+
+    onAuthStateChanged(auth, user => {
+        if (user) {
+            document.getElementById('auth-box').style.display = 'none';
+            document.getElementById('main-nav').style.display = 'flex';
+            onValue(ref(db, `jogadores/${user.uid}`), snap => {
+                if(snap.exists()) {
+                    uLog = { id: user.uid, ...snap.val() };
+                    document.getElementById('my-name').innerText = uLog.nome;
+                    document.getElementById('my-balance').innerText = `$ ${uLog.saldo.toLocaleString()}`;
+                    document.getElementById('my-avatar').src = uLog.foto || "https://placehold.co/100?text=Sovereign";
+                    showTab('tab-conta');
+                    carregarRanking();
+                }
+            });
+        }
     });
 
-    // Navegação Sub-ADM
-    window.showAdmSec = (id, btn) => {
-        document.querySelectorAll('.adm-section, .adm-btn-sub').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.adm-section').forEach(el => el.style.display = 'none');
-        document.getElementById(id).style.display = 'block';
-        btn.classList.add('active');
-    };
+    // --- AÇÕES DO PERFIL ---
+    window.saveProfile = async () => {
+        const n = document.getElementById('new-name').value;
+        const f = document.getElementById('new-pic').value;
+        const up = {};
+        if(n) up.nome = n;
+        if(f) up.foto = f;
+        await update(ref(db, `jogadores/${uLog.id}`), up);
+        document.getElementById('edit-mode').classList.add('hidden');
+        alert("Dados Acadêmicos Atualizados.");
+    }
 
-    // --- SISTEMA DE AUTENTICAÇÃO (Auth Blindada v2) ---
-    const btnToggle = document.getElementById('btn-toggle-auth');
-    const regBox = document.getElementById('reg-box');
-    const btnMain = document.getElementById('btn-login-main');
+    window.deleteAccount = async () => {
+        if(confirm("⚠️ ATENÇÃO: Deseja apagar sua matrícula? Esta ação é irreversível e você perderá todo seu saldo Sovereign.")){
+            await remove(ref(db, `jogadores/${uLog.id}`));
+            deleteUser(auth.currentUser).then(() => location.reload());
+        }
+    }
 
-    if(btnToggle) btnToggle.onclick = () => {
-        regBox.style.display = regBox.style.display==='none'?'block':'none';
-        btnMain.innerText = regBox.style.display==='none'?'Confirmar Identidade':'Finalizar Matrícula Sovereign';
-    };
+    // --- RANKING ---
+    function carregarRanking() {
+        onValue(ref(db, 'jogadores'), snap => {
+            let h = "";
+            let list = [];
+            snap.forEach(child => { list.push(child.val()) });
+            list.sort((a,b) => b.saldo - a.saldo).slice(0, 10).forEach((p, i) => {
+                h += `<div class="card" style="display:flex; justify-content:space-between; align-items:center; padding: 10px 20px;">
+                        <span><b>#${i+1}</b> ${p.nome}</span>
+                        <span style="color:var(--gold); font-weight:700">$ ${p.saldo.toLocaleString()}</span>
+                      </div>`;
+            });
+            document.getElementById('ranking-list').innerHTML = h;
+        });
+    }
 
-    if(btnMain) btnMain.onclick = async () => {
-        const email = document.getElementById('u-email').value;
-        const pass = document.getElementById('u-pass').value;
-        if(!email || !pass) return alert("Preencha as credenciais acadêmicas.");
-
-        try {
-            if(regBox.style.display === 'block') {
-                const nome = document.getElementById
+</script>
+</body>
+</html>
