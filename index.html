@@ -808,6 +808,10 @@
         });
     }
 
+    function makeId() {
+        return `${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+    }
+
     function autoTitle(u) {
         if (!u) return "---";
 
@@ -871,7 +875,7 @@
     }
 
     function parseNewsTags() {
-        const tags = [];
+        const tags = {};
         const pairs = [
             ['adm-n-tag1', 'adm-n-cor1'],
             ['adm-n-tag2', 'adm-n-cor2'],
@@ -881,7 +885,9 @@
         for (const [tId, cId] of pairs) {
             const texto = document.getElementById(tId).value.trim();
             const cor = document.getElementById(cId).value;
-            if (texto) tags.push({ texto, cor });
+            if (texto) {
+                tags[makeId()] = { texto, cor };
+            }
         }
 
         return tags;
@@ -894,9 +900,11 @@
             .join("");
     }
 
-    function renderNewsTags(tagsArr) {
-        if (!tagsArr || !tagsArr.length) return "";
-        return tagsArr.map(t => `<span class="tag" style="background:${t.cor || '#C0C0C0'}">${esc(t.texto || '')}</span>`).join("");
+    function renderNewsTags(tagsObj) {
+        if (!tagsObj || !Object.keys(tagsObj).length) return "";
+        return Object.values(tagsObj)
+            .map(t => `<span class="tag" style="background:${t.cor || '#C0C0C0'}">${esc(t.texto || '')}</span>`)
+            .join("");
     }
 
     function renderInventory(invObj) {
@@ -1010,7 +1018,7 @@
                 <div class="card left">
                     ${n.img ? `<img src="${esc(n.img)}" alt="" style="width:100%; border-radius:10px; margin-bottom:12px">` : ""}
                     <div class="news-title">${esc(n.titulo || '')}</div>
-                    <div>${renderNewsTags(n.tags || [])}</div>
+                    <div>${renderNewsTags(n.tags)}</div>
                     <p class="mini">${esc(n.texto || '')}</p>
                     <div class="row-actions" style="justify-content:flex-start">
                         <button class="btn-sec small-btn" onclick="app.addNewsComment('${id}')">Comentar</button>
@@ -1094,6 +1102,7 @@
             admNewsEl.innerHTML = Object.entries(data).reverse().map(([id, n]) => `
                 <div class="list-item">
                     <strong>${esc(n.titulo || '')}</strong><br>
+                    <div>${renderNewsTags(n.tags)}</div>
                     <span class="subtle">${esc(n.texto || '').slice(0, 120)}</span>
                     <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
                         <button class="btn-sec small-btn" onclick="app.editNews('${id}')">Editar</button>
@@ -1199,23 +1208,24 @@
         });
 
         listen(ref(db, 'editorial'), snap => {
+            const data = snap.val() || {};
             const newsEl = document.getElementById('news-list');
-            if (newsEl) newsEl.innerHTML = renderNews(snap.val());
+            if (newsEl) newsEl.innerHTML = renderNews(data);
 
-            const posts = snap.val() || {};
-            const admHtml = Object.entries(posts).reverse().map(([id, n]) => `
-                <div class="list-item">
-                    <strong>${esc(n.titulo || '')}</strong><br>
-                    <span class="subtle">${esc(n.texto || '').slice(0, 120)}</span>
-                    <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
-                        <button class="btn-sec small-btn" onclick="app.editNews('${id}')">Editar</button>
-                        <button class="btn-red small-btn" onclick="app.deleteNews('${id}')">Excluir</button>
+            const admNewsEl = document.getElementById('adm-news-list');
+            if (admNewsEl) {
+                admNewsEl.innerHTML = Object.entries(data).reverse().map(([id, n]) => `
+                    <div class="list-item">
+                        <strong>${esc(n.titulo || '')}</strong><br>
+                        <div>${renderNewsTags(n.tags)}</div>
+                        <span class="subtle">${esc(n.texto || '').slice(0, 120)}</span>
+                        <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                            <button class="btn-sec small-btn" onclick="app.editNews('${id}')">Editar</button>
+                            <button class="btn-red small-btn" onclick="app.deleteNews('${id}')">Excluir</button>
+                        </div>
                     </div>
-                </div>
-            `).join("");
-
-            const admNews = document.getElementById('adm-news-list');
-            if (admNews) admNews.innerHTML = admHtml;
+                `).join("");
+            }
         });
 
         listen(ref(db, 'loja'), snap => {
@@ -1355,25 +1365,6 @@
         if (d.role === 'reitora') document.getElementById('btn-adm').style.display = 'inline-block';
         else document.getElementById('btn-adm').style.display = 'none';
     }
-
-    function registerPhotoPreview() {
-        const input = document.getElementById('set-foto');
-        const preview = document.getElementById('foto-preview');
-        if (!input || !preview) return;
-
-        input.addEventListener('input', () => {
-            const url = input.value.trim();
-            if (!url) {
-                preview.classList.add('hidden');
-                preview.src = '';
-                return;
-            }
-            preview.src = url;
-            preview.classList.remove('hidden');
-        });
-    }
-
-    registerPhotoPreview();
 
     onAuthStateChanged(auth, user => {
         clearSubs();
@@ -1803,25 +1794,38 @@
             const titulo = prompt("Novo título:", n.titulo || '');
             const img = prompt("Nova imagem / URL:", n.img || '');
             const texto = prompt("Novo texto:", n.texto || '');
-            const tagTxt = prompt("Tags da notícia no formato: tag|cor; tag|cor; tag|cor", (n.tags || []).map(t => `${t.texto || ''}|${t.cor || '#C0C0C0'}`).join('; '));
+
+            const currentTags = Object.values(n.tags || {})
+                .map(t => `${t.texto || ''}|${t.cor || '#C0C0C0'}`)
+                .join('; ');
+
+            const tagTxt = prompt(
+                "Tags da notícia no formato: tag|cor; tag|cor; tag|cor",
+                currentTags
+            );
 
             if (titulo === null || img === null || texto === null || tagTxt === null) return;
 
-            const tags = tagTxt
+            const tags = {};
+            tagTxt
                 .split(';')
                 .map(s => s.trim())
                 .filter(Boolean)
-                .map(pair => {
+                .forEach(pair => {
                     const [textoTag, corTag] = pair.split('|').map(x => x.trim());
-                    return { texto: textoTag || '', cor: corTag || '#C0C0C0' };
-                })
-                .filter(t => t.texto);
+                    if (textoTag) {
+                        tags[makeId()] = {
+                            texto: textoTag,
+                            cor: corTag || '#C0C0C0'
+                        };
+                    }
+                });
 
             await update(ref(db, `editorial/${postId}`), {
                 titulo: titulo ?? n.titulo,
                 img: img ?? n.img,
                 texto: texto ?? n.texto,
-                tags: tags.length ? tags : (n.tags || [])
+                tags: Object.keys(tags).length ? tags : (n.tags || {})
             });
 
             await pushAudit({
