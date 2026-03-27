@@ -6,65 +6,39 @@
     <title>ERA ACADEMY | Sovereign System</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --prata: #C0C0C0;
-            --azul-royal: #0A192F;
-            --azul-card: #112240;
-            --white: #F8F9FA;
-            --gold: #D4AF37;
-            --red: #8B0000;
-            --glass: rgba(192, 192, 192, 0.05);
-        }
-
-        body { background: var(--azul-royal); color: var(--white); font-family: 'Montserrat', sans-serif; margin: 0; min-height: 100vh; }
+        :root { --prata: #C0C0C0; --azul-royal: #0A192F; --azul-card: #112240; --white: #F8F9FA; --gold: #D4AF37; --red: #8B0000; --glass: rgba(192, 192, 192, 0.05); }
+        body { background: var(--azul-royal); color: var(--white); font-family: 'Montserrat', sans-serif; margin: 0; min-height: 100vh; overflow-x: hidden; }
         header { padding: 30px; text-align: center; background: #02060C; border-bottom: 2px solid var(--prata); }
         h1 { font-family: 'Cinzel', serif; color: var(--prata); letter-spacing: 4px; margin: 0; }
         
-        nav { display: none; background: #050A14; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid var(--glass); justify-content: center; position: sticky; top: 0; z-index: 100; }
-        .nav-btn { background: none; border: none; color: var(--prata); padding: 15px; font-size: 10px; font-weight: bold; cursor: pointer; opacity: 0.6; }
-        .nav-btn.active { opacity: 1; border-bottom: 2px solid var(--prata); }
+        nav { display: none; background: #050A14; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid var(--glass); position: sticky; top: 0; z-index: 100; padding: 0 10px; }
+        .nav-btn { background: none; border: none; color: var(--prata); padding: 15px 12px; font-size: 10px; font-weight: bold; cursor: pointer; opacity: 0.6; text-transform: uppercase; }
+        .nav-btn.active { opacity: 1; border-bottom: 2px solid var(--prata); color: #fff; }
 
-        .container { max-width: 900px; margin: 20px auto; padding: 0 20px 100px; }
-        .card { background: var(--azul-card); border: 1px solid var(--glass); border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .container { max-width: 900px; margin: 20px auto; padding-bottom: 100px; }
+        .card { background: var(--azul-card); border: 1px solid var(--glass); border-radius: 12px; padding: 25px; margin: 0 15px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
         .balance { font-family: 'Cinzel'; font-size: 3rem; color: var(--prata); margin: 10px 0; }
-        .tag { padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; text-transform: uppercase; margin: 2px; display: inline-block; }
+        .tag { padding: 3px 8px; border-radius: 4px; font-size: 9px; font-weight: bold; margin: 2px; display: inline-block; color: #000; }
         
-        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; background: #02060C; border: 1px solid #1d3557; color: white; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: var(--prata); color: var(--azul-royal); border: none; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; }
-        button:hover { filter: brightness(1.2); }
+        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; background: #02060C; border: 1px solid #1d3557; color: white; border-radius: 5px; box-sizing: border-box; font-family: 'Montserrat'; }
+        button { width: 100%; padding: 15px; background: var(--prata); color: var(--azul-royal); border: none; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin-top: 5px; }
         .btn-sec { background: none; border: 1px solid var(--prata); color: var(--prata); }
-        
-        .hidden { display: none; }
-        .grid-market { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-        .item-card { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; border: 1px solid var(--glass); text-align: center; }
+        .hidden { display: none !important; }
+
+        /* Componentes Específicos */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .item-market { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px solid var(--glass); }
+        .notif-item { padding: 10px; border-bottom: 1px solid var(--glass); font-size: 12px; text-align: left; }
     </style>
 </head>
 <body>
 
 <header>
-    <img src="era.png" alt="" style="max-height:80px; margin-bottom:10px" onerror="this.style.display='none'">
+    <img src="era.png" alt="ERA" style="max-height:70px; margin-bottom:10px" onerror="this.style.display='none'">
     <h1>ERA ACADEMY</h1>
-    <p style="font-size: 10px; letter-spacing: 2px; opacity: 0.6;">SOVEREIGN SYSTEM</p>
+    <p style="font-size: 9px; letter-spacing: 2px; opacity: 0.6;">SOVEREIGN MANAGEMENT SYSTEM</p>
 </header>
-
-<div id="auth-screen" class="container">
-    <div class="card" id="login-box" style="max-width:400px; margin:auto">
-        <h2 style="font-family:'Cinzel'">Acesso de Elite</h2>
-        <input type="email" id="email" placeholder="E-mail Acadêmico">
-        <input type="password" id="pass" placeholder="Senha">
-        <button onclick="authAction('login')">Entrar</button>
-        <button class="btn-sec" style="margin-top:10px" onclick="toggleAuth()">Solicitar Matrícula</button>
-    </div>
-    <div class="card hidden" id="register-box" style="max-width:400px; margin:auto">
-        <h2 style="font-family:'Cinzel'">Matrícula</h2>
-        <input type="text" id="reg-name" placeholder="Nome do Personagem">
-        <input type="email" id="reg-email" placeholder="E-mail">
-        <input type="password" id="reg-pass" placeholder="Senha">
-        <button onclick="authAction('register')">Registrar</button>
-        <button class="btn-sec" style="margin-top:10px" onclick="toggleAuth()">Voltar</button>
-    </div>
-</div>
 
 <nav id="main-nav">
     <button class="nav-btn active" onclick="showTab('tab-dash', this)">DASHBOARD</button>
@@ -78,69 +52,114 @@
     <button class="nav-btn" id="btn-adm" style="color:var(--gold); display:none" onclick="showTab('tab-adm', this)">REITORIA</button>
 </nav>
 
+<div id="auth-screen" class="container">
+    <div class="card" id="login-box" style="max-width:380px; margin:40px auto">
+        <h2 style="font-family:'Cinzel'">Login de Elite</h2>
+        <input type="email" id="email" placeholder="E-mail">
+        <input type="password" id="pass" placeholder="Senha">
+        <button onclick="authAction('login')">Acessar Sistema</button>
+        <p style="font-size:11px; margin-top:15px; cursor:pointer" onclick="toggleAuth()">Não tem conta? Solicite Matrícula</p>
+    </div>
+    <div class="card hidden" id="register-box" style="max-width:380px; margin:40px auto">
+        <h2 style="font-family:'Cinzel'">Nova Matrícula</h2>
+        <input type="text" id="reg-name" placeholder="Nome do Personagem">
+        <input type="email" id="reg-email" placeholder="E-mail Acadêmico">
+        <input type="password" id="reg-pass" placeholder="Senha">
+        <button onclick="authAction('register')">Registrar</button>
+        <p style="font-size:11px; margin-top:15px; cursor:pointer" onclick="toggleAuth()">Voltar para Login</p>
+    </div>
+</div>
+
 <div id="app-content" class="container hidden">
     <div id="tab-dash" class="tab">
         <div class="card">
-            <div style="text-align:right"><button class="btn-sec" style="width:auto; padding:5px 10px" onclick="document.getElementById('set-box').classList.toggle('hidden')">⚙️ SETTINGS</button></div>
-            <img id="u-foto" src="" style="width:120px; height:120px; border-radius:50%; border:2px solid var(--prata); object-fit:cover">
-            <h2 id="u-nome" style="font-family:'Cinzel'">---</h2>
+            <div style="text-align:right"><button class="btn-sec" style="width:auto; font-size:10px" onclick="document.getElementById('settings-area').classList.toggle('hidden')">⚙️ SETTINGS</button></div>
+            <img id="u-foto" src="" style="width:110px; height:110px; border-radius:50%; border:2px solid var(--prata); object-fit:cover">
+            <h2 id="u-nome" style="font-family:'Cinzel'; margin:10px 0">---</h2>
             <div id="u-tags"></div>
             <div class="balance" id="u-saldo">$ 0</div>
+            <p id="u-bio" style="font-size:12px; opacity:0.7"></p>
             
-            <div id="set-box" class="hidden" style="margin-top:20px; border-top:1px solid var(--glass); padding-top:20px">
-                <input type="text" id="edit-nome" placeholder="Novo Nome">
-                <input type="text" id="edit-foto" placeholder="URL da Foto">
-                <textarea id="edit-bio" placeholder="Sua biografia..."></textarea>
-                <button onclick="saveProfile()">Salvar Alterações</button>
-                <button class="btn-sec" style="margin-top:10px" onclick="authAction('logout')">Sair da Conta</button>
-                <button style="background:var(--red); color:white; margin-top:10px" onclick="delAccount()">Excluir Matrícula</button>
+            <div id="settings-area" class="hidden" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--glass)">
+                <input type="text" id="set-nome" placeholder="Alterar Nome">
+                <input type="text" id="set-foto" placeholder="URL da Foto">
+                <textarea id="set-bio" placeholder="Alterar Biografia"></textarea>
+                <button onclick="updateProfile()">Salvar Perfil</button>
+                <button class="btn-sec" onclick="authAction('logout')">Sair do Sistema</button>
+                <button style="background:var(--red); color:#fff" onclick="deleteAccount()">Excluir Matrícula</button>
             </div>
         </div>
-        <div class="card">
-            <h3 style="font-family:'Cinzel'">🎒 INVENTÁRIO ATIVO</h3>
-            <div id="u-inv" class="grid-market"></div>
-        </div>
+        <div class="card"><h3>🎒 INVENTÁRIO ATIVO</h3><div id="u-inv" class="grid"></div></div>
+    </div>
+
+    <div id="tab-notif" class="tab hidden">
+        <div class="card"><h2>Alertas do Sistema</h2><div id="list-notif"></div></div>
     </div>
 
     <div id="tab-news" class="tab hidden">
-        <h2 style="font-family:'Cinzel'">Mural Academy</h2>
-        <div id="news-list"></div>
+        <h2 style="font-family:'Cinzel'; text-align:center">Mural Academy</h2>
+        <div id="list-news"></div>
     </div>
 
     <div id="tab-finan" class="tab hidden">
         <div class="card">
-            <h2 style="font-family:'Cinzel'">Crédito Acadêmico</h2>
-            <p>Taxa Semanal: <b>10%</b></p>
-            <p>Dívida Atual: <b id="u-divida" style="color:var(--red)">$ 0</b></p>
-            <input type="number" id="loan-val" placeholder="Valor do Empréstimo">
-            <button onclick="requestLoan()">Solicitar Financiamento</button>
-            <hr style="opacity:0.1; margin:20px 0">
-            <button class="btn-sec" onclick="alert('Procure a Reitoria para parcelamento')">Negociar Parcelas</button>
+            <h2>Crédito Estudantil</h2>
+            <p>Juros Atuais: <b style="color:var(--gold)">10% p/ semana</b></p>
+            <p>Dívida Total: <b id="u-divida" style="color:var(--red)">$ 0</b></p>
+            <input type="number" id="f-valor" placeholder="Valor do Empréstimo">
+            <button onclick="requestFinan()">Solicitar Aprovação</button>
         </div>
     </div>
 
     <div id="tab-mercado" class="tab hidden">
-        <h2 style="font-family:'Cinzel'">Itens de Prestígio</h2>
-        <div id="market-list" class="grid-market"></div>
+        <h2 style="font-family:'Cinzel'; text-align:center">Mercado de Prestígio</h2>
+        <div id="list-market" class="grid"></div>
+    </div>
+
+    <div id="tab-transf" class="tab hidden">
+        <div class="card">
+            <h2>Enviar Sovereign</h2>
+            <select id="t-dest" placeholder="Selecione o Destinatário"></select>
+            <input type="number" id="t-val" placeholder="Valor $">
+            <input type="text" id="t-desc" placeholder="Descrição">
+            <div style="display:flex; gap:10px; align-items:center">
+                <input type="text" id="t-tag" placeholder="Tag (Ex: Presente)">
+                <input type="color" id="t-color" value="#C0C0C0" style="width:50px">
+            </div>
+            <label style="font-size:10px"><input type="checkbox" id="t-anon"> Transferência Anônima (Taxa 20%)</label>
+            <button onclick="sendMoney()">Confirmar Envio</button>
+        </div>
+    </div>
+
+    <div id="tab-rank" class="tab hidden">
+        <h2 style="font-family:'Cinzel'; text-align:center">Elite de ERA</h2>
+        <div id="list-rank"></div>
+    </div>
+
+    <div id="tab-vagas" class="tab hidden">
+        <h2 style="font-family:'Cinzel'; text-align:center">Oportunidades</h2>
+        <div id="list-vagas"></div>
     </div>
 
     <div id="tab-adm" class="tab hidden">
         <div class="card" style="border-color:var(--gold)">
-            <h2 style="color:var(--gold); font-family:'Cinzel'">Comando Superior</h2>
-            <button onclick="girarCiclo()" style="background:var(--azul-royal); color:var(--prata); border:1px solid var(--prata); margin-bottom:15px">⏩ GIRAR CICLO ACADÊMICO</button>
+            <h2 style="color:var(--gold)">Painel da Reitoria</h2>
+            <button onclick="girarCiclo()" style="background:#000; color:var(--gold); border:1px solid var(--gold)">⏩ GIRAR CICLO (Salários & Juros)</button>
             
-            <h3 style="font-size:12px">POSTAR NOTÍCIA</h3>
-            <input type="text" id="adm-news-t" placeholder="Título">
-            <input type="text" id="adm-news-i" placeholder="URL Imagem">
-            <textarea id="adm-news-x" placeholder="Texto..."></textarea>
-            <button onclick="admPostNews()">Publicar Notícia</button>
-
-            <h3 style="font-size:12px; margin-top:20px">GESTÃO DE JOGADOR</h3>
-            <select id="adm-p-list"></select>
-            <input type="number" id="adm-p-val" placeholder="Valor (+ ou -)">
+            <hr style="opacity:0.2; margin:20px 0">
+            <h3>Gestão de Jogador</h3>
+            <select id="adm-p-sel"></select>
+            <input type="number" id="adm-p-edit" placeholder="Valor a Adicionar/Remover">
             <input type="text" id="adm-p-tag" placeholder="Nova Tag">
-            <input type="color" id="adm-p-color" value="#C0C0C0">
-            <button onclick="admAdjustPlayer()">Aplicar Mudanças</button>
+            <input type="color" id="adm-p-tag-c" value="#C0C0C0">
+            <button onclick="admUpdatePlayer()">Aplicar Saldo/Tag</button>
+
+            <hr style="opacity:0.2; margin:20px 0">
+            <h3>Criar Notícia</h3>
+            <input type="text" id="adm-n-t" placeholder="Título">
+            <input type="text" id="adm-n-i" placeholder="URL Imagem">
+            <textarea id="adm-n-x" placeholder="Texto"></textarea>
+            <button onclick="admPostNews()">Publicar Editorial</button>
         </div>
     </div>
 </div>
@@ -150,42 +169,27 @@
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
     import { getDatabase, ref, set, get, update, onValue, remove, push } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyBt7zjlI1P8lN4JxnxTe_erzNbfu1AHdfE",
-        authDomain: "universityerarpg-6a29d.firebaseapp.com",
-        databaseURL: "https://universityerarpg-6a29d-default-rtdb.firebaseio.com",
-        projectId: "universityerarpg-6a29d",
-        storageBucket: "universityerarpg-6a29d.firebasestorage.app",
-        messagingSenderId: "912095174573",
-        appId: "1:912095174573:web:e4591c65eeb9259ba9cb24"
-    };
+    const firebaseConfig = { apiKey: "AIzaSyBt7zjlI1P8lN4JxnxTe_erzNbfu1AHdfE", authDomain: "universityerarpg-6a29d.firebaseapp.com", databaseURL: "https://universityerarpg-6a29d-default-rtdb.firebaseio.com", projectId: "universityerarpg-6a29d", storageBucket: "universityerarpg-6a29d.firebasestorage.app", messagingSenderId: "912095174573", appId: "1:912095174573:web:e4591c65eeb9259ba9cb24" };
+    const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getDatabase(app);
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
-
-    // --- NAVEGAÇÃO ---
     window.toggleAuth = () => { document.getElementById('login-box').classList.toggle('hidden'); document.getElementById('register-box').classList.toggle('hidden'); };
-    window.showTab = (id, btn) => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.add('hidden'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(id).classList.remove('hidden');
-        btn.classList.add('active');
+    window.showTab = (id, btn) => { 
+        document.querySelectorAll('.tab').forEach(t => t.classList.add('hidden')); 
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); 
+        document.getElementById(id).classList.remove('hidden'); btn.classList.add('active'); 
     };
 
-    // --- AUTH ---
-    window.authAction = async (t) => {
+    window.authAction = async (m) => {
+        const e = document.getElementById(m==='login'?'email':'reg-email').value;
+        const p = document.getElementById(m==='login'?'pass':'reg-pass').value;
         try {
-            if(t==='login') await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('pass').value);
-            if(t==='register'){
+            if(m==='login') await signInWithEmailAndPassword(auth, e, p);
+            else if(m==='register'){
                 const n = document.getElementById('reg-name').value;
-                const e = document.getElementById('reg-email').value;
-                const p = document.getElementById('reg-pass').value;
                 const r = await createUserWithEmailAndPassword(auth, e, p);
-                await set(ref(db, `jogadores/${r.user.uid}`), { nome:n, email:e, saldo:1500, divida:0, role:'aluno', foto:'', bio:'', despesa:200, lucro:500 });
-            }
-            if(t==='logout'){ await signOut(auth); location.reload(); }
-        } catch(e){ alert(e.message); }
+                await set(ref(db, `jogadores/${r.user.uid}`), { nome:n, saldo:1500, divida:0, role:'aluno', foto:'', bio:'', tags:{} });
+            } else { await signOut(auth); location.reload(); }
+        } catch(err) { alert(err.message); }
     };
 
     onAuthStateChanged(auth, user => {
@@ -193,63 +197,78 @@
             document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('main-nav').style.display = 'flex';
             document.getElementById('app-content').classList.remove('hidden');
-            
             onValue(ref(db, `jogadores/${user.uid}`), snap => {
-                const d = snap.val();
-                if(d){
-                    document.getElementById('u-nome').innerText = d.nome;
-                    document.getElementById('u-saldo').innerText = `$ ${d.saldo.toLocaleString()}`;
-                    document.getElementById('u-divida').innerText = `$ ${d.divida.toLocaleString()}`;
-                    document.getElementById('u-foto').src = d.foto || "https://placehold.co/150/0A192F/C0C0C0?text=ERA";
-                    if(d.role === 'reitora' || d.role === 'admin') document.getElementById('btn-adm').style.display='block';
-                }
+                const d = snap.val(); if(!d) return;
+                document.getElementById('u-nome').innerText = d.nome;
+                document.getElementById('u-saldo').innerText = `$ ${d.saldo.toLocaleString()}`;
+                document.getElementById('u-divida').innerText = `$ ${d.divida.toLocaleString()}`;
+                document.getElementById('u-foto').src = d.foto || "https://placehold.co/150/0A192F/C0C0C0?text=ERA";
+                document.getElementById('u-bio').innerText = d.bio || "";
+                let tagsH = ""; if(d.tags) Object.values(d.tags).forEach(t => tagsH += `<span class="tag" style="background:${t.cor}">${t.texto}</span>`);
+                document.getElementById('u-tags').innerHTML = tagsH;
+                if(d.role==='reitora') document.getElementById('btn-adm').style.display='inline-block';
             });
-            loadNews();
-            loadMarket();
-            loadPlayersList();
+            loadRanking(); loadGlobalData();
         }
     });
 
-    // --- REITORIA ACTIONS ---
-    window.admPostNews = async () => {
-        const n = { titulo: document.getElementById('adm-news-t').value, img: document.getElementById('adm-news-i').value, txt: document.getElementById('adm-news-x').value, data: new Date().toLocaleDateString() };
-        await push(ref(db, 'editorial'), n);
-        alert("Publicado!");
+    function loadGlobalData(){
+        onValue(ref(db, 'jogadores'), s => {
+            let opts = "<option value=''>Selecionar...</option>";
+            s.forEach(c => opts += `<option value="${c.key}">${c.val().nome}</option>`);
+            document.getElementById('t-dest').innerHTML = opts;
+            document.getElementById('adm-p-sel').innerHTML = opts;
+        });
+        onValue(ref(db, 'editorial'), s => {
+            let h = ""; s.forEach(c => { const n = c.val(); h += `<div class="card">${n.img?`<img src="${n.img}" style="width:100%">`:''}<h3>${n.t}</h3><p>${n.x}</p><button class='btn-sec' onclick='deleteNews("${c.key}")'>EXCLUIR</button></div>`; });
+            document.getElementById('list-news').innerHTML = h;
+        });
+    }
+
+    window.sendMoney = async () => {
+        const d = document.getElementById('t-dest').value; const v = parseInt(document.getElementById('t-val').value);
+        if(!d || v <= 0) return alert("Dados inválidos");
+        const taxa = document.getElementById('t-anon').checked ? 0.8 : 1;
+        const snapS = await get(ref(db, `jogadores/${auth.currentUser.uid}`));
+        const snapD = await get(ref(db, `jogadores/${d}`));
+        if(snapS.val().saldo < v) return alert("Saldo insuficiente");
+        await update(ref(db, `jogadores/${auth.currentUser.uid}`), { saldo: snapS.val().saldo - v });
+        await update(ref(db, `jogadores/${d}`), { saldo: snapD.val().saldo + (v * taxa) });
+        await push(ref(db, `notificacoes/${d}`), { txt: `Você recebeu $${v*taxa} de ${document.getElementById('t-anon').checked?'Anônimo':snapS.val().nome}` });
+        alert("Transferência Concluída!");
     };
 
-    function loadNews() {
-        onValue(ref(db, 'editorial'), snap => {
-            let h = "";
-            snap.forEach(c => {
-                const n = c.val();
-                h += `<div class="card">${n.img?`<img src="${n.img}" style="width:100%; border-radius:8px">`:''}<h3>${n.titulo}</h3><p>${n.txt}</p></div>`;
-            });
-            document.getElementById('news-list').innerHTML = h || "Sem notícias.";
-        });
-    }
+    window.admUpdatePlayer = async () => {
+        const id = document.getElementById('adm-p-sel').value; const v = parseInt(document.getElementById('adm-p-edit').value) || 0;
+        const tagT = document.getElementById('adm-p-tag').value; const tagC = document.getElementById('adm-p-tag-c').value;
+        const s = await get(ref(db, `jogadores/${id}`));
+        const up = { saldo: s.val().saldo + v };
+        if(tagT) await push(ref(db, `jogadores/${id}/tags`), { texto: tagT, cor: tagC });
+        await update(ref(db, `jogadores/${id}`), up); alert("Atualizado!");
+    };
 
-    function loadMarket() {
-        onValue(ref(db, 'mercado'), snap => {
-            let h = "";
-            snap.forEach(c => {
-                const i = c.val();
-                h += `<div class="item-card"><img src="${i.img}" style="width:50px"><h4>${i.nome}</h4><p>$ ${i.preco}</p><button onclick="buy('${c.key}')">Comprar</button></div>`;
-            });
-            document.getElementById('market-list').innerHTML = h;
-        });
-    }
+    window.admPostNews = async () => {
+        await push(ref(db, 'editorial'), { t: document.getElementById('adm-n-t').value, i: document.getElementById('adm-n-i').value, x: document.getElementById('adm-n-x').value });
+        alert("Postado!");
+    };
 
     window.girarCiclo = async () => {
-        if(!confirm("Girar ciclo (Salários, Juros e Despesas)?")) return;
-        const snap = await get(ref(db, 'jogadores'));
-        snap.forEach(p => {
-            const d = p.val();
-            const novoSaldo = d.saldo + (d.lucro || 0) - (d.despesa || 0);
-            const novaDivida = d.divida * 1.1; // Juros de 10%
-            update(ref(db, `jogadores/${p.key}`), { saldo: novoSaldo, divida: novaDivida });
+        const s = await get(ref(db, 'jogadores'));
+        s.forEach(c => {
+            const d = c.val();
+            update(ref(db, `jogadores/${c.key}`), { divida: d.divida * 1.1 });
         });
-        alert("Ciclo Concluído!");
+        alert("Ciclo Concluído! Juros de 10% aplicados.");
     };
+
+    function loadRanking(){
+        onValue(ref(db, 'jogadores'), s => {
+            let l = []; s.forEach(c => l.push(c.val()));
+            l.sort((a,b) => b.saldo - a.saldo);
+            let h = ""; l.forEach((p, i) => h += `<div class="card" style="display:flex; justify-content:space-between"><span>#${i+1} ${p.nome}</span><b>$${p.saldo.toLocaleString()}</b></div>`);
+            document.getElementById('list-rank').innerHTML = h;
+        });
+    }
 
 </script>
 </body>
