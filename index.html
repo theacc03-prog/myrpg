@@ -10,26 +10,19 @@
         body { background: var(--azul-royal); color: var(--white); font-family: 'Montserrat', sans-serif; margin: 0; min-height: 100vh; overflow-x: hidden; }
         header { padding: 30px; text-align: center; background: #02060C; border-bottom: 2px solid var(--prata); }
         h1 { font-family: 'Cinzel', serif; color: var(--prata); letter-spacing: 4px; margin: 0; }
-        
         nav { display: none; background: #050A14; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid var(--glass); position: sticky; top: 0; z-index: 100; padding: 0 10px; }
         .nav-btn { background: none; border: none; color: var(--prata); padding: 15px 12px; font-size: 10px; font-weight: bold; cursor: pointer; opacity: 0.6; text-transform: uppercase; }
         .nav-btn.active { opacity: 1; border-bottom: 2px solid var(--prata); color: #fff; }
-
         .container { max-width: 900px; margin: 20px auto; padding-bottom: 100px; }
-        .card { background: var(--azul-card); border: 1px solid var(--glass); border-radius: 12px; padding: 25px; margin: 0 15px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        
+        .card { background: var(--azul-card); border: 1px solid var(--glass); border-radius: 12px; padding: 25px; margin: 0 15px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; }
         .balance { font-family: 'Cinzel'; font-size: 3rem; color: var(--prata); margin: 10px 0; }
-        .tag { padding: 3px 8px; border-radius: 4px; font-size: 9px; font-weight: bold; margin: 2px; display: inline-block; color: #000; }
-        
-        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; background: #02060C; border: 1px solid #1d3557; color: white; border-radius: 5px; box-sizing: border-box; font-family: 'Montserrat'; }
+        .tag { padding: 4px 10px; border-radius: 4px; font-size: 9px; font-weight: bold; margin: 3px; display: inline-block; color: #000; }
+        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; background: #02060C; border: 1px solid #1d3557; color: white; border-radius: 5px; box-sizing: border-box; }
         button { width: 100%; padding: 15px; background: var(--prata); color: var(--azul-royal); border: none; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin-top: 5px; }
         .btn-sec { background: none; border: 1px solid var(--prata); color: var(--prata); }
         .hidden { display: none !important; }
-
-        /* Componentes Específicos */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-        .item-market { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px solid var(--glass); }
-        .notif-item { padding: 10px; border-bottom: 1px solid var(--glass); font-size: 12px; text-align: left; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
+        .news-img { width: 100%; border-radius: 8px; margin-bottom: 15px; max-height: 300px; object-fit: cover; }
     </style>
 </head>
 <body>
@@ -37,238 +30,189 @@
 <header>
     <img src="era.png" alt="ERA" style="max-height:70px; margin-bottom:10px" onerror="this.style.display='none'">
     <h1>ERA ACADEMY</h1>
-    <p style="font-size: 9px; letter-spacing: 2px; opacity: 0.6;">SOVEREIGN MANAGEMENT SYSTEM</p>
 </header>
 
 <nav id="main-nav">
-    <button class="nav-btn active" onclick="showTab('tab-dash', this)">DASHBOARD</button>
-    <button class="nav-btn" onclick="showTab('tab-notif', this)">NOTIFICAÇÕES</button>
-    <button class="nav-btn" onclick="showTab('tab-news', this)">EDITORIAL</button>
-    <button class="nav-btn" onclick="showTab('tab-finan', this)">FINANÇAS</button>
-    <button class="nav-btn" onclick="showTab('tab-mercado', this)">MERCADO</button>
-    <button class="nav-btn" onclick="showTab('tab-transf', this)">TRANSFERIR</button>
-    <button class="nav-btn" onclick="showTab('tab-rank', this)">RANKING</button>
-    <button class="nav-btn" onclick="showTab('tab-vagas', this)">VAGAS</button>
-    <button class="nav-btn" id="btn-adm" style="color:var(--gold); display:none" onclick="showTab('tab-adm', this)">REITORIA</button>
+    <button class="nav-btn active" onclick="changeTab('tab-dash', this)">DASHBOARD</button>
+    <button class="nav-btn" onclick="changeTab('tab-news', this)">EDITORIAL</button>
+    <button class="nav-btn" onclick="changeTab('tab-transf', this)">TRANSFERIR</button>
+    <button class="nav-btn" onclick="changeTab('tab-mercado', this)">MERCADO</button>
+    <button class="nav-btn" onclick="changeTab('tab-rank', this)">RANKING</button>
+    <button class="nav-btn" id="btn-adm" style="color:var(--gold); display:none" onclick="changeTab('tab-adm', this)">REITORIA</button>
 </nav>
 
-<div id="auth-screen" class="container">
-    <div class="card" id="login-box" style="max-width:380px; margin:40px auto">
-        <h2 style="font-family:'Cinzel'">Login de Elite</h2>
+<div id="auth-area" class="container">
+    <div class="card" id="login-box" style="max-width:380px; margin:auto">
+        <h2 style="font-family:'Cinzel'">Login Acadêmico</h2>
         <input type="email" id="email" placeholder="E-mail">
         <input type="password" id="pass" placeholder="Senha">
-        <button onclick="authAction('login')">Acessar Sistema</button>
-        <p style="font-size:11px; margin-top:15px; cursor:pointer" onclick="toggleAuth()">Não tem conta? Solicite Matrícula</p>
+        <button onclick="handleLogin()">Entrar</button>
+        <p style="font-size:11px; margin-top:15px; cursor:pointer" onclick="toggleAuth()">Não possui conta? Solicite aqui</p>
     </div>
-    <div class="card hidden" id="register-box" style="max-width:380px; margin:40px auto">
+    <div class="card hidden" id="register-box" style="max-width:380px; margin:auto">
         <h2 style="font-family:'Cinzel'">Nova Matrícula</h2>
         <input type="text" id="reg-name" placeholder="Nome do Personagem">
-        <input type="email" id="reg-email" placeholder="E-mail Acadêmico">
+        <input type="email" id="reg-email" placeholder="E-mail">
         <input type="password" id="reg-pass" placeholder="Senha">
-        <button onclick="authAction('register')">Registrar</button>
-        <p style="font-size:11px; margin-top:15px; cursor:pointer" onclick="toggleAuth()">Voltar para Login</p>
+        <button onclick="handleRegister()">Registrar</button>
+        <p style="font-size:11px; margin-top:15px; cursor:pointer" onclick="toggleAuth()">Voltar ao Login</p>
     </div>
 </div>
 
-<div id="app-content" class="container hidden">
-    <div id="tab-dash" class="tab">
+<div id="app-area" class="container hidden">
+    <div id="tab-dash" class="tab-content">
         <div class="card">
-            <div style="text-align:right"><button class="btn-sec" style="width:auto; font-size:10px" onclick="document.getElementById('settings-area').classList.toggle('hidden')">⚙️ SETTINGS</button></div>
-            <img id="u-foto" src="" style="width:110px; height:110px; border-radius:50%; border:2px solid var(--prata); object-fit:cover">
-            <h2 id="u-nome" style="font-family:'Cinzel'; margin:10px 0">---</h2>
+            <div style="text-align:right"><button class="btn-sec" style="width:auto; padding:5px 10px" onclick="toggleSettings()">⚙️ SETTINGS</button></div>
+            <img id="u-foto" src="" style="width:120px; height:120px; border-radius:50%; border:2px solid var(--prata); object-fit:cover">
+            <h2 id="u-nome" style="font-family:'Cinzel'">---</h2>
             <div id="u-tags"></div>
             <div class="balance" id="u-saldo">$ 0</div>
-            <p id="u-bio" style="font-size:12px; opacity:0.7"></p>
             
-            <div id="settings-area" class="hidden" style="margin-top:20px; padding-top:20px; border-top:1px solid var(--glass)">
-                <input type="text" id="set-nome" placeholder="Alterar Nome">
+            <div id="settings-area" class="hidden">
                 <input type="text" id="set-foto" placeholder="URL da Foto">
-                <textarea id="set-bio" placeholder="Alterar Biografia"></textarea>
-                <button onclick="updateProfile()">Salvar Perfil</button>
-                <button class="btn-sec" onclick="authAction('logout')">Sair do Sistema</button>
-                <button style="background:var(--red); color:#fff" onclick="deleteAccount()">Excluir Matrícula</button>
+                <textarea id="set-bio" placeholder="Sua biografia..."></textarea>
+                <button onclick="updateProfile()">Salvar</button>
+                <button class="btn-sec" onclick="handleLogout()">Sair</button>
             </div>
         </div>
-        <div class="card"><h3>🎒 INVENTÁRIO ATIVO</h3><div id="u-inv" class="grid"></div></div>
+        <div class="card"><h3>🎒 INVENTÁRIO</h3><div id="u-inv" class="grid"></div></div>
     </div>
 
-    <div id="tab-notif" class="tab hidden">
-        <div class="card"><h2>Alertas do Sistema</h2><div id="list-notif"></div></div>
+    <div id="tab-news" class="tab-content hidden">
+        <h2 style="font-family:'Cinzel'; text-align:center">Mural de Notícias</h2>
+        <div id="news-feed"></div>
     </div>
 
-    <div id="tab-news" class="tab hidden">
-        <h2 style="font-family:'Cinzel'; text-align:center">Mural Academy</h2>
-        <div id="list-news"></div>
-    </div>
-
-    <div id="tab-finan" class="tab hidden">
+    <div id="tab-transf" class="tab-content hidden">
         <div class="card">
-            <h2>Crédito Estudantil</h2>
-            <p>Juros Atuais: <b style="color:var(--gold)">10% p/ semana</b></p>
-            <p>Dívida Total: <b id="u-divida" style="color:var(--red)">$ 0</b></p>
-            <input type="number" id="f-valor" placeholder="Valor do Empréstimo">
-            <button onclick="requestFinan()">Solicitar Aprovação</button>
+            <h2>Transferir Sovereign</h2>
+            <select id="t-dest"></select>
+            <input type="number" id="t-val" placeholder="Valor">
+            <label style="font-size:10px"><input type="checkbox" id="t-anon"> Anônimo (Taxa 20%)</label>
+            <button onclick="processTransfer()">Enviar</button>
         </div>
     </div>
 
-    <div id="tab-mercado" class="tab hidden">
-        <h2 style="font-family:'Cinzel'; text-align:center">Mercado de Prestígio</h2>
-        <div id="list-market" class="grid"></div>
-    </div>
-
-    <div id="tab-transf" class="tab hidden">
-        <div class="card">
-            <h2>Enviar Sovereign</h2>
-            <select id="t-dest" placeholder="Selecione o Destinatário"></select>
-            <input type="number" id="t-val" placeholder="Valor $">
-            <input type="text" id="t-desc" placeholder="Descrição">
-            <div style="display:flex; gap:10px; align-items:center">
-                <input type="text" id="t-tag" placeholder="Tag (Ex: Presente)">
-                <input type="color" id="t-color" value="#C0C0C0" style="width:50px">
-            </div>
-            <label style="font-size:10px"><input type="checkbox" id="t-anon"> Transferência Anônima (Taxa 20%)</label>
-            <button onclick="sendMoney()">Confirmar Envio</button>
-        </div>
-    </div>
-
-    <div id="tab-rank" class="tab hidden">
-        <h2 style="font-family:'Cinzel'; text-align:center">Elite de ERA</h2>
-        <div id="list-rank"></div>
-    </div>
-
-    <div id="tab-vagas" class="tab hidden">
-        <h2 style="font-family:'Cinzel'; text-align:center">Oportunidades</h2>
-        <div id="list-vagas"></div>
-    </div>
-
-    <div id="tab-adm" class="tab hidden">
+    <div id="tab-adm" class="tab-content hidden">
         <div class="card" style="border-color:var(--gold)">
-            <h2 style="color:var(--gold)">Painel da Reitoria</h2>
-            <button onclick="girarCiclo()" style="background:#000; color:var(--gold); border:1px solid var(--gold)">⏩ GIRAR CICLO (Salários & Juros)</button>
-            
-            <hr style="opacity:0.2; margin:20px 0">
-            <h3>Gestão de Jogador</h3>
-            <select id="adm-p-sel"></select>
-            <input type="number" id="adm-p-edit" placeholder="Valor a Adicionar/Remover">
-            <input type="text" id="adm-p-tag" placeholder="Nova Tag">
-            <input type="color" id="adm-p-tag-c" value="#C0C0C0">
-            <button onclick="admUpdatePlayer()">Aplicar Saldo/Tag</button>
-
-            <hr style="opacity:0.2; margin:20px 0">
-            <h3>Criar Notícia</h3>
+            <h2 style="color:var(--gold)">Painel de Controle</h2>
+            <button onclick="girarCiclo()">⏩ GIRAR CICLO SEMANAL</button>
+            <hr>
+            <h3>Postar Notícia</h3>
             <input type="text" id="adm-n-t" placeholder="Título">
             <input type="text" id="adm-n-i" placeholder="URL Imagem">
             <textarea id="adm-n-x" placeholder="Texto"></textarea>
-            <button onclick="admPostNews()">Publicar Editorial</button>
+            <button onclick="postNews()">Publicar</button>
         </div>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
-    import { getDatabase, ref, set, get, update, onValue, remove, push } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+    import { getDatabase, ref, set, get, update, onValue, push, remove } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
     const firebaseConfig = { apiKey: "AIzaSyBt7zjlI1P8lN4JxnxTe_erzNbfu1AHdfE", authDomain: "universityerarpg-6a29d.firebaseapp.com", databaseURL: "https://universityerarpg-6a29d-default-rtdb.firebaseio.com", projectId: "universityerarpg-6a29d", storageBucket: "universityerarpg-6a29d.firebasestorage.app", messagingSenderId: "912095174573", appId: "1:912095174573:web:e4591c65eeb9259ba9cb24" };
-    const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getDatabase(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
 
+    // FUNÇÕES GLOBAIS (CONECTADAS AOS BOTÕES)
     window.toggleAuth = () => { document.getElementById('login-box').classList.toggle('hidden'); document.getElementById('register-box').classList.toggle('hidden'); };
-    window.showTab = (id, btn) => { 
-        document.querySelectorAll('.tab').forEach(t => t.classList.add('hidden')); 
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); 
-        document.getElementById(id).classList.remove('hidden'); btn.classList.add('active'); 
+    window.changeTab = (id, btn) => {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.remove('hidden');
+        btn.classList.add('active');
+    };
+    window.toggleSettings = () => document.getElementById('settings-area').classList.toggle('hidden');
+
+    window.handleLogin = () => {
+        const e = document.getElementById('email').value;
+        const p = document.getElementById('pass').value;
+        signInWithEmailAndPassword(auth, e, p).catch(err => alert("Erro: " + err.message));
     };
 
-    window.authAction = async (m) => {
-        const e = document.getElementById(m==='login'?'email':'reg-email').value;
-        const p = document.getElementById(m==='login'?'pass':'reg-pass').value;
-        try {
-            if(m==='login') await signInWithEmailAndPassword(auth, e, p);
-            else if(m==='register'){
-                const n = document.getElementById('reg-name').value;
-                const r = await createUserWithEmailAndPassword(auth, e, p);
-                await set(ref(db, `jogadores/${r.user.uid}`), { nome:n, saldo:1500, divida:0, role:'aluno', foto:'', bio:'', tags:{} });
-            } else { await signOut(auth); location.reload(); }
-        } catch(err) { alert(err.message); }
+    window.handleRegister = () => {
+        const n = document.getElementById('reg-name').value;
+        const e = document.getElementById('reg-email').value;
+        const p = document.getElementById('reg-pass').value;
+        createUserWithEmailAndPassword(auth, e, p).then(r => {
+            set(ref(db, `jogadores/${r.user.uid}`), { nome: n, saldo: 1500, divida: 0, role: 'aluno', foto: '', bio: '' });
+        }).catch(err => alert(err.message));
     };
 
+    window.handleLogout = () => signOut(auth).then(() => location.reload());
+
+    // OBSERVAR LOGIN
     onAuthStateChanged(auth, user => {
         if(user){
-            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('auth-area').classList.add('hidden');
+            document.getElementById('app-area').classList.remove('hidden');
             document.getElementById('main-nav').style.display = 'flex';
-            document.getElementById('app-content').classList.remove('hidden');
+            
+            // Dados do Jogador
             onValue(ref(db, `jogadores/${user.uid}`), snap => {
                 const d = snap.val(); if(!d) return;
                 document.getElementById('u-nome').innerText = d.nome;
                 document.getElementById('u-saldo').innerText = `$ ${d.saldo.toLocaleString()}`;
-                document.getElementById('u-divida').innerText = `$ ${d.divida.toLocaleString()}`;
                 document.getElementById('u-foto').src = d.foto || "https://placehold.co/150/0A192F/C0C0C0?text=ERA";
-                document.getElementById('u-bio').innerText = d.bio || "";
-                let tagsH = ""; if(d.tags) Object.values(d.tags).forEach(t => tagsH += `<span class="tag" style="background:${t.cor}">${t.texto}</span>`);
-                document.getElementById('u-tags').innerHTML = tagsH;
-                if(d.role==='reitora') document.getElementById('btn-adm').style.display='inline-block';
+                if(d.role === 'reitora') document.getElementById('btn-adm').style.display = 'inline-block';
+                
+                // Render Tags
+                let th = ""; if(d.tags) Object.values(d.tags).forEach(t => th += `<span class="tag" style="background:${t.cor}">${t.texto}</span>`);
+                document.getElementById('u-tags').innerHTML = th;
             });
-            loadRanking(); loadGlobalData();
+
+            loadGlobalData();
         }
     });
 
     function loadGlobalData(){
+        // Lista para Transferência
         onValue(ref(db, 'jogadores'), s => {
-            let opts = "<option value=''>Selecionar...</option>";
-            s.forEach(c => opts += `<option value="${c.key}">${c.val().nome}</option>`);
-            document.getElementById('t-dest').innerHTML = opts;
-            document.getElementById('adm-p-sel').innerHTML = opts;
+            let h = "<option>Selecionar Player...</option>";
+            s.forEach(c => h += `<option value="${c.key}">${c.val().nome}</option>`);
+            document.getElementById('t-dest').innerHTML = h;
         });
+        // Editorial
         onValue(ref(db, 'editorial'), s => {
-            let h = ""; s.forEach(c => { const n = c.val(); h += `<div class="card">${n.img?`<img src="${n.img}" style="width:100%">`:''}<h3>${n.t}</h3><p>${n.x}</p><button class='btn-sec' onclick='deleteNews("${c.key}")'>EXCLUIR</button></div>`; });
-            document.getElementById('list-news').innerHTML = h;
+            let h = "";
+            s.forEach(c => {
+                const n = c.val();
+                h += `<div class="card">${n.img?`<img src="${n.img}" class="news-img">`:''}<h3>${n.titulo}</h3><p>${n.texto}</p></div>`;
+            });
+            document.getElementById('news-feed').innerHTML = h || "Sem notícias.";
         });
     }
 
-    window.sendMoney = async () => {
-        const d = document.getElementById('t-dest').value; const v = parseInt(document.getElementById('t-val').value);
-        if(!d || v <= 0) return alert("Dados inválidos");
+    window.processTransfer = async () => {
+        const dest = document.getElementById('t-dest').value;
+        const val = parseInt(document.getElementById('t-val').value);
+        if(!dest || val <= 0) return alert("Valor inválido");
+        const s = await get(ref(db, `jogadores/${auth.currentUser.uid}`));
+        if(s.val().saldo < val) return alert("Saldo insuficiente");
+        
         const taxa = document.getElementById('t-anon').checked ? 0.8 : 1;
-        const snapS = await get(ref(db, `jogadores/${auth.currentUser.uid}`));
-        const snapD = await get(ref(db, `jogadores/${d}`));
-        if(snapS.val().saldo < v) return alert("Saldo insuficiente");
-        await update(ref(db, `jogadores/${auth.currentUser.uid}`), { saldo: snapS.val().saldo - v });
-        await update(ref(db, `jogadores/${d}`), { saldo: snapD.val().saldo + (v * taxa) });
-        await push(ref(db, `notificacoes/${d}`), { txt: `Você recebeu $${v*taxa} de ${document.getElementById('t-anon').checked?'Anônimo':snapS.val().nome}` });
-        alert("Transferência Concluída!");
+        const d = await get(ref(db, `jogadores/${dest}`));
+        await update(ref(db, `jogadores/${auth.currentUser.uid}`), { saldo: s.val().saldo - val });
+        await update(ref(db, `jogadores/${dest}`), { saldo: d.val().saldo + (val * taxa) });
+        alert("Transferência realizada!");
     };
 
-    window.admUpdatePlayer = async () => {
-        const id = document.getElementById('adm-p-sel').value; const v = parseInt(document.getElementById('adm-p-edit').value) || 0;
-        const tagT = document.getElementById('adm-p-tag').value; const tagC = document.getElementById('adm-p-tag-c').value;
-        const s = await get(ref(db, `jogadores/${id}`));
-        const up = { saldo: s.val().saldo + v };
-        if(tagT) await push(ref(db, `jogadores/${id}/tags`), { texto: tagT, cor: tagC });
-        await update(ref(db, `jogadores/${id}`), up); alert("Atualizado!");
-    };
-
-    window.admPostNews = async () => {
-        await push(ref(db, 'editorial'), { t: document.getElementById('adm-n-t').value, i: document.getElementById('adm-n-i').value, x: document.getElementById('adm-n-x').value });
+    window.postNews = () => {
+        const t = document.getElementById('adm-n-t').value;
+        const i = document.getElementById('adm-n-i').value;
+        const x = document.getElementById('adm-n-x').value;
+        push(ref(db, 'editorial'), { titulo: t, img: i, texto: x });
         alert("Postado!");
     };
 
     window.girarCiclo = async () => {
         const s = await get(ref(db, 'jogadores'));
-        s.forEach(c => {
-            const d = c.val();
-            update(ref(db, `jogadores/${c.key}`), { divida: d.divida * 1.1 });
-        });
-        alert("Ciclo Concluído! Juros de 10% aplicados.");
+        s.forEach(c => update(ref(db, `jogadores/${c.key}`), { divida: c.val().divida * 1.1 }));
+        alert("Ciclo girado: Juros aplicados.");
     };
-
-    function loadRanking(){
-        onValue(ref(db, 'jogadores'), s => {
-            let l = []; s.forEach(c => l.push(c.val()));
-            l.sort((a,b) => b.saldo - a.saldo);
-            let h = ""; l.forEach((p, i) => h += `<div class="card" style="display:flex; justify-content:space-between"><span>#${i+1} ${p.nome}</span><b>$${p.saldo.toLocaleString()}</b></div>`);
-            document.getElementById('list-rank').innerHTML = h;
-        });
-    }
 
 </script>
 </body>
