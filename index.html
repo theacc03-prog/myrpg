@@ -477,7 +477,7 @@
         <div class="card" style="border-color:var(--gold)">
             <h2 style="color:var(--gold); font-family:'Cinzel'">Controle da Reitoria</h2>
             <button onclick="app.girarCiclo()">⏩ GIRAR CICLO</button>
-            <p class="sticky-note">Aplica fixos, juros, salários, validade de itens e auditoria.</p>
+            <p class="sticky-note">Aplica fixos, salários, juros, validade de itens e auditoria.</p>
         </div>
 
         <div class="grid-2">
@@ -566,8 +566,16 @@
                 <input type="text" id="adm-n-t" placeholder="Título">
                 <input type="text" id="adm-n-i" placeholder="Imagem / URL">
                 <textarea id="adm-n-x" placeholder="Texto da notícia"></textarea>
-                <input type="text" id="adm-n-tag" placeholder="Tag">
-                <input type="color" id="adm-n-cor" value="#C0C0C0">
+
+                <div class="hr"></div>
+                <strong>Tags da notícia</strong>
+                <input type="text" id="adm-n-tag1" placeholder="Tag 1">
+                <input type="color" id="adm-n-cor1" value="#C0C0C0">
+                <input type="text" id="adm-n-tag2" placeholder="Tag 2">
+                <input type="color" id="adm-n-cor2" value="#D4AF37">
+                <input type="text" id="adm-n-tag3" placeholder="Tag 3">
+                <input type="color" id="adm-n-cor3" value="#8B0000">
+
                 <button onclick="app.admPostNews()">Publicar Notícia</button>
                 <div id="adm-news-list"></div>
             </div>
@@ -692,12 +700,49 @@
         if (!u) return "---";
         const saldo = Number(u.saldo || 0);
         const divida = Number(u.divida || 0);
-        if (saldo >= 20000) return "Magnata de Luxo";
+
+        if (saldo >= 25000) return "Magnata de Laboratório";
+        if (saldo >= 15000) return "Rei do Campus";
         if (saldo >= 8000) return "Elite de Prata";
         if (saldo >= 3000) return "Viciado em Dinheiro";
-        if (divida > 0 && saldo < 0) return "Pobretão em Observação";
-        if (divida > 0) return "Endividado Notável";
-        return "Estudante Financeiro";
+        if (saldo >= 1000) return "Acadêmico de Bolso Cheio";
+        if (saldo >= 0) return "Sobrevivente do Café";
+        if (divida > 0 && saldo < 0) return "Bolsista do Caos";
+        return "Penhorado Honorário";
+    }
+
+    function narrateNotification(msg = "") {
+        const m = String(msg).toLowerCase();
+
+        if (m.includes("recebeu")) return `💸 ${msg}`;
+        if (m.includes("transferiu")) return `🏦 ${msg}`;
+        if (m.includes("comentou")) return `🗣️ ${msg}`;
+        if (m.includes("empréstimo")) return `📨 ${msg}`;
+        if (m.includes("aprovado")) return `🎓 ${msg}`;
+        if (m.includes("negado")) return `❌ ${msg}`;
+        if (m.includes("comprou")) return `🛍️ ${msg}`;
+        if (m.includes("ciclo")) return `🔄 ${msg}`;
+        if (m.includes("vaga")) return `💼 ${msg}`;
+        if (m.includes("dívida")) return `🧾 ${msg}`;
+
+        return `🔔 ${msg}`;
+    }
+
+    function parseNewsTags() {
+        const tags = [];
+        const pairs = [
+            ['adm-n-tag1', 'adm-n-cor1'],
+            ['adm-n-tag2', 'adm-n-cor2'],
+            ['adm-n-tag3', 'adm-n-cor3']
+        ];
+
+        for (const [tId, cId] of pairs) {
+            const texto = document.getElementById(tId).value.trim();
+            const cor = document.getElementById(cId).value;
+            if (texto) tags.push({ texto, cor });
+        }
+
+        return tags;
     }
 
     function renderTags(tagsObj) {
@@ -705,6 +750,11 @@
         return Object.values(tagsObj)
             .map(t => `<span class="tag" style="background:${t.cor || '#C0C0C0'}">${esc(t.texto || t.nome || '')}</span>`)
             .join("");
+    }
+
+    function renderNewsTags(tagsArr) {
+        if (!tagsArr || !tagsArr.length) return "";
+        return tagsArr.map(t => `<span class="tag" style="background:${t.cor || '#C0C0C0'}">${esc(t.texto || '')}</span>`).join("");
     }
 
     function renderInventory(invObj) {
@@ -815,7 +865,7 @@
                 <div class="card left">
                     ${n.img ? `<img src="${esc(n.img)}" alt="" style="width:100%; border-radius:10px; margin-bottom:12px">` : ""}
                     <h3 style="font-family:'Cinzel'">${esc(n.titulo || '')}</h3>
-                    <div>${renderTags(n.tags ? { a: { texto: n.tags, cor: n.cor || '#C0C0C0' } } : null)}</div>
+                    <div>${renderNewsTags(n.tags || [])}</div>
                     <p class="mini">${esc(n.texto || '')}</p>
                     <div class="row-actions" style="justify-content:flex-start">
                         <button class="btn-sec small-btn" onclick="app.addNewsComment('${id}')">Comentar</button>
@@ -1216,14 +1266,29 @@
             const snap = await get(ref(db, `editorial/${postId}`));
             const n = snap.val();
             if (!n) return;
+
             const titulo = prompt("Novo título:", n.titulo || '');
             const img = prompt("Nova imagem / URL:", n.img || '');
             const texto = prompt("Novo texto:", n.texto || '');
-            if (!titulo && !img && !texto) return;
+            const tagTxt = prompt("Tags da notícia no formato: tag|cor; tag|cor; tag|cor", (n.tags || []).map(t => `${t.texto || ''}|${t.cor || '#C0C0C0'}`).join('; '));
+
+            if (titulo === null || img === null || texto === null || tagTxt === null) return;
+
+            const tags = tagTxt
+                .split(';')
+                .map(s => s.trim())
+                .filter(Boolean)
+                .map(pair => {
+                    const [textoTag, corTag] = pair.split('|').map(x => x.trim());
+                    return { texto: textoTag || '', cor: corTag || '#C0C0C0' };
+                })
+                .filter(t => t.texto);
+
             await update(ref(db, `editorial/${postId}`), {
                 titulo: titulo ?? n.titulo,
                 img: img ?? n.img,
-                texto: texto ?? n.texto
+                texto: texto ?? n.texto,
+                tags: tags.length ? tags : (n.tags || [])
             });
         },
 
@@ -1256,7 +1321,6 @@
             const snap = await get(ref(db, 'jogadores'));
             const players = snap.val() || {};
             const batch = {};
-            const auditMsg = [];
 
             for (const [uid, p] of Object.entries(players)) {
                 let saldo = Number(p.saldo || 0);
@@ -1282,7 +1346,7 @@
 
                 batch[`jogadores/${uid}/saldo`] = saldo;
                 batch[`jogadores/${uid}/divida`] = divida;
-                auditMsg.push(`${p.nome}: ciclo aplicado`);
+
                 await pushHistory(uid, 'ciclo', saldo, 'Giro de ciclo aplicado');
                 await pushNotif(uid, `🔄 O ciclo acadêmico foi processado.`);
             }
@@ -1442,7 +1506,6 @@
             const cor = document.getElementById('adm-var-cor').value;
             if (!id || !nome) return;
             await push(ref(db, `jogadores/${id}/variaveis`), { nome, descricao, valor, tag, cor });
-            await update(ref(db, `jogadores/${id}`), { saldo: (uLog && id === uLog.id) ? Number(uLog.saldo || 0) + valor : undefined });
             await pushHistory(id, 'variável', valor, descricao || nome);
             await pushNotif(id, `📌 Movimento variável aplicado: ${nome}`);
             renderAdmLists();
@@ -1479,15 +1542,13 @@
             const titulo = document.getElementById('adm-n-t').value.trim();
             const img = document.getElementById('adm-n-i').value.trim();
             const texto = document.getElementById('adm-n-x').value.trim();
-            const tags = document.getElementById('adm-n-tag').value.trim();
-            const cor = document.getElementById('adm-n-cor').value;
+            const tags = parseNewsTags();
             if (!titulo) return;
             await push(ref(db, 'editorial'), {
                 titulo,
                 img,
                 texto,
                 tags,
-                cor,
                 comentarios: {}
             });
             alert("Notícia publicada.");
@@ -1688,6 +1749,40 @@
                 </div>
             `).join("") || `<div class="subtle">Nenhum pedido pendente.</div>`;
         });
+
+        listen(ref(db, 'auditoria'), snap => {
+            const audit = snap.val() || {};
+            document.getElementById('audit-feed').innerHTML = Object.values(audit).reverse().map(a => `
+                <div class="list-item mini">
+                    ${esc(a.msg || '')}<br>
+                    <span class="subtle">${new Date(a.ts || Date.now()).toLocaleString("pt-BR")}</span>
+                </div>
+            `).join("") || `<div class="subtle">Sem eventos na auditoria.</div>`;
+        });
+    }
+
+    function bindPlayerStreams(uid) {
+        listen(ref(db, `jogadores/${uid}/notificacoes`), s => {
+            const notifs = s.val() || {};
+            document.getElementById('notif-list').innerHTML = Object.entries(notifs).reverse().map(([id, n]) => `
+                <div class="comment-box">
+                    <div class="comment-meta">${new Date(n.ts || Date.now()).toLocaleString("pt-BR")}</div>
+                    ${esc(narrateNotification(n.msg || ''))}
+                </div>
+            `).join("") || `<div class="subtle">Nenhuma notificação.</div>`;
+        });
+
+        listen(ref(db, `jogadores/${uid}/historico`), s => {
+            document.getElementById('u-history').innerHTML = renderHistory(s.val());
+        });
+
+        listen(ref(db, `jogadores/${uid}/mochila`), s => {
+            document.getElementById('u-inv').innerHTML = renderInventory(s.val());
+        });
+
+        listen(ref(db, `jogadores/${uid}/emprestimos`), s => {
+            document.getElementById('fin-loans').innerHTML = renderLoans(s.val());
+        });
     }
 
     onAuthStateChanged(auth, user => {
@@ -1709,36 +1804,17 @@
                 document.getElementById('set-foto').value = d.foto || '';
                 document.getElementById('set-bio').value = d.bio || '';
 
-                listen(ref(db, `jogadores/${user.uid}/notificacoes`), s => {
-                    const notifs = s.val() || {};
-                    document.getElementById('notif-list').innerHTML = Object.entries(notifs).reverse().map(([id, n]) => `
-                        <div class="comment-box">
-                            <div class="comment-meta">${new Date(n.ts || Date.now()).toLocaleString("pt-BR")}</div>
-                            ${esc(n.msg || '')}
-                        </div>
-                    `).join("") || `<div class="subtle">Nenhuma notificação.</div>`;
-                });
-
-                listen(ref(db, `jogadores/${user.uid}/historico`), s => {
-                    document.getElementById('u-history').innerHTML = renderHistory(s.val());
-                });
-
-                listen(ref(db, `jogadores/${user.uid}/mochila`), s => {
-                    document.getElementById('u-inv').innerHTML = renderInventory(s.val());
-                });
-
-                listen(ref(db, `jogadores/${user.uid}/emprestimos`), s => {
-                    document.getElementById('fin-loans').innerHTML = renderLoans(s.val());
-                });
-
                 if (d.role === 'reitora') {
                     document.getElementById('btn-adm').style.display = 'inline-block';
                 } else {
                     document.getElementById('btn-adm').style.display = 'none';
                 }
+
+                bindPlayerStreams(user.uid);
             });
 
             renderGlobalData();
+
             setInterval(() => {
                 const c = document.getElementById('clock');
                 if (c) c.innerText = nowClock();
@@ -1752,7 +1828,6 @@
         }
     });
 
-    // helpers de exclusão de mercado, notícias e empregos
     window.app.deleteMarketItem = async (id) => {
         if (confirm("Excluir item do mercado?")) await remove(ref(db, `loja/${id}`));
     };
@@ -1760,8 +1835,6 @@
     window.app.deleteJob = async (id) => {
         if (confirm("Excluir vaga?")) await remove(ref(db, `vagas/${id}`));
     };
-
-    window.app.postNewsComment = () => {};
 </script>
 </body>
 </html>
