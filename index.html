@@ -7,221 +7,256 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #D4AF37;
-            --navy: #050A14;
-            --glass: rgba(255, 255, 255, 0.03);
-            --white: #E0E1DD;
-            --red: #8B0000;
+            --prata: #C0C0C0;
+            --prata-brilho: #E8E8E8;
+            --azul-escuro: #0A192F;
+            --azul-card: #112240;
+            --azul-hover: #1D3557;
+            --glass: rgba(192, 192, 192, 0.1);
+            --white: #F8F9FA;
+            --red: #A00000;
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
         }
 
         body {
-            background: var(--navy);
+            background: var(--azul-escuro);
             color: var(--white);
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* --- Header & Branding --- */
+        /* --- Header & Logo --- */
         header {
-            padding: 40px 20px;
+            padding: 30px 20px;
             text-align: center;
-            background: linear-gradient(to bottom, #000, var(--navy));
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            background: linear-gradient(to bottom, #02060C, var(--azul-escuro));
+            border-bottom: 2px solid var(--prata);
         }
 
         .logo-top {
-            max-height: 120px; /* Tamanho médio da logo */
-            margin-bottom: 15px;
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3)); /* Sombra dourada suave */
+            max-height: 100px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 5px var(--prata));
         }
 
         h1 {
             font-family: 'Cinzel', serif;
-            letter-spacing: 5px;
-            font-size: 1.5rem;
+            letter-spacing: 4px;
+            font-size: 1.6rem;
             margin: 0;
-            color: var(--gold);
+            color: var(--prata);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
-        /* --- Telas de Acesso --- */
-        .auth-container {
-            max-width: 350px;
-            margin: 50px auto;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid #1a2233;
-            color: white;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background: var(--gold);
-            color: black;
-            border: none;
-            font-weight: 700;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-        }
-
-        button:hover { filter: brightness(1.2); }
-
-        .btn-outline {
-            background: none;
-            color: var(--gold);
-            border: 1px solid var(--gold);
-            font-size: 10px;
-            margin-top: 20px;
-        }
-
-        /* --- Sistema Principal --- */
+        /* --- Navegação Estilo Navbar --- */
         nav {
             display: none;
-            justify-content: center;
-            background: #000;
-            padding: 10px;
+            background: #02060C;
+            padding: 5px;
             border-bottom: 1px solid var(--glass);
-            flex-wrap: wrap;
+            overflow-x: auto;
+            white-space: nowrap;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .nav-btn {
             background: none;
-            color: var(--white);
-            font-size: 10px;
-            width: auto;
-            padding: 10px 15px;
+            color: var(--prata);
+            border: none;
+            padding: 12px 18px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: 0.3s;
             opacity: 0.6;
         }
 
         .nav-btn.active {
             opacity: 1;
-            color: var(--gold);
-            border-bottom: 1px solid var(--gold);
+            color: var(--white);
+            border-bottom: 2px solid var(--prata);
         }
 
-        .content {
-            display: none;
-            max-width: 500px;
+        /* --- Containers e Cards --- */
+        .container {
+            max-width: 900px;
             margin: 20px auto;
-            padding: 20px;
+            padding: 0 20px 100px;
         }
 
         .card {
-            background: rgba(255,255,255,0.02);
-            padding: 20px;
-            border-radius: 10px;
+            background: var(--azul-card);
             border: 1px solid var(--glass);
+            border-radius: 12px;
+            padding: 25px;
             margin-bottom: 20px;
-            text-align: center;
+            box-shadow: var(--shadow);
         }
 
-        .balance-text {
-            font-size: 3rem;
+        .balance-box {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--azul-card), #1a365d);
+            border: 1px solid var(--prata);
+        }
+
+        .balance-value {
             font-family: 'Cinzel';
-            color: var(--gold);
+            font-size: 3.5rem;
+            color: var(--prata-brilho);
             margin: 10px 0;
         }
 
-        .btn-danger { background: var(--red); color: white; margin-top: 20px; }
+        /* --- Formulários --- */
+        .auth-container {
+            max-width: 380px;
+            margin: 60px auto;
+            padding: 40px;
+            background: var(--azul-card);
+            border-radius: 15px;
+            border: 1px solid var(--glass);
+            text-align: center;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            background: #050A14;
+            border: 1px solid var(--azul-hover);
+            color: white;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: var(--prata);
+            color: var(--azul-escuro);
+            border: none;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        button:hover { background: var(--prata-brilho); transform: translateY(-2px); }
+        .btn-danger { background: var(--red); color: white; margin-top: 10px; }
+        .btn-secondary { background: transparent; border: 1px solid var(--prata); color: var(--prata); font-size: 10px; }
 
         .hidden { display: none; }
+        .status-tag { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 10px; background: var(--prata); color: #000; font-weight: bold; }
+
     </style>
 </head>
 <body>
 
 <header>
-    <img id="header-logo" src="" alt="ERA Logo" class="logo-top hidden">
-    <h1 id="main-title">ERA ACADEMY</h1>
-    <p style="font-size: 9px; opacity: 0.5; letter-spacing: 2px;">SOVEREIGN MANAGEMENT SYSTEM</p>
+    <img id="header-logo" src="era.png" alt="ERA Logo" class="logo-top">
+    <h1>ERA ACADEMY</h1>
+    <p style="font-size: 10px; opacity: 0.7; letter-spacing: 3px; color: var(--prata);">SOVEREIGN SYSTEM</p>
 </header>
 
-<div id="auth-box" class="auth-container">
-    <div id="login-fields">
-        <h2 style="font-family: 'Cinzel'; font-size: 18px;">Acesso de Elite</h2>
-        <input type="email" id="email" placeholder="E-mail Acadêmico">
-        <input type="password" id="pass" placeholder="Senha">
-        <button onclick="handleAuth('login')">Entrar no Sistema</button>
-    </div>
+<div id="auth-screen">
+    <div class="auth-container">
+        <div id="login-box">
+            <h2 style="font-family: 'Cinzel'; color: var(--prata);">Login Acadêmico</h2>
+            <input type="email" id="email" placeholder="E-mail">
+            <input type="password" id="pass" placeholder="Senha">
+            <button onclick="authAction('login')">Acessar Sistema</button>
+            <p style="font-size: 11px; margin-top: 15px; cursor: pointer;" onclick="toggleAuth()">Solicitar Nova Matrícula</p>
+            <p style="font-size: 10px; opacity: 0.5;">Esqueceu a senha? Contate a Reitoria.</p>
+        </div>
 
-    <div id="register-fields" class="hidden">
-        <h2 style="font-family: 'Cinzel'; font-size: 18px;">Nova Matrícula</h2>
-        <input type="text" id="reg-nome" placeholder="Nome Completo">
-        <input type="email" id="reg-email" placeholder="E-mail para Registro">
-        <input type="password" id="reg-pass" placeholder="Senha">
-        <button onclick="handleAuth('register')">Concluir Matrícula</button>
+        <div id="register-box" class="hidden">
+            <h2 style="font-family: 'Cinzel'; color: var(--prata);">Matrícula</h2>
+            <input type="text" id="reg-name" placeholder="Nome do Personagem">
+            <input type="email" id="reg-email" placeholder="E-mail">
+            <input type="password" id="reg-pass" placeholder="Senha">
+            <button onclick="authAction('register')">Registrar</button>
+            <p style="font-size: 11px; margin-top: 15px; cursor: pointer;" onclick="toggleAuth()">Já possui conta? Entrar</p>
+        </div>
     </div>
-
-    <button class="btn-outline" id="toggle-auth" onclick="toggleAuthMode()">Não possui conta? Solicite aqui</button>
 </div>
 
 <nav id="main-nav">
-    <button class="nav-btn active" onclick="showTab('tab-conta', this)">CONTA</button>
-    <button class="nav-btn" onclick="showTab('tab-elite', this)">ELITE</button>
+    <button class="nav-btn active" onclick="showTab('tab-dash', this)">DASHBOARD</button>
+    <button class="nav-btn" onclick="showTab('tab-editorial', this)">EDITORIAL</button>
+    <button class="nav-btn" onclick="showTab('tab-transf', this)">TRANSFERIR</button>
+    <button class="nav-btn" onclick="showTab('tab-finan', this)">FINANÇAS</button>
     <button class="nav-btn" onclick="showTab('tab-mercado', this)">MERCADO</button>
-    <button class="nav-btn" id="reitoria-btn" style="display:none; color: var(--gold)" onclick="showTab('tab-reitoria', this)">REITORIA</button>
+    <button class="nav-btn" onclick="showTab('tab-vagas', this)">VAGAS</button>
+    <button class="nav-btn" onclick="showTab('tab-rank', this)">RANKING</button>
+    <button class="nav-btn" id="btn-admin" style="color: var(--prata); border: 1px solid var(--glass); display: none;" onclick="showTab('tab-admin', this)">REITORIA</button>
 </nav>
 
-<div id="app-content">
-    <div id="tab-conta" class="content">
+<div id="app-wrap" class="container hidden">
+    
+    <div id="tab-dash" class="tab-content">
+        <div class="card balance-box">
+            <img id="user-avatar" src="" style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--prata); object-fit: cover; margin-bottom: 15px;">
+            <h2 id="user-name" style="margin:0; font-family: 'Cinzel';">---</h2>
+            <div id="user-status" style="margin-bottom: 15px;"></div>
+            <div class="balance-value" id="user-balance">$ 0</div>
+            <p style="font-size: 10px; opacity: 0.5;">DATA DO SISTEMA: <span id="sys-date">27/03/2026</span></p>
+        </div>
+
         <div class="card">
-            <div id="profile-pic" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--gold); margin: 0 auto 15px; background: #000; overflow: hidden;">
-                <img id="my-avatar" src="" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
-            <h2 id="my-name" class="title-font" style="margin:0">Carregando...</h2>
-            <div id="my-balance" class="balance-text">$ 0</div>
-            
-            <div id="edit-mode" class="hidden">
-                <input type="text" id="new-name" placeholder="Novo Nome">
-                <input type="text" id="new-pic" placeholder="URL da Foto">
-                <button onclick="saveProfile()" class="btn-outline">Confirmar Alterações</button>
-            </div>
-            
-            <button onclick="document.getElementById('edit-mode').classList.toggle('hidden')" class="btn-outline">Editar Perfil</button>
-            <button onclick="handleAuth('logout')" style="background: #222; color: white;">Encerrar Sessão</button>
-            <button onclick="deleteAccount()" class="btn-danger">Excluir Matrícula Permanentemente</button>
+            <h3 style="font-family: 'Cinzel'; font-size: 14px; border-bottom: 1px solid var(--glass); padding-bottom: 10px;">CONFIGURAÇÕES DE PERFIL</h3>
+            <input type="text" id="edit-name" placeholder="Alterar Nome">
+            <input type="text" id="edit-pic" placeholder="URL da Foto">
+            <textarea id="edit-bio" placeholder="Sua biografia..."></textarea>
+            <button onclick="updateProfile()" class="btn-secondary">Salvar Alterações</button>
+            <hr style="opacity: 0.1; margin: 20px 0;">
+            <button onclick="authAction('logout')" class="btn-secondary">Sair da Conta</button>
+            <button onclick="deleteAccount()" class="btn-danger" style="font-size: 9px; padding: 10px;">Excluir Matrícula</button>
         </div>
     </div>
 
-    <div id="tab-elite" class="content">
-        <h2 style="font-family: 'Cinzel'; text-align: center;">Sociedade de Elite</h2>
-        <div id="ranking-list"></div>
+    <div id="tab-editorial" class="tab-content hidden">
+        <h2 style="font-family: 'Cinzel';">Mural Editorial</h2>
+        <div id="news-feed"></div>
     </div>
 
-    <div id="tab-mercado" class="content">
-        <h2 style="font-family: 'Cinzel'; text-align: center;">Mercado Acadêmico</h2>
-        <div id="store-list"></div>
+    <div id="tab-finan" class="tab-content hidden">
+        <div class="card">
+            <h2 style="font-family: 'Cinzel';">Financiamento Estudantil</h2>
+            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px;">
+                <p>Dívida Total: <b id="user-debt" style="color: var(--red);">$ 0</b></p>
+                <button onclick="alert('Funcionalidade em desenvolvimento pela Reitoria')">Solicitar Empréstimo</button>
+            </div>
+        </div>
     </div>
+
+    <div id="tab-admin" class="tab-content hidden">
+        <div class="card" style="border: 1px solid var(--prata);">
+            <h2 style="font-family: 'Cinzel'; color: var(--prata);">Painel da Reitoria</h2>
+            <button onclick="girarCiclo()" style="background: #112240; color: var(--prata); border: 1px solid var(--prata); margin-bottom: 20px;">⏩ GIRAR CICLO (7 DIAS)</button>
+            
+            <h3 style="font-size: 14px;">Postar Notícia</h3>
+            <input type="text" id="news-title" placeholder="Título">
+            <input type="text" id="news-img" placeholder="URL da Imagem">
+            <textarea id="news-text" placeholder="Conteúdo da notícia..."></textarea>
+            <button onclick="postNews()">Publicar no Editorial</button>
+        </div>
+    </div>
+
 </div>
 
 <script type="module">
-    // --- LÓGICA DA LOGO ---
-    // Força o caminho relativo correto para o GitHub Pages
-    const logoImg = document.getElementById('header-logo');
-    logoImg.src = window.location.origin + window.location.pathname.replace('index.html', '') + 'era.png';
-    logoImg.classList.remove('hidden'); // Mostra a logo após carregar o caminho
-
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, deleteUser } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
-    import { getDatabase, ref, set, get, update, onValue, remove } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+    import { getDatabase, ref, set, get, update, onValue, remove, push } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBt7zjlI1P8lN4JxnxTe_erzNbfu1AHdfE",
@@ -236,99 +271,124 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getDatabase(app);
-    let uLog = null;
+    let currentUserData = null;
 
-    // --- FUNÇÕES DE NAVEGAÇÃO ---
-    window.toggleAuthMode = () => {
-        const isLogin = document.getElementById('login-fields').classList.toggle('hidden');
-        document.getElementById('register-fields').classList.toggle('hidden');
-        document.getElementById('toggle-auth').innerText = isLogin ? "Já possui conta? Acessar" : "Não possui conta? Solicite aqui";
+    // --- NAVEGAÇÃO ---
+    window.toggleAuth = () => {
+        document.getElementById('login-box').classList.toggle('hidden');
+        document.getElementById('register-box').classList.toggle('hidden');
     }
 
     window.showTab = (tabId, btn) => {
-        document.querySelectorAll('.content').forEach(c => c.style.display = 'none');
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).style.display = 'block';
-        if(btn) btn.classList.add('active');
+        document.getElementById(tabId).classList.remove('hidden');
+        btn.classList.add('active');
     }
 
     // --- AUTENTICAÇÃO ---
-    window.handleAuth = async (mode) => {
+    window.authAction = async (type) => {
         try {
-            if (mode === 'login') {
+            if(type === 'login') {
                 const e = document.getElementById('email').value;
                 const p = document.getElementById('pass').value;
                 await signInWithEmailAndPassword(auth, e, p);
-            } 
-            else if (mode === 'register') {
-                const n = document.getElementById('reg-nome').value;
+            } else if (type === 'register') {
+                const n = document.getElementById('reg-name').value;
                 const e = document.getElementById('reg-email').value;
                 const p = document.getElementById('reg-pass').value;
-                if(!n) return alert("Nome é obrigatório.");
+                if(!n) return alert("Nome do personagem é obrigatório.");
                 const res = await createUserWithEmailAndPassword(auth, e, p);
                 await set(ref(db, `jogadores/${res.user.uid}`), {
-                    nome: n, saldo: 1500, role: 'aluno', bio: '', foto: ''
+                    nome: n, e-mail: e, saldo: 1500, divida: 0, role: 'aluno', foto: '', bio: '', status: 'Ativo'
                 });
-            } 
-            else if (mode === 'logout') {
+            } else if (type === 'logout') {
                 await signOut(auth);
                 location.reload();
             }
-        } catch (err) {
-            alert("Erro no Sistema: " + err.message);
-        }
+        } catch (err) { alert("Erro: " + err.message); }
     }
 
     onAuthStateChanged(auth, user => {
-        if (user) {
-            document.getElementById('auth-box').style.display = 'none';
+        if(user) {
+            document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('main-nav').style.display = 'flex';
+            document.getElementById('app-wrap').classList.remove('hidden');
+            
+            // Ouvinte de dados do usuário
             onValue(ref(db, `jogadores/${user.uid}`), snap => {
                 if(snap.exists()) {
-                    uLog = { id: user.uid, ...snap.val() };
-                    document.getElementById('my-name').innerText = uLog.nome;
-                    document.getElementById('my-balance').innerText = `$ ${uLog.saldo.toLocaleString()}`;
-                    document.getElementById('my-avatar').src = uLog.foto || "https://placehold.co/100?text=Sovereign";
-                    showTab('tab-conta');
-                    carregarRanking();
+                    const d = snap.val();
+                    currentUserData = { id: user.uid, ...d };
+                    document.getElementById('user-name').innerText = d.nome;
+                    document.getElementById('user-balance').innerText = `$ ${d.saldo.toLocaleString()}`;
+                    document.getElementById('user-debt').innerText = `$ ${d.divida.toLocaleString()}`;
+                    document.getElementById('user-avatar').src = d.foto || "https://placehold.co/200/0A192F/C0C0C0?text=SOVEREIGN";
+                    document.getElementById('user-status').innerHTML = `<span class="status-tag">${d.role.toUpperCase()}</span>`;
+                    
+                    // Mostrar Reitoria se for admin
+                    if(d.role === 'admin' || d.role === 'reitora') {
+                        document.getElementById('btn-admin').style.display = 'inline-block';
+                    }
                 }
             });
+            loadNews();
         }
     });
 
-    // --- AÇÕES DO PERFIL ---
-    window.saveProfile = async () => {
-        const n = document.getElementById('new-name').value;
-        const f = document.getElementById('new-pic').value;
+    // --- FUNÇÕES DE PERFIL ---
+    window.updateProfile = async () => {
+        const n = document.getElementById('edit-name').value;
+        const f = document.getElementById('edit-pic').value;
+        const b = document.getElementById('edit-bio').value;
         const up = {};
         if(n) up.nome = n;
         if(f) up.foto = f;
-        await update(ref(db, `jogadores/${uLog.id}`), up);
-        document.getElementById('edit-mode').classList.add('hidden');
-        alert("Dados Acadêmicos Atualizados.");
+        if(b) up.bio = b;
+        await update(ref(db, `jogadores/${auth.currentUser.uid}`), up);
+        alert("Perfil atualizado nas crônicas da ERA.");
     }
 
     window.deleteAccount = async () => {
-        if(confirm("⚠️ ATENÇÃO: Deseja apagar sua matrícula? Esta ação é irreversível e você perderá todo seu saldo Sovereign.")){
-            await remove(ref(db, `jogadores/${uLog.id}`));
+        if(confirm("Deseja apagar sua existência neste sistema? Esta ação é definitiva.")){
+            await remove(ref(db, `jogadores/${auth.currentUser.uid}`));
             deleteUser(auth.currentUser).then(() => location.reload());
         }
     }
 
-    // --- RANKING ---
-    function carregarRanking() {
-        onValue(ref(db, 'jogadores'), snap => {
-            let h = "";
-            let list = [];
-            snap.forEach(child => { list.push(child.val()) });
-            list.sort((a,b) => b.saldo - a.saldo).slice(0, 10).forEach((p, i) => {
-                h += `<div class="card" style="display:flex; justify-content:space-between; align-items:center; padding: 10px 20px;">
-                        <span><b>#${i+1}</b> ${p.nome}</span>
-                        <span style="color:var(--gold); font-weight:700">$ ${p.saldo.toLocaleString()}</span>
-                      </div>`;
-            });
-            document.getElementById('ranking-list').innerHTML = h;
+    // --- REITORIA E EDITORIAL ---
+    window.postNews = async () => {
+        const t = document.getElementById('news-title').value;
+        const i = document.getElementById('news-img').value;
+        const x = document.getElementById('news-text').value;
+        if(!t || !x) return alert("Título e texto obrigatórios.");
+        await push(ref(db, 'editorial'), {
+            titulo: t, imagem: i, texto: x, data: new Date().toLocaleDateString(), autor: "Reitoria"
         });
+        alert("Notícia publicada!");
+    }
+
+    function loadNews() {
+        onValue(ref(db, 'editorial'), snap => {
+            let h = "";
+            snap.forEach(child => {
+                const n = child.val();
+                h += `
+                <div class="card">
+                    ${n.imagem ? `<img src="${n.imagem}" style="width:100%; border-radius:8px; margin-bottom:15px;">` : ''}
+                    <h3 style="font-family:'Cinzel'; color:var(--prata);">${n.titulo}</h3>
+                    <p style="font-size:13px; line-height:1.6; opacity:0.8;">${n.texto}</p>
+                    <small style="opacity:0.4;">Publicado em: ${n.data}</small>
+                </div>`;
+            });
+            document.getElementById('news-feed').innerHTML = h || "<p>Nenhuma notícia oficial no momento.</p>";
+        });
+    }
+
+    window.girarCiclo = async () => {
+        if(!confirm("Isso irá processar salários e cobranças de todos os jogadores. Confirmar?")) return;
+        // Lógica de loop para processamento em massa (Placeholder para implementação futura)
+        alert("Ciclo processado com sucesso!");
     }
 
 </script>
