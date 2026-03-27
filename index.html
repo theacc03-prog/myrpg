@@ -13,13 +13,14 @@
             --white: #F8F9FA;
             --gold: #D4AF37;
             --red: #8B0000;
-            --muted: rgba(255,255,255,0.7);
+            --muted: rgba(255,255,255,0.72);
+            --good: #2A9D8F;
         }
 
         * { box-sizing: border-box; }
 
         body {
-            background: var(--azul-royal);
+            background: radial-gradient(circle at top, #112240 0%, var(--azul-royal) 58%, #050A14 100%);
             color: var(--white);
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -28,13 +29,14 @@
         }
 
         header {
-            padding: 25px;
+            padding: 25px 15px;
             text-align: center;
-            background: #02060C;
+            background: rgba(2, 6, 12, 0.98);
             border-bottom: 2px solid var(--prata);
             position: sticky;
             top: 0;
             z-index: 1000;
+            backdrop-filter: blur(10px);
         }
 
         h1 {
@@ -47,7 +49,7 @@
 
         nav {
             display: none;
-            background: #050A14;
+            background: rgba(5, 10, 20, 0.98);
             overflow-x: auto;
             white-space: nowrap;
             border-bottom: 1px solid rgba(192,192,192,0.1);
@@ -55,6 +57,7 @@
             top: 96px;
             z-index: 999;
             scrollbar-width: none;
+            backdrop-filter: blur(10px);
         }
 
         nav::-webkit-scrollbar { display: none; }
@@ -63,12 +66,13 @@
             background: none;
             border: none;
             color: var(--prata);
-            padding: 15px;
+            padding: 15px 14px;
             font-size: 9px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            opacity: 0.6;
+            opacity: 0.62;
             text-transform: uppercase;
+            letter-spacing: 0.6px;
         }
 
         .nav-btn.active {
@@ -78,18 +82,18 @@
         }
 
         .container {
-            max-width: 850px;
+            max-width: 920px;
             margin: 20px auto;
             padding: 0 15px 100px;
         }
 
         .card {
-            background: var(--azul-card);
+            background: linear-gradient(180deg, rgba(17,34,64,0.96) 0%, rgba(10,25,47,0.96) 100%);
             border: 1px solid rgba(192,192,192,0.1);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
             text-align: center;
         }
 
@@ -98,7 +102,7 @@
         }
 
         .card.soft {
-            background: linear-gradient(180deg, #112240 0%, #0A192F 100%);
+            background: linear-gradient(180deg, #13294E 0%, #0A192F 100%);
         }
 
         .balance {
@@ -109,8 +113,8 @@
         }
 
         .tag {
-            padding: 3px 8px;
-            border-radius: 4px;
+            padding: 4px 9px;
+            border-radius: 999px;
             font-size: 9px;
             font-weight: bold;
             margin: 2px;
@@ -123,6 +127,28 @@
             color: var(--muted);
         }
 
+        .status-banner {
+            margin: 12px 0 0;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+            color: #fff;
+            font-size: 12px;
+        }
+
+        .warning {
+            border-left: 3px solid var(--gold);
+        }
+
+        .danger {
+            border-left: 3px solid var(--red);
+        }
+
+        .good {
+            border-left: 3px solid var(--good);
+        }
+
         input, textarea, select {
             width: 100%;
             padding: 12px;
@@ -130,7 +156,7 @@
             background: #02060C;
             border: 1px solid #1d3557;
             color: white;
-            border-radius: 5px;
+            border-radius: 6px;
             box-sizing: border-box;
             outline: none;
         }
@@ -141,15 +167,19 @@
             background: var(--prata);
             color: var(--azul-royal);
             border: none;
-            font-weight: bold;
-            border-radius: 5px;
+            font-weight: 800;
+            border-radius: 6px;
             cursor: pointer;
             text-transform: uppercase;
             margin-top: 5px;
             transition: .2s ease;
+            letter-spacing: 0.4px;
         }
 
-        button:hover { filter: brightness(1.05); transform: translateY(-1px); }
+        button:hover {
+            filter: brightness(1.05);
+            transform: translateY(-1px);
+        }
 
         .btn-sec {
             background: none;
@@ -255,6 +285,7 @@
             border: 2px solid var(--prata);
             object-fit: cover;
             margin-bottom: 10px;
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.03);
         }
 
         .title-badge {
@@ -287,6 +318,7 @@
             justify-content: center;
             z-index: 3000;
             padding: 20px;
+            backdrop-filter: blur(6px);
         }
 
         .modal .card {
@@ -318,8 +350,44 @@
             opacity: 0.8;
         }
 
+        .hero-meta {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .hero-box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 11px;
+        }
+
+        .hero-box strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--prata);
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+        }
+
+        .news-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+        }
+
+        .photo-caption {
+            font-size: 10px;
+            opacity: 0.75;
+            margin-top: -2px;
+        }
+
         @media (max-width: 700px) {
             .grid-2 { grid-template-columns: 1fr; }
+            .hero-meta { grid-template-columns: 1fr; }
             .balance { font-size: 2rem; }
             h1 { font-size: 1.1rem; }
             nav { top: 90px; }
@@ -372,17 +440,43 @@
             <div style="text-align:right">
                 <button class="btn-sec small-btn" onclick="app.toggleSettings()">⚙️ SETTINGS</button>
             </div>
+
             <div id="clock" class="sticky-note">00:00:00</div>
+
             <img id="u-foto" src="" class="profile-photo" onerror="this.src='https://placehold.co/150/0A192F/C0C0C0?text=ERA'">
-            <h2 id="u-nome" style="font-family:'Cinzel'; margin:5px 0">---</h2>
+            <div class="photo-caption">perfil institucional</div>
+
+            <h2 id="u-nome" style="font-family:'Cinzel'; margin:8px 0 5px">---</h2>
             <div id="u-tags"></div>
             <div class="title-badge" id="u-title">---</div>
+
             <div class="balance" id="u-saldo">$ 0</div>
-            <p id="u-bio" style="font-size:12px; opacity:0.8"></p>
+            <p id="u-bio" style="font-size:12px; opacity:0.85"></p>
+            <div id="u-warning" class="status-banner hidden"></div>
+
+            <div class="hero-meta">
+                <div class="hero-box">
+                    <strong>STATUS</strong>
+                    <span id="u-status-mini">---</span>
+                </div>
+                <div class="hero-box">
+                    <strong>DÍVIDA</strong>
+                    <span id="u-divida-mini">$ 0</span>
+                </div>
+                <div class="hero-box">
+                    <strong>REPUTAÇÃO</strong>
+                    <span id="u-rep-mini">Campus neutro</span>
+                </div>
+            </div>
 
             <div id="settings-area" class="hidden" style="margin-top:15px; border-top:1px solid rgba(255,255,255,0.1); padding-top:15px">
                 <input type="text" id="set-nome" placeholder="Novo nome">
-                <input type="text" id="set-foto" placeholder="URL da Foto">
+                <input type="text" id="set-foto" placeholder="URL da foto (opcional)">
+                <div class="subtle" style="font-size:10px; margin-top:4px">
+                    ou envie uma imagem direto do seu celular
+                </div>
+                <input type="file" id="set-foto-file" accept="image/*" capture="environment">
+                <img id="foto-preview" src="" class="profile-photo hidden" style="margin:10px auto 0">
                 <textarea id="set-bio" placeholder="Bio do Personagem"></textarea>
                 <button onclick="app.updateProfile()">Salvar Perfil</button>
                 <button class="btn-sec" onclick="app.handleLogout()">Sair</button>
@@ -444,8 +538,6 @@
             <h2 class="tab-title">Transferência de Luxo</h2>
             <select id="tr-dest"></select>
             <input type="number" id="tr-val" placeholder="Valor">
-            <input type="text" id="tr-tag-n" placeholder="Nome da Tag">
-            <input type="color" id="tr-tag-c" value="#C0C0C0" style="height:44px">
             <textarea id="tr-msg" placeholder="Descrição da transferência"></textarea>
             <button onclick="app.transferirDinheiro()" class="btn-gold">Confirmar Envio</button>
         </div>
@@ -648,6 +740,12 @@
         push,
         remove
     } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+    import {
+        getStorage,
+        ref as sRef,
+        uploadBytes,
+        getDownloadURL
+    } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-storage.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBt7zjlI1P8lN4JxnxTe_erzNbfu1AHdfE",
@@ -662,8 +760,14 @@
     const fbApp = initializeApp(firebaseConfig);
     const auth = getAuth(fbApp);
     const db = getDatabase(fbApp);
+    const storage = getStorage(fbApp);
 
     const subs = [];
+    let clockTimer = null;
+    let uLog = null;
+    let currentProfileId = null;
+    let sessionBootstrapped = false;
+
     const esc = (s = "") => String(s)
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
@@ -672,16 +776,14 @@
         .replaceAll("'", "&#039;");
 
     const money = (n = 0) => `$ ${Number(n || 0).toLocaleString("pt-BR")}`;
+
     const nowClock = () => new Date().toLocaleTimeString("pt-BR");
+
     const daysLeft = (expiresAt) => {
         if (!expiresAt) return "sem validade";
         const diff = Math.ceil((expiresAt - Date.now()) / (1000 * 60 * 60 * 24));
         return diff > 0 ? `${diff} dia(s)` : "expirado";
     };
-
-    let uLog = null;
-    let currentProfileId = null;
-    let currentAdmPlayer = null;
 
     function clearSubs() {
         while (subs.length) {
@@ -696,8 +798,16 @@
         return unsub;
     }
 
+    function pushAudit(dados) {
+        return push(ref(db, 'auditoria'), {
+            ...dados,
+            ts: Date.now()
+        });
+    }
+
     function autoTitle(u) {
         if (!u) return "---";
+
         const saldo = Number(u.saldo || 0);
         const divida = Number(u.divida || 0);
 
@@ -706,24 +816,53 @@
         if (saldo >= 8000) return "Elite de Prata";
         if (saldo >= 3000) return "Viciado em Dinheiro";
         if (saldo >= 1000) return "Acadêmico de Bolso Cheio";
-        if (saldo >= 0) return "Sobrevivente do Café";
+        if (saldo >= 0) return "Sobrevivente da Cantina";
         if (divida > 0 && saldo < 0) return "Bolsista do Caos";
-        return "Penhorado Honorário";
+        return "Pobretão da ERA";
+    }
+
+    function financialMood(u) {
+        if (!u) return "Status indisponível";
+        const saldo = Number(u.saldo || 0);
+        const divida = Number(u.divida || 0);
+
+        if (saldo >= 10000) return "Magnata Acadêmico";
+        if (saldo >= 5000) return "Nobre da Cátedra";
+        if (saldo >= 2000) return "Promessa do Campus";
+        if (saldo >= 500) return "Café, saldo e esperança";
+        if (saldo >= 0) return "Sobrevivente da Cantina";
+        if (divida > 0) return "Pobretão da ERA";
+        return "Caso de Estudo";
+    }
+
+    function reputationMood(u) {
+        if (!u) return "Campus neutro";
+        const saldo = Number(u.saldo || 0);
+        const divida = Number(u.divida || 0);
+
+        if (saldo >= 15000) return "reputação de elite";
+        if (saldo >= 5000) return "movimentação respeitável";
+        if (divida > 0 && saldo < 0) return "nome em observação";
+        if (divida > 0) return "risco financeiro ativo";
+        return "perfil acadêmico discreto";
     }
 
     function narrateNotification(msg = "") {
         const m = String(msg).toLowerCase();
 
-        if (m.includes("recebeu")) return `💸 ${msg}`;
-        if (m.includes("transferiu")) return `🏦 ${msg}`;
-        if (m.includes("comentou")) return `🗣️ ${msg}`;
-        if (m.includes("empréstimo")) return `📨 ${msg}`;
-        if (m.includes("aprovado")) return `🎓 ${msg}`;
-        if (m.includes("negado")) return `❌ ${msg}`;
-        if (m.includes("comprou")) return `🛍️ ${msg}`;
-        if (m.includes("ciclo")) return `🔄 ${msg}`;
-        if (m.includes("vaga")) return `💼 ${msg}`;
-        if (m.includes("dívida")) return `🧾 ${msg}`;
+        if (m.includes("recebeu")) return `💸 Um depósito elegante pousou na sua conta. ${msg}`;
+        if (m.includes("transferiu")) return `🏦 O dinheiro atravessou o campus em silêncio. ${msg}`;
+        if (m.includes("comentou")) return `🗣️ Um comentário pousou no seu perfil. ${msg}`;
+        if (m.includes("empréstimo") && m.includes("aprov")) return `🎓 A reitoria abriu a porta. ${msg}`;
+        if (m.includes("empréstimo") && m.includes("neg")) return `❌ A reitoria fechou a janela. ${msg}`;
+        if (m.includes("empréstimo")) return `📨 Sua solicitação financeira foi registrada. ${msg}`;
+        if (m.includes("aprovado")) return `✅ A notícia é boa. ${msg}`;
+        if (m.includes("negado")) return `🚫 O sistema respondeu com frieza. ${msg}`;
+        if (m.includes("comprou")) return `🛍️ Aquisição registrada, sem testemunhas. ${msg}`;
+        if (m.includes("ciclo")) return `🔄 O ciclo acadêmico girou. ${msg}`;
+        if (m.includes("vaga")) return `💼 O mercado acadêmico se moveu. ${msg}`;
+        if (m.includes("dívida")) return `🧾 Uma dívida estalou os dedos. ${msg}`;
+        if (m.includes("perfil")) return `🪞 Seu perfil ganhou um novo verniz. ${msg}`;
 
         return `🔔 ${msg}`;
     }
@@ -836,7 +975,10 @@
     }
 
     function renderNews(postsObj) {
-        if (!postsObj || !Object.keys(postsObj).length) return `<div class="subtle">Nenhuma notícia publicada.</div>`;
+        if (!postsObj || !Object.keys(postsObj).length) {
+            return `<div class="subtle">nada novo por aqui, pequena borboleta</div>`;
+        }
+
         return Object.entries(postsObj).reverse().map(([id, n]) => {
             const comments = n.comentarios || {};
             const commentHtml = Object.entries(comments).reverse().map(([cid, c]) => {
@@ -864,7 +1006,7 @@
             return `
                 <div class="card left">
                     ${n.img ? `<img src="${esc(n.img)}" alt="" style="width:100%; border-radius:10px; margin-bottom:12px">` : ""}
-                    <h3 style="font-family:'Cinzel'">${esc(n.titulo || '')}</h3>
+                    <div class="news-title">${esc(n.titulo || '')}</div>
                     <div>${renderNewsTags(n.tags || [])}</div>
                     <p class="mini">${esc(n.texto || '')}</p>
                     <div class="row-actions" style="justify-content:flex-start">
@@ -940,6 +1082,7 @@
     function renderAdmLists() {
         const pId = document.getElementById('adm-p-sel').value;
         if (!pId) return;
+
         const playerRef = ref(db, `jogadores/${pId}`);
         get(playerRef).then(snap => {
             const d = snap.val();
@@ -968,694 +1111,28 @@
         });
     }
 
-    window.app = {
-        toggleAuth: () => {
-            document.getElementById('login-box').classList.toggle('hidden');
-            document.getElementById('register-box').classList.toggle('hidden');
-        },
-
-        showTab: (id, btn) => {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.remove('hidden');
-            if (btn) btn.classList.add('active');
-        },
-
-        toggleSettings: () => document.getElementById('settings-area').classList.toggle('hidden'),
-
-        closeModal: (id) => {
-            document.getElementById(id).style.display = 'none';
-        },
-
-        handleLogin: async () => {
-            const e = document.getElementById('email').value.trim();
-            const p = document.getElementById('pass').value.trim();
-            if (!e || !p) return alert("Preencha e-mail e senha.");
-            try {
-                await signInWithEmailAndPassword(auth, e, p);
-            } catch (err) {
-                alert("Acesso negado: " + err.message);
-            }
-        },
-
-        handleRegister: async () => {
-            const n = document.getElementById('reg-name').value.trim();
-            const e = document.getElementById('reg-email').value.trim();
-            const p = document.getElementById('reg-pass').value.trim();
-            if (!n || !e || !p) return alert("Preencha nome, e-mail e senha.");
-            try {
-                const res = await createUserWithEmailAndPassword(auth, e, p);
-                await set(ref(db, `jogadores/${res.user.uid}`), {
-                    nome: n,
-                    saldo: 1500,
-                    divida: 0,
-                    role: 'aluno',
-                    foto: '',
-                    bio: '',
-                    tags: {},
-                    mochila: {},
-                    fixos: {},
-                    variaveis: {},
-                    historico: {},
-                    notificacoes: {},
-                    emprestimos: {},
-                    title: "Estudante Financeiro"
-                });
-                await push(ref(db, `auditoria`), {
-                    msg: `Novo aluno registrado: ${n}`,
-                    ts: Date.now()
-                });
-            } catch (err) {
-                alert(err.message);
-            }
-        },
-
-        handleLogout: async () => {
-            await signOut(auth);
-            clearSubs();
-            location.reload();
-        },
-
-        updateProfile: async () => {
-            if (!auth.currentUser) return;
-            const up = {};
-            const nome = document.getElementById('set-nome').value.trim();
-            const foto = document.getElementById('set-foto').value.trim();
-            const bio = document.getElementById('set-bio').value.trim();
-            if (nome) up.nome = nome;
-            if (foto) up.foto = foto;
-            if (bio) up.bio = bio;
-            await update(ref(db, `jogadores/${auth.currentUser.uid}`), up);
-            await pushHistory(auth.currentUser.uid, 'perfil', 0, 'Perfil atualizado');
-            alert("Perfil atualizado!");
-        },
-
-        deleteMe: async () => {
-            if (!auth.currentUser) return;
-            if (!confirm("Tem certeza que deseja excluir sua conta?")) return;
-            const uid = auth.currentUser.uid;
-            try {
-                await remove(ref(db, `jogadores/${uid}`));
-                await deleteUser(auth.currentUser);
-                clearSubs();
-                location.reload();
-            } catch (e) {
-                alert("Para excluir, talvez seja necessário entrar novamente e tentar de novo.");
-            }
-        },
-
-        transferirDinheiro: async () => {
-            const dId = document.getElementById('tr-dest').value;
-            const val = parseInt(document.getElementById('tr-val').value);
-            const tagNome = document.getElementById('tr-tag-n').value.trim();
-            const tagCor = document.getElementById('tr-tag-c').value;
-            const msg = document.getElementById('tr-msg').value.trim();
-
-            if (!uLog || !dId || !val || val <= 0) return alert("Preencha destinatário e valor.");
-            if (dId === uLog.id) return alert("Não dá para transferir para si mesmo.");
-            if (val > Number(uLog.saldo || 0)) return alert("Saldo insuficiente.");
-
-            const dSnap = await get(ref(db, `jogadores/${dId}`));
-            const d = dSnap.val();
-            if (!d) return alert("Jogador inválido.");
-
-            await update(ref(db, `jogadores/${uLog.id}`), { saldo: Number(uLog.saldo || 0) - val });
-            await update(ref(db, `jogadores/${dId}`), { saldo: Number(d.saldo || 0) + val });
-
-            await pushHistory(uLog.id, 'transferência enviada', -val, `${msg || 'Transferência'} para ${d.nome}`);
-            await pushHistory(dId, 'transferência recebida', val, `${msg || 'Transferência'} de ${uLog.nome}`);
-
-            await pushNotif(dId, `💸 Você recebeu ${money(val)} de ${uLog.nome}. ${msg ? 'Recado: ' + msg : ''}`);
-            await push(ref(db, `auditoria`), {
-                msg: `${uLog.nome} transferiu ${money(val)} para ${d.nome}${msg ? ` | ${msg}` : ''}`,
-                ts: Date.now()
-            });
-
-            if (tagNome) {
-                await push(ref(db, `jogadores/${dId}/notificacoes`), {
-                    msg: `🏷️ Nova tag recebida: ${tagNome}`,
-                    ts: Date.now()
-                });
-                await push(ref(db, `jogadores/${dId}/tags`), {
-                    texto: tagNome,
-                    cor: tagCor
-                });
-            }
-
-            alert("Transferência concluída.");
-        },
-
-        requestLoan: async () => {
-            if (!uLog) return;
-            const valor = parseInt(prompt("Valor do empréstimo:"));
-            const parcelas = parseInt(prompt("Em quantas parcelas? (mínimo 1)")) || 1;
-            if (!valor || valor <= 0) return;
-
-            const loanId = push(ref(db, `emprestimos_pendentes`)).key;
-            await set(ref(db, `emprestimos_pendentes/${loanId}`), {
-                uid: uLog.id,
-                nome: uLog.nome,
-                valor,
-                parcelas,
-                restante: Math.round(valor * 1.2),
-                juros: 0.2,
-                status: 'pendente',
-                ts: Date.now()
-            });
-
-            await pushNotif(uLog.id, `📨 Seu pedido de empréstimo de ${money(valor)} foi enviado para a reitoria.`);
-            alert("Pedido enviado para aprovação.");
-        },
-
-        payDebt: async () => {
-            if (!uLog) return;
-            const pago = parseInt(prompt(`Quanto deseja amortizar? Dívida atual: ${money(uLog.divida || 0)}`));
-            if (!pago || pago <= 0) return;
-            const saldo = Number(uLog.saldo || 0);
-            const divida = Number(uLog.divida || 0);
-            const efetivo = Math.min(pago, saldo, divida);
-            if (efetivo <= 0) return alert("Nada a amortizar.");
-
-            await update(ref(db, `jogadores/${uLog.id}`), {
-                saldo: saldo - efetivo,
-                divida: divida - efetivo
-            });
-
-            await pushHistory(uLog.id, 'amortização', -efetivo, 'Amortização de dívida');
-            await pushNotif(uLog.id, `✅ Você amortizou ${money(efetivo)} da sua dívida.`);
-            alert("Dívida amortizada.");
-        },
-
-        negotiateDebt: async () => {
-            if (!uLog) return;
-            const extra = parseInt(prompt("Parcelas extras para alongar o pagamento:")) || 0;
-            if (extra <= 0) return;
-            const snap = await get(ref(db, `jogadores/${uLog.id}/emprestimos`));
-            const loans = snap.val() || {};
-            const keys = Object.keys(loans);
-            if (!keys.length) return alert("Sem empréstimos ativos.");
-
-            const firstId = keys[0];
-            const loan = loans[firstId];
-            loan.parcelas = (loan.parcelas || 1) + extra;
-
-            await update(ref(db, `jogadores/${uLog.id}/emprestimos/${firstId}`), { parcelas: loan.parcelas });
-            await pushHistory(uLog.id, 'negociação', 0, `Parcelas ajustadas em +${extra}`);
-            await pushNotif(uLog.id, `📝 Seu parcelamento foi ajustado para ${loan.parcelas} parcelas.`);
-            alert("Empréstimo renegociado.");
-        },
-
-        buyItem: async (id) => {
-            if (!uLog) return;
-            const s = await get(ref(db, `loja/${id}`));
-            const item = s.val();
-            if (!item) return;
-
-            const stock = Number(item.estoque || 0);
-            const price = Number(item.preco || 0);
-            if (stock <= 0) return alert("Item esgotado.");
-            if (Number(uLog.saldo || 0) < price) return alert("Saldo insuficiente.");
-
-            const expiresAt = Date.now() + (Number(item.duracao || 0) * 7 * 24 * 60 * 60 * 1000);
-            const invId = push(ref(db, `jogadores/${uLog.id}/mochila`)).key;
-
-            await update(ref(db, `jogadores/${uLog.id}`), { saldo: Number(uLog.saldo || 0) - price });
-            await update(ref(db, `loja/${id}`), { estoque: stock - 1 });
-            await set(ref(db, `jogadores/${uLog.id}/mochila/${invId}`), {
-                nome: item.nome,
-                descricao: item.descricao || '',
-                img: item.img || '',
-                tag: item.tag || 'Mercado',
-                cor: item.cor || '#C0C0C0',
-                expiresAt
-            });
-
-            await pushHistory(uLog.id, 'compra', -price, `Compra de ${item.nome}`);
-            await pushNotif(uLog.id, `🛍️ Você comprou ${item.nome}.`);
-            await push(ref(db, 'auditoria'), {
-                msg: `${uLog.nome} comprou ${item.nome} por ${money(price)}`,
-                ts: Date.now()
-            });
-
-            alert("Compra realizada.");
-        },
-
-        openProfile: async (id) => {
-            currentProfileId = id;
-            const s = await get(ref(db, `jogadores/${id}`));
-            const p = s.val();
-            if (!p) return;
-
-            document.getElementById('pub-foto').src = p.foto || 'https://placehold.co/150/0A192F/C0C0C0?text=ERA';
-            document.getElementById('pub-nome').innerText = p.nome || 'Sem nome';
-            document.getElementById('pub-tags').innerHTML = renderTags(p.tags);
-            document.getElementById('pub-title').innerText = autoTitle(p);
-            document.getElementById('pub-bio').innerText = p.bio || 'Sem descrição.';
-            document.getElementById('pub-msg').value = '';
-            document.getElementById('pub-mural').innerHTML = 'Carregando...';
-            document.getElementById('profile-modal').style.display = 'flex';
-
-            const muralRef = ref(db, `jogadores/${id}/mural`);
-            listen(muralRef, snap => {
-                document.getElementById('pub-mural').innerHTML = renderMural(snap.val());
-            });
-        },
-
-        postMural: async () => {
-            if (!uLog || !currentProfileId) return;
-            const msg = document.getElementById('pub-msg').value.trim();
-            if (!msg) return;
-            await push(ref(db, `jogadores/${currentProfileId}/mural`), {
-                uid: uLog.id,
-                de: uLog.nome,
-                msg,
-                ts: Date.now()
-            });
-            await pushNotif(currentProfileId, `💬 ${uLog.nome} comentou no seu perfil.`);
-            document.getElementById('pub-msg').value = '';
-        },
-
-        deleteMuralComment: async (cid) => {
-            if (!currentProfileId) return;
-            await remove(ref(db, `jogadores/${currentProfileId}/mural/${cid}`));
-        },
-
-        addNewsComment: async (postId) => {
-            const txt = prompt("Escreva seu comentário:");
-            if (!txt || !uLog) return;
-            await push(ref(db, `editorial/${postId}/comentarios`), {
-                uid: uLog.id,
-                user: uLog.nome,
-                texto: txt,
-                ts: Date.now(),
-                likes: {}
-            });
-            await pushNotif(uLog.id, `📰 Seu comentário foi publicado no Editorial.`);
-        },
-
-        likeComment: async (postId, commentId) => {
-            if (!uLog) return;
-            await set(ref(db, `editorial/${postId}/comentarios/${commentId}/likes/${uLog.id}`), true);
-        },
-
-        deleteComment: async (postId, commentId) => {
-            await remove(ref(db, `editorial/${postId}/comentarios/${commentId}`));
-        },
-
-        editNews: async (postId) => {
-            const snap = await get(ref(db, `editorial/${postId}`));
-            const n = snap.val();
-            if (!n) return;
-
-            const titulo = prompt("Novo título:", n.titulo || '');
-            const img = prompt("Nova imagem / URL:", n.img || '');
-            const texto = prompt("Novo texto:", n.texto || '');
-            const tagTxt = prompt("Tags da notícia no formato: tag|cor; tag|cor; tag|cor", (n.tags || []).map(t => `${t.texto || ''}|${t.cor || '#C0C0C0'}`).join('; '));
-
-            if (titulo === null || img === null || texto === null || tagTxt === null) return;
-
-            const tags = tagTxt
-                .split(';')
-                .map(s => s.trim())
-                .filter(Boolean)
-                .map(pair => {
-                    const [textoTag, corTag] = pair.split('|').map(x => x.trim());
-                    return { texto: textoTag || '', cor: corTag || '#C0C0C0' };
-                })
-                .filter(t => t.texto);
-
-            await update(ref(db, `editorial/${postId}`), {
-                titulo: titulo ?? n.titulo,
-                img: img ?? n.img,
-                texto: texto ?? n.texto,
-                tags: tags.length ? tags : (n.tags || [])
-            });
-        },
-
-        deleteNews: async (postId) => {
-            if (confirm("Excluir notícia?")) await remove(ref(db, `editorial/${postId}`));
-        },
-
-        applyJob: async (jobId) => {
-            const txt = prompt("Escreva sua candidatura:");
-            if (!txt || !uLog) return;
-            const s = await get(ref(db, `vagas/${jobId}`));
-            const job = s.val();
-            if (!job) return;
-            await push(ref(db, `candidaturas`), {
-                uid: uLog.id,
-                user: uLog.nome,
-                jobId,
-                titulo: job.titulo,
-                salario: Number(job.salario || 0),
-                texto: txt,
-                status: 'pendente',
-                ts: Date.now()
-            });
-            await pushNotif(uLog.id, `📨 Candidatura enviada para "${job.titulo}".`);
-            alert("Candidatura enviada.");
-        },
-
-        girarCiclo: async () => {
-            if (!confirm("Isso aplicará fixos, salários e juros. Confirmar?")) return;
-            const snap = await get(ref(db, 'jogadores'));
-            const players = snap.val() || {};
-            const batch = {};
-
-            for (const [uid, p] of Object.entries(players)) {
-                let saldo = Number(p.saldo || 0);
-                let divida = Number(p.divida || 0);
-
-                if (p.fixos) {
-                    for (const f of Object.values(p.fixos)) {
-                        saldo += Number(f.valor || 0);
-                    }
-                }
-
-                if (divida > 0) {
-                    divida = Math.round(divida * 1.05);
-                }
-
-                if (p.mochila) {
-                    for (const [itemId, item] of Object.entries(p.mochila)) {
-                        if (item.expiresAt && item.expiresAt <= Date.now()) {
-                            batch[`jogadores/${uid}/mochila/${itemId}`] = null;
-                        }
-                    }
-                }
-
-                batch[`jogadores/${uid}/saldo`] = saldo;
-                batch[`jogadores/${uid}/divida`] = divida;
-
-                await pushHistory(uid, 'ciclo', saldo, 'Giro de ciclo aplicado');
-                await pushNotif(uid, `🔄 O ciclo acadêmico foi processado.`);
-            }
-
-            await update(ref(db), batch);
-            await push(ref(db, 'auditoria'), { msg: 'Ciclo acadêmico executado pela reitoria.', ts: Date.now() });
-            alert("Ciclo girado.");
-        },
-
-        loadAdmPlayerData: () => {
-            currentAdmPlayer = document.getElementById('adm-p-sel').value;
-            if (!currentAdmPlayer) {
-                document.getElementById('adm-p-panel').classList.add('hidden');
-                return;
-            }
-            renderAdmLists();
-        },
-
-        selectAdmRecord: (type, id) => {
-            document.getElementById('adm-p-sel').dataset.selectedType = type;
-            document.getElementById('adm-p-sel').dataset.selectedId = id;
-            alert(`Selecionado: ${type} / ${id}`);
-        },
-
-        admDeleteUser: async () => {
-            const id = document.getElementById('adm-p-sel').value;
-            if (!id) return;
-            if (!confirm("Excluir esta conta?")) return;
-            await remove(ref(db, `jogadores/${id}`));
-            await push(ref(db, 'auditoria'), { msg: `Conta excluída pela reitoria. UID: ${id}`, ts: Date.now() });
-            alert("Conta excluída.");
-        },
-
-        admAddTag: async () => {
-            const id = document.getElementById('adm-p-sel').value;
-            const texto = document.getElementById('adm-tag-n').value.trim();
-            const cor = document.getElementById('adm-tag-c').value;
-            if (!id || !texto) return;
-            await push(ref(db, `jogadores/${id}/tags`), { texto, cor });
-            await pushNotif(id, `🏷️ Você recebeu uma nova tag: ${texto}`);
-            renderAdmLists();
-        },
-
-        admEditTag: async () => {
-            const id = document.getElementById('adm-p-sel').value;
-            if (!id) return;
-            const snap = await get(ref(db, `jogadores/${id}/tags`));
-            const tags = snap.val() || {};
-            const keys = Object.keys(tags);
-            if (!keys.length) return alert("Sem tags.");
-            const selected = prompt(`Digite a chave da tag para editar:\n${keys.join(', ')}`);
-            if (!selected || !tags[selected]) return;
-            const novoTexto = prompt("Novo texto da tag:", tags[selected].texto || '');
-            const novaCor = prompt("Nova cor da tag (hex):", tags[selected].cor || '#C0C0C0');
-            await update(ref(db, `jogadores/${id}/tags/${selected}`), { texto: novoTexto || tags[selected].texto, cor: novaCor || tags[selected].cor });
-            renderAdmLists();
-        },
-
-        admRemoveTag: async () => {
-            const id = document.getElementById('adm-p-sel').value;
-            if (!id) return;
-            const snap = await get(ref(db, `jogadores/${id}/tags`));
-            const tags = snap.val() || {};
-            const keys = Object.keys(tags);
-            if (!keys.length) return alert("Sem tags.");
-            const selected = prompt(`Chave da tag para excluir:\n${keys.join(', ')}`);
-            if (!selected || !tags[selected]) return;
-            await remove(ref(db, `jogadores/${id}/tags/${selected}`));
-            renderAdmLists();
-        },
-
-        admAddInventory: async () => {
-            const id = document.getElementById('adm-p-sel').value;
-            const nome = document.getElementById('adm-inv-n').value.trim();
-            const descricao = document.getElementById('adm-inv-d').value.trim();
-            const valid = parseInt(document.getElementById('adm-inv-v').value) || 0;
-            const img = document.getElementById('adm-inv-img').value.trim();
-            if (!id || !nome) return;
-            await push(ref(db, `jogadores/${id}/mochila`), {
-                nome,
-                descricao,
-                img,
-                expiresAt: Date.now() + valid * 7 * 24 * 60 * 60 * 1000
-            });
-            renderAdmLists();
-        },
-
-        admRemoveInventory: async () => {
-            const id = document.getElementById('adm-p-sel').value;
-            if (!id) return;
-            const snap = await get(ref(db, `jogadores/${id}/mochila`));
-            const inv = snap.val() || {};
-            const keys = Object.keys(inv);
-            if (!keys.length) return alert("Sem itens.");
-            const selected = prompt(`Chave do item para excluir:\n${keys.join(', ')}`);
-            if (!selected || !inv[selected]) return;
-            await remove(ref(db, `jogadores/${id}/mochila/${selected}`));
-            renderAdmLists();
-        },
-
-        admAddFixo: async () => {
-            const id = document.getElementById('adm-p-sel').value;
-            const nome = document.getElementById('adm-f-n').value.trim();
-            const descricao = document.getElementById('adm-f-d').value.trim();
-            const valor = parseInt(document.getElementById('adm-f-v').value) || 0;
-            const tag = document.getElementById('adm-f-tag').value.trim();
-            const cor = document.getElementById('adm-f-cor').value;
-            if (!id || !nome) return;
-            await push(ref(db, `jogadores/${id}/fixos`), { nome, descricao, valor, tag, cor });
-            await pushNotif(id, `💼 Novo fixo aplicado: ${nome}`);
-            renderAdmLists();
-        },
-
-        admEditFixo: async () => {
-            const id = document.getElementById('adm-p-sel').value;
-            if (!id) return;
-            const snap = await get(ref(db, `jogadores/${id}/fixos`));
-            const fx = snap.val() || {};
-            const keys = Object.keys(fx);
-            if (!keys.length) return alert("Sem fixos.");
-            const selected = prompt(`Chave do fixo para editar:\n${keys.join(', ')}`);
-            if (!selected || !fx[selected]) return;
-            const nome = prompt("Nome:", fx[selected].nome || '');
-            const descricao = prompt("Descrição:", fx[selected].descricao || '');
-            const valor = parseInt(prompt("Valor:", fx[selected].valor || 0));
-            const tag = prompt("Tag:", fx[selected].tag || '');
-            const cor = prompt("Cor:", fx[selected].cor || '#C0C0C0');
-            await update(ref(db, `jogadores/${id}/fixos/${selected}`), {
-                nome: nome ?? fx[selected].nome,
-                descricao: descricao ?? fx[selected].descricao,
-                valor: Number.isFinite(valor) ? valor : fx[selected].valor,
-                tag: tag ?? fx[selected].tag,
-                cor: cor ?? fx[selected].cor
-            });
-            renderAdmLists();
-        },
-
-        admRemoveFixo: async () => {
-            const id = document.getElementById('adm-p-sel').value;
-            if (!id) return;
-            const snap = await get(ref(db, `jogadores/${id}/fixos`));
-            const fx = snap.val() || {};
-            const keys = Object.keys(fx);
-            if (!keys.length) return alert("Sem fixos.");
-            const selected = prompt(`Chave do fixo para excluir:\n${keys.join(', ')}`);
-            if (!selected || !fx[selected]) return;
-            await remove(ref(db, `jogadores/${id}/fixos/${selected}`));
-            renderAdmLists();
-        },
-
-        admAddVariavel: async () => {
-            const id = document.getElementById('adm-p-sel').value;
-            const nome = document.getElementById('adm-var-n').value.trim();
-            const descricao = document.getElementById('adm-var-d').value.trim();
-            const valor = parseInt(document.getElementById('adm-var-v').value) || 0;
-            const tag = document.getElementById('adm-var-tag').value.trim();
-            const cor = document.getElementById('adm-var-cor').value;
-            if (!id || !nome) return;
-            await push(ref(db, `jogadores/${id}/variaveis`), { nome, descricao, valor, tag, cor });
-            await pushHistory(id, 'variável', valor, descricao || nome);
-            await pushNotif(id, `📌 Movimento variável aplicado: ${nome}`);
-            renderAdmLists();
-        },
-
-        admRemoveVariavel: async () => {
-            const id = document.getElementById('adm-p-sel').value;
-            if (!id) return;
-            const snap = await get(ref(db, `jogadores/${id}/variaveis`));
-            const vars = snap.val() || {};
-            const keys = Object.keys(vars);
-            if (!keys.length) return alert("Sem variáveis.");
-            const selected = prompt(`Chave da variável para excluir:\n${keys.join(', ')}`);
-            if (!selected || !vars[selected]) return;
-            await remove(ref(db, `jogadores/${id}/variaveis/${selected}`));
-            renderAdmLists();
-        },
-
-        admAddMarket: async () => {
-            const nome = document.getElementById('adm-m-n').value.trim();
-            const preco = parseInt(document.getElementById('adm-m-p').value) || 0;
-            const img = document.getElementById('adm-m-i').value.trim();
-            const descricao = document.getElementById('adm-m-d').value.trim();
-            const estoque = parseInt(document.getElementById('adm-m-q').value) || 0;
-            const duracao = parseInt(document.getElementById('adm-m-v').value) || 0;
-            const tag = document.getElementById('adm-m-t').value.trim();
-            const cor = document.getElementById('adm-m-c').value;
-            if (!nome) return;
-            await push(ref(db, 'loja'), { nome, preco, img, descricao, estoque, duracao, tag, cor });
-            alert("Item criado.");
-        },
-
-        admPostNews: async () => {
-            const titulo = document.getElementById('adm-n-t').value.trim();
-            const img = document.getElementById('adm-n-i').value.trim();
-            const texto = document.getElementById('adm-n-x').value.trim();
-            const tags = parseNewsTags();
-            if (!titulo) return;
-            await push(ref(db, 'editorial'), {
-                titulo,
-                img,
-                texto,
-                tags,
-                comentarios: {}
-            });
-            alert("Notícia publicada.");
-        },
-
-        admAddJob: async () => {
-            const titulo = document.getElementById('adm-j-t').value.trim();
-            const img = document.getElementById('adm-j-i').value.trim();
-            const descricao = document.getElementById('adm-j-d').value.trim();
-            const salario = parseInt(document.getElementById('adm-j-s').value) || 0;
-            if (!titulo) return;
-            await push(ref(db, 'vagas'), {
-                titulo,
-                img,
-                descricao,
-                salario,
-                candidaturas: {}
-            });
-            alert("Vaga criada.");
-        },
-
-        approveLoan: async (loanId) => {
-            const snap = await get(ref(db, `emprestimos_pendentes/${loanId}`));
-            const loan = snap.val();
-            if (!loan) return;
-            const uid = loan.uid;
-            const userSnap = await get(ref(db, `jogadores/${uid}`));
-            const u = userSnap.val();
-            if (!u) return;
-
-            const total = Math.round(Number(loan.valor || 0) * 1.2);
-            const loanKey = push(ref(db, `jogadores/${uid}/emprestimos`)).key;
-
-            await update(ref(db, `jogadores/${uid}`), {
-                saldo: Number(u.saldo || 0) + Number(loan.valor || 0),
-                divida: Number(u.divida || 0) + total
-            });
-
-            await set(ref(db, `jogadores/${uid}/emprestimos/${loanKey}`), {
-                titulo: "Empréstimo aprovado",
-                valor: Number(loan.valor || 0),
-                restante: total,
-                parcelas: Number(loan.parcelas || 1),
-                status: 'ativo',
-                juros: 0.2,
-                ts: Date.now()
-            });
-
-            await pushNotif(uid, `✅ Seu empréstimo de ${money(loan.valor)} foi aprovado pela reitoria.`);
-            await push(ref(db, 'auditoria'), { msg: `Empréstimo aprovado para ${u.nome} no valor de ${money(loan.valor)}`, ts: Date.now() });
-            await remove(ref(db, `emprestimos_pendentes/${loanId}`));
-        },
-
-        denyLoan: async (loanId) => {
-            const snap = await get(ref(db, `emprestimos_pendentes/${loanId}`));
-            const loan = snap.val();
-            if (!loan) return;
-            await pushNotif(loan.uid, `❌ Seu empréstimo foi negado pela reitoria.`);
-            await remove(ref(db, `emprestimos_pendentes/${loanId}`));
-        },
-
-        approveApplication: async (appId) => {
-            const snap = await get(ref(db, `candidaturas/${appId}`));
-            const appData = snap.val();
-            if (!appData) return;
-            const uid = appData.uid;
-            const salary = Number(appData.salario || 0);
-            const userSnap = await get(ref(db, `jogadores/${uid}`));
-            const u = userSnap.val();
-            if (!u) return;
-
-            await push(ref(db, `jogadores/${uid}/fixos`), {
-                nome: `Salário - ${appData.titulo}`,
-                descricao: `Salário aprovado para a vaga ${appData.titulo}`,
-                valor: salary,
-                tag: "Emprego",
-                cor: "#C0C0C0"
-            });
-
-            await pushNotif(uid, `🎉 Você foi aceito na vaga "${appData.titulo}". Vá à reitoria para iniciar as atividades.`);
-            await push(ref(db, 'auditoria'), { msg: `Candidatura aprovada para ${u.nome} na vaga ${appData.titulo}`, ts: Date.now() });
-            await remove(ref(db, `candidaturas/${appId}`));
-        },
-
-        denyApplication: async (appId) => {
-            const snap = await get(ref(db, `candidaturas/${appId}`));
-            const appData = snap.val();
-            if (!appData) return;
-            await pushNotif(appData.uid, `❌ Sua candidatura para "${appData.titulo}" não foi aprovada.`);
-            await remove(ref(db, `candidaturas/${appId}`));
+    function setStatusBanner(d) {
+        const banner = document.getElementById('u-warning');
+        const saldo = Number(d?.saldo || 0);
+        const divida = Number(d?.divida || 0);
+
+        if (saldo < 0) {
+            banner.className = "status-banner danger";
+            banner.textContent = "Pobretão da ERA em observação administrativa.";
+            banner.classList.remove('hidden');
+            return;
         }
-    };
 
-    function renderPlayerDashboard(d) {
-        document.getElementById('u-nome').innerText = d.nome || '---';
-        document.getElementById('u-saldo').innerText = money(d.saldo || 0);
-        document.getElementById('u-foto').src = d.foto || "https://placehold.co/150/0A192F/C0C0C0?text=ERA";
-        document.getElementById('u-bio').innerText = d.bio || "Membro da Sovereign Society.";
-        document.getElementById('u-title').innerText = autoTitle(d);
-        document.getElementById('u-tags').innerHTML = renderTags(d.tags);
-        document.getElementById('u-inv').innerHTML = renderInventory(d.mochila);
-        document.getElementById('u-history').innerHTML = renderHistory(d.historico);
-        document.getElementById('fin-divida').innerText = money(d.divida || 0);
-        document.getElementById('fin-loans').innerHTML = renderLoans(d.emprestimos);
+        if (divida > 0) {
+            banner.className = "status-banner warning";
+            banner.textContent = "Há um brilho suspeito na sua dívida. Melhor respirar fundo e contar as moedas.";
+            banner.classList.remove('hidden');
+            return;
+        }
 
-        if (d.role === 'reitora') document.getElementById('btn-adm').style.display = 'inline-block';
-        else document.getElementById('btn-adm').style.display = 'none';
+        banner.className = "status-banner good";
+        banner.textContent = "Conta saudável. O campus respeita sua presença financeira.";
+        banner.classList.remove('hidden');
     }
 
     function fillAdmPlayers(playersObj) {
@@ -1754,7 +1231,12 @@
             const audit = snap.val() || {};
             document.getElementById('audit-feed').innerHTML = Object.values(audit).reverse().map(a => `
                 <div class="list-item mini">
-                    ${esc(a.msg || '')}<br>
+                    <strong>${esc((a.tipo || 'registro').toUpperCase())}</strong><br>
+                    ${a.de ? `${esc(a.de)} ➜ ${esc(a.para || a.user || '')}` : esc(a.user || a.msg || '')}<br>
+                    ${a.vaga ? `Vaga: ${esc(a.vaga)}<br>` : ''}
+                    ${a.item ? `Item: ${esc(a.item)}<br>` : ''}
+                    ${a.valor !== undefined ? `Valor: ${money(a.valor)}<br>` : ''}
+                    ${a.msg ? `${esc(a.msg)}<br>` : ''}
                     <span class="subtle">${new Date(a.ts || Date.now()).toLocaleString("pt-BR")}</span>
                 </div>
             `).join("") || `<div class="subtle">Sem eventos na auditoria.</div>`;
@@ -1785,8 +1267,46 @@
         });
     }
 
+    function refreshMyProfileUI(d) {
+        document.getElementById('u-nome').innerText = d.nome || '---';
+        document.getElementById('u-saldo').innerText = money(d.saldo || 0);
+        document.getElementById('u-foto').src = d.foto || "https://placehold.co/150/0A192F/C0C0C0?text=ERA";
+        document.getElementById('u-bio').innerText = d.bio || "Membro da Sovereign Society.";
+        document.getElementById('u-title').innerText = autoTitle(d);
+        document.getElementById('u-tags').innerHTML = renderTags(d.tags);
+        document.getElementById('fin-divida').innerText = money(d.divida || 0);
+        document.getElementById('u-status-mini').innerText = financialMood(d);
+        document.getElementById('u-divida-mini').innerText = money(d.divida || 0);
+        document.getElementById('u-rep-mini').innerText = reputationMood(d);
+        setStatusBanner(d);
+
+        if (d.role === 'reitora') document.getElementById('btn-adm').style.display = 'inline-block';
+        else document.getElementById('btn-adm').style.display = 'none';
+    }
+
+    function registerPhotoPreview() {
+        const input = document.getElementById('set-foto-file');
+        const preview = document.getElementById('foto-preview');
+        if (!input || !preview) return;
+
+        input.addEventListener('change', (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            preview.src = URL.createObjectURL(file);
+            preview.classList.remove('hidden');
+        });
+    }
+
+    registerPhotoPreview();
+
     onAuthStateChanged(auth, user => {
         clearSubs();
+        sessionBootstrapped = false;
+
+        if (clockTimer) {
+            clearInterval(clockTimer);
+            clockTimer = null;
+        }
 
         if (user) {
             document.getElementById('auth-screen').classList.add('hidden');
@@ -1796,26 +1316,22 @@
             listen(ref(db, `jogadores/${user.uid}`), snap => {
                 const d = snap.val();
                 if (!d) return;
-                uLog = { id: user.uid, ...d };
 
-                renderPlayerDashboard(d);
+                uLog = { id: user.uid, ...d };
+                refreshMyProfileUI(d);
 
                 document.getElementById('set-nome').value = d.nome || '';
                 document.getElementById('set-foto').value = d.foto || '';
                 document.getElementById('set-bio').value = d.bio || '';
 
-                if (d.role === 'reitora') {
-                    document.getElementById('btn-adm').style.display = 'inline-block';
-                } else {
-                    document.getElementById('btn-adm').style.display = 'none';
+                if (!sessionBootstrapped) {
+                    sessionBootstrapped = true;
+                    renderGlobalData();
+                    bindPlayerStreams(user.uid);
                 }
-
-                bindPlayerStreams(user.uid);
             });
 
-            renderGlobalData();
-
-            setInterval(() => {
+            clockTimer = setInterval(() => {
                 const c = document.getElementById('clock');
                 if (c) c.innerText = nowClock();
             }, 1000);
@@ -1828,13 +1344,916 @@
         }
     });
 
+    window.app = {
+        toggleAuth: () => {
+            document.getElementById('login-box').classList.toggle('hidden');
+            document.getElementById('register-box').classList.toggle('hidden');
+        },
+
+        showTab: (id, btn) => {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.remove('hidden');
+            if (btn) btn.classList.add('active');
+        },
+
+        toggleSettings: () => document.getElementById('settings-area').classList.toggle('hidden'),
+
+        closeModal: (id) => {
+            document.getElementById(id).style.display = 'none';
+        },
+
+        handleLogin: async () => {
+            const e = document.getElementById('email').value.trim();
+            const p = document.getElementById('pass').value.trim();
+            if (!e || !p) return alert("Preencha e-mail e senha.");
+            try {
+                await signInWithEmailAndPassword(auth, e, p);
+            } catch (err) {
+                alert("Acesso negado: " + err.message);
+            }
+        },
+
+        handleRegister: async () => {
+            const n = document.getElementById('reg-name').value.trim();
+            const e = document.getElementById('reg-email').value.trim();
+            const p = document.getElementById('reg-pass').value.trim();
+            if (!n || !e || !p) return alert("Preencha nome, e-mail e senha.");
+            try {
+                const res = await createUserWithEmailAndPassword(auth, e, p);
+                await set(ref(db, `jogadores/${res.user.uid}`), {
+                    nome: n,
+                    saldo: 1500,
+                    divida: 0,
+                    role: 'aluno',
+                    foto: '',
+                    bio: '',
+                    tags: {},
+                    mochila: {},
+                    fixos: {},
+                    variaveis: {},
+                    historico: {},
+                    notificacoes: {},
+                    emprestimos: {},
+                    title: "Estudante Financeiro"
+                });
+                await pushAudit({
+                    tipo: 'registro',
+                    user: n,
+                    msg: 'Novo aluno registrado'
+                });
+            } catch (err) {
+                alert(err.message);
+            }
+        },
+
+        handleLogout: async () => {
+            await signOut(auth);
+            clearSubs();
+            if (clockTimer) clearInterval(clockTimer);
+            location.reload();
+        },
+
+        updateProfile: async () => {
+            if (!auth.currentUser) return;
+
+            const up = {};
+            const nome = document.getElementById('set-nome').value.trim();
+            const fotoUrl = document.getElementById('set-foto').value.trim();
+            const bio = document.getElementById('set-bio').value.trim();
+            const file = document.getElementById('set-foto-file').files[0];
+
+            let fotoFinal = fotoUrl;
+
+            try {
+                if (file) {
+                    const path = `perfil/${auth.currentUser.uid}/${Date.now()}-${file.name}`;
+                    const fileRef = sRef(storage, path);
+                    await uploadBytes(fileRef, file);
+                    fotoFinal = await getDownloadURL(fileRef);
+                }
+
+                if (nome) up.nome = nome;
+                if (fotoFinal) up.foto = fotoFinal;
+                if (bio) up.bio = bio;
+
+                await update(ref(db, `jogadores/${auth.currentUser.uid}`), up);
+
+                await pushAudit({
+                    tipo: 'perfil',
+                    user: uLog?.nome || auth.currentUser.email,
+                    msg: 'Perfil atualizado'
+                });
+
+                alert("Perfil atualizado!");
+            } catch (err) {
+                alert("Erro ao salvar a foto ou o perfil.");
+            }
+        },
+
+        deleteMe: async () => {
+            if (!auth.currentUser) return;
+            if (!confirm("Tem certeza que deseja excluir sua conta?")) return;
+            const uid = auth.currentUser.uid;
+            try {
+                await remove(ref(db, `jogadores/${uid}`));
+                await pushAudit({
+                    tipo: 'exclusao',
+                    user: uLog?.nome || auth.currentUser.email,
+                    msg: 'Conta excluída pelo próprio usuário'
+                });
+                await deleteUser(auth.currentUser);
+                clearSubs();
+                location.reload();
+            } catch (e) {
+                alert("Para excluir, talvez seja necessário entrar novamente e tentar de novo.");
+            }
+        },
+
+        transferirDinheiro: async () => {
+            const dId = document.getElementById('tr-dest').value;
+            const val = parseInt(document.getElementById('tr-val').value);
+            const msg = document.getElementById('tr-msg').value.trim();
+
+            if (!uLog || !dId || !val || val <= 0) return alert("Preencha destinatário e valor.");
+            if (dId === uLog.id) return alert("Não dá para transferir para si mesmo.");
+            if (val > Number(uLog.saldo || 0)) return alert("Saldo insuficiente.");
+
+            const dSnap = await get(ref(db, `jogadores/${dId}`));
+            const d = dSnap.val();
+            if (!d) return alert("Jogador inválido.");
+
+            await update(ref(db, `jogadores/${uLog.id}`), { saldo: Number(uLog.saldo || 0) - val });
+            await update(ref(db, `jogadores/${dId}`), { saldo: Number(d.saldo || 0) + val });
+
+            await pushHistory(uLog.id, 'transferência enviada', -val, `${msg || 'Transferência'} para ${d.nome}`);
+            await pushHistory(dId, 'transferência recebida', val, `${msg || 'Transferência'} de ${uLog.nome}`);
+
+            await pushNotif(dId, `💸 Você recebeu ${money(val)} de ${uLog.nome}. ${msg ? 'Recado: ' + msg : ''}`);
+
+            await pushAudit({
+                tipo: 'transferencia',
+                de: uLog.nome,
+                para: d.nome,
+                valor: val,
+                msg: msg || 'Transferência entre jogadores'
+            });
+
+            alert("Transferência concluída.");
+        },
+
+        requestLoan: async () => {
+            if (!uLog) return;
+            const valor = parseInt(prompt("Valor do empréstimo:"));
+            const parcelas = parseInt(prompt("Em quantas parcelas? (mínimo 1)")) || 1;
+            if (!valor || valor <= 0) return;
+
+            const loanId = push(ref(db, `emprestimos_pendentes`)).key;
+            await set(ref(db, `emprestimos_pendentes/${loanId}`), {
+                uid: uLog.id,
+                nome: uLog.nome,
+                valor,
+                parcelas,
+                restante: Math.round(valor * 1.2),
+                juros: 0.2,
+                status: 'pendente',
+                ts: Date.now()
+            });
+
+            await pushNotif(uLog.id, `📨 Seu pedido de empréstimo de ${money(valor)} foi enviado para a reitoria.`);
+            await pushAudit({
+                tipo: 'emprestimo',
+                user: uLog.nome,
+                valor,
+                msg: 'Pedido de empréstimo enviado para aprovação'
+            });
+
+            alert("Pedido enviado para aprovação.");
+        },
+
+        payDebt: async () => {
+            if (!uLog) return;
+            const pago = parseInt(prompt(`Quanto deseja amortizar? Dívida atual: ${money(uLog.divida || 0)}`));
+            if (!pago || pago <= 0) return;
+            const saldo = Number(uLog.saldo || 0);
+            const divida = Number(uLog.divida || 0);
+            const efetivo = Math.min(pago, saldo, divida);
+            if (efetivo <= 0) return alert("Nada a amortizar.");
+
+            await update(ref(db, `jogadores/${uLog.id}`), {
+                saldo: saldo - efetivo,
+                divida: divida - efetivo
+            });
+
+            await pushHistory(uLog.id, 'amortização', -efetivo, 'Amortização de dívida');
+            await pushNotif(uLog.id, `✅ Você amortizou ${money(efetivo)} da sua dívida.`);
+            await pushAudit({
+                tipo: 'amortizacao',
+                user: uLog.nome,
+                valor: efetivo,
+                msg: 'Amortização realizada'
+            });
+
+            alert("Dívida amortizada.");
+        },
+
+        negotiateDebt: async () => {
+            if (!uLog) return;
+            const extra = parseInt(prompt("Parcelas extras para alongar o pagamento:")) || 0;
+            if (extra <= 0) return;
+            const snap = await get(ref(db, `jogadores/${uLog.id}/emprestimos`));
+            const loans = snap.val() || {};
+            const keys = Object.keys(loans);
+            if (!keys.length) return alert("Sem empréstimos ativos.");
+
+            const firstId = keys[0];
+            const loan = loans[firstId];
+            loan.parcelas = (loan.parcelas || 1) + extra;
+
+            await update(ref(db, `jogadores/${uLog.id}/emprestimos/${firstId}`), { parcelas: loan.parcelas });
+            await pushHistory(uLog.id, 'negociação', 0, `Parcelas ajustadas em +${extra}`);
+            await pushNotif(uLog.id, `📝 Seu parcelamento foi ajustado para ${loan.parcelas} parcelas.`);
+            await pushAudit({
+                tipo: 'negociacao',
+                user: uLog.nome,
+                msg: `Parcelamento ajustado em +${extra} parcelas`
+            });
+
+            alert("Empréstimo renegociado.");
+        },
+
+        buyItem: async (id) => {
+            if (!uLog) return;
+            const s = await get(ref(db, `loja/${id}`));
+            const item = s.val();
+            if (!item) return;
+
+            const stock = Number(item.estoque || 0);
+            const price = Number(item.preco || 0);
+            if (stock <= 0) return alert("Item esgotado.");
+            if (Number(uLog.saldo || 0) < price) return alert("Saldo insuficiente.");
+
+            const expiresAt = Date.now() + (Number(item.duracao || 0) * 7 * 24 * 60 * 60 * 1000);
+            const invId = push(ref(db, `jogadores/${uLog.id}/mochila`)).key;
+
+            await update(ref(db, `jogadores/${uLog.id}`), { saldo: Number(uLog.saldo || 0) - price });
+            await update(ref(db, `loja/${id}`), { estoque: stock - 1 });
+            await set(ref(db, `jogadores/${uLog.id}/mochila/${invId}`), {
+                nome: item.nome,
+                descricao: item.descricao || '',
+                img: item.img || '',
+                tag: item.tag || 'Mercado',
+                cor: item.cor || '#C0C0C0',
+                expiresAt
+            });
+
+            await pushHistory(uLog.id, 'compra', -price, `Compra de ${item.nome}`);
+            await pushNotif(uLog.id, `🛍️ Você comprou ${item.nome}.`);
+            await pushAudit({
+                tipo: 'compra',
+                user: uLog.nome,
+                item: item.nome,
+                valor: price,
+                msg: 'Compra de item no mercado'
+            });
+
+            alert("Compra realizada.");
+        },
+
+        openProfile: async (id) => {
+            currentProfileId = id;
+            const s = await get(ref(db, `jogadores/${id}`));
+            const p = s.val();
+            if (!p) return;
+
+            document.getElementById('pub-foto').src = p.foto || 'https://placehold.co/150/0A192F/C0C0C0?text=ERA';
+            document.getElementById('pub-nome').innerText = p.nome || 'Sem nome';
+            document.getElementById('pub-tags').innerHTML = renderTags(p.tags);
+            document.getElementById('pub-title').innerText = autoTitle(p);
+            document.getElementById('pub-bio').innerText = p.bio || 'Sem descrição.';
+            document.getElementById('pub-msg').value = '';
+            document.getElementById('pub-mural').innerHTML = 'Carregando...';
+            document.getElementById('profile-modal').style.display = 'flex';
+
+            const muralRef = ref(db, `jogadores/${id}/mural`);
+            listen(muralRef, snap => {
+                document.getElementById('pub-mural').innerHTML = renderMural(snap.val());
+            });
+        },
+
+        postMural: async () => {
+            if (!uLog || !currentProfileId) return;
+            const msg = document.getElementById('pub-msg').value.trim();
+            if (!msg) return;
+            await push(ref(db, `jogadores/${currentProfileId}/mural`), {
+                uid: uLog.id,
+                de: uLog.nome,
+                msg,
+                ts: Date.now()
+            });
+            await pushNotif(currentProfileId, `💬 ${uLog.nome} comentou no seu perfil.`);
+            await pushAudit({
+                tipo: 'comentario_perfil',
+                user: uLog.nome,
+                alvo: currentProfileId,
+                msg: 'Comentário publicado em perfil'
+            });
+            document.getElementById('pub-msg').value = '';
+        },
+
+        deleteMuralComment: async (cid) => {
+            if (!currentProfileId) return;
+            await remove(ref(db, `jogadores/${currentProfileId}/mural/${cid}`));
+            await pushAudit({
+                tipo: 'exclusao_comentario_perfil',
+                user: uLog?.nome || '',
+                alvo: currentProfileId,
+                msg: 'Comentário do perfil removido'
+            });
+        },
+
+        addNewsComment: async (postId) => {
+            const txt = prompt("Escreva seu comentário:");
+            if (!txt || !uLog) return;
+            await push(ref(db, `editorial/${postId}/comentarios`), {
+                uid: uLog.id,
+                user: uLog.nome,
+                texto: txt,
+                ts: Date.now(),
+                likes: {}
+            });
+            await pushNotif(uLog.id, `📰 Seu comentário foi publicado no Editorial.`);
+            await pushAudit({
+                tipo: 'comentario_noticia',
+                user: uLog.nome,
+                noticia: postId,
+                msg: 'Comentário adicionado em notícia'
+            });
+        },
+
+        likeComment: async (postId, commentId) => {
+            if (!uLog) return;
+            await set(ref(db, `editorial/${postId}/comentarios/${commentId}/likes/${uLog.id}`), true);
+        },
+
+        deleteComment: async (postId, commentId) => {
+            await remove(ref(db, `editorial/${postId}/comentarios/${commentId}`));
+            await pushAudit({
+                tipo: 'exclusao_comentario_noticia',
+                user: uLog?.nome || '',
+                noticia: postId,
+                msg: 'Comentário removido da notícia'
+            });
+        },
+
+        editNews: async (postId) => {
+            const snap = await get(ref(db, `editorial/${postId}`));
+            const n = snap.val();
+            if (!n) return;
+
+            const titulo = prompt("Novo título:", n.titulo || '');
+            const img = prompt("Nova imagem / URL:", n.img || '');
+            const texto = prompt("Novo texto:", n.texto || '');
+            const tagTxt = prompt("Tags da notícia no formato: tag|cor; tag|cor; tag|cor", (n.tags || []).map(t => `${t.texto || ''}|${t.cor || '#C0C0C0'}`).join('; '));
+
+            if (titulo === null || img === null || texto === null || tagTxt === null) return;
+
+            const tags = tagTxt
+                .split(';')
+                .map(s => s.trim())
+                .filter(Boolean)
+                .map(pair => {
+                    const [textoTag, corTag] = pair.split('|').map(x => x.trim());
+                    return { texto: textoTag || '', cor: corTag || '#C0C0C0' };
+                })
+                .filter(t => t.texto);
+
+            await update(ref(db, `editorial/${postId}`), {
+                titulo: titulo ?? n.titulo,
+                img: img ?? n.img,
+                texto: texto ?? n.texto,
+                tags: tags.length ? tags : (n.tags || [])
+            });
+
+            await pushAudit({
+                tipo: 'edicao_noticia',
+                user: uLog?.nome || '',
+                noticia: postId,
+                msg: 'Notícia editada'
+            });
+        },
+
+        deleteNews: async (postId) => {
+            if (confirm("Excluir notícia?")) {
+                await remove(ref(db, `editorial/${postId}`));
+                await pushAudit({
+                    tipo: 'exclusao_noticia',
+                    user: uLog?.nome || '',
+                    noticia: postId,
+                    msg: 'Notícia excluída'
+                });
+            }
+        },
+
+        applyJob: async (jobId) => {
+            const txt = prompt("Escreva sua candidatura:");
+            if (!txt || !uLog) return;
+            const s = await get(ref(db, `vagas/${jobId}`));
+            const job = s.val();
+            if (!job) return;
+            await push(ref(db, `candidaturas`), {
+                uid: uLog.id,
+                user: uLog.nome,
+                jobId,
+                titulo: job.titulo,
+                salario: Number(job.salario || 0),
+                texto: txt,
+                status: 'pendente',
+                ts: Date.now()
+            });
+            await pushNotif(uLog.id, `📨 Candidatura enviada para "${job.titulo}".`);
+            await pushAudit({
+                tipo: 'candidatura',
+                user: uLog.nome,
+                vaga: job.titulo,
+                msg: 'Candidatura enviada'
+            });
+            alert("Candidatura enviada.");
+        },
+
+        girarCiclo: async () => {
+            if (!confirm("Isso aplicará fixos, salários e juros. Confirmar?")) return;
+            const snap = await get(ref(db, 'jogadores'));
+            const players = snap.val() || {};
+            const batch = {};
+
+            for (const [uid, p] of Object.entries(players)) {
+                let saldo = Number(p.saldo || 0);
+                let divida = Number(p.divida || 0);
+
+                if (p.fixos) {
+                    for (const f of Object.values(p.fixos)) {
+                        saldo += Number(f.valor || 0);
+                    }
+                }
+
+                if (divida > 0) {
+                    divida = Math.round(divida * 1.05);
+                }
+
+                if (p.mochila) {
+                    for (const [itemId, item] of Object.entries(p.mochila)) {
+                        if (item.expiresAt && item.expiresAt <= Date.now()) {
+                            batch[`jogadores/${uid}/mochila/${itemId}`] = null;
+                        }
+                    }
+                }
+
+                batch[`jogadores/${uid}/saldo`] = saldo;
+                batch[`jogadores/${uid}/divida`] = divida;
+
+                await pushHistory(uid, 'ciclo', saldo, 'Giro de ciclo aplicado');
+                await pushNotif(uid, `🔄 O ciclo acadêmico foi processado.`);
+            }
+
+            await update(ref(db), batch);
+            await pushAudit({
+                tipo: 'ciclo',
+                user: 'REITORIA',
+                msg: 'Ciclo acadêmico executado'
+            });
+            alert("Ciclo girado.");
+        },
+
+        loadAdmPlayerData: () => {
+            const pId = document.getElementById('adm-p-sel').value;
+            if (!pId) {
+                document.getElementById('adm-p-panel').classList.add('hidden');
+                return;
+            }
+            renderAdmLists();
+        },
+
+        selectAdmRecord: (type, id) => {
+            document.getElementById('adm-p-sel').dataset.selectedType = type;
+            document.getElementById('adm-p-sel').dataset.selectedId = id;
+            alert(`Selecionado: ${type} / ${id}`);
+        },
+
+        admDeleteUser: async () => {
+            const id = document.getElementById('adm-p-sel').value;
+            if (!id) return;
+            if (!confirm("Excluir esta conta?")) return;
+            await remove(ref(db, `jogadores/${id}`));
+            await pushAudit({
+                tipo: 'exclusao_conta',
+                user: uLog?.nome || 'REITORIA',
+                alvo: id,
+                msg: `Conta excluída pela reitoria. UID: ${id}`
+            });
+            alert("Conta excluída.");
+        },
+
+        admAddTag: async () => {
+            const id = document.getElementById('adm-p-sel').value;
+            const texto = document.getElementById('adm-tag-n').value.trim();
+            const cor = document.getElementById('adm-tag-c').value;
+            if (!id || !texto) return;
+            await push(ref(db, `jogadores/${id}/tags`), { texto, cor });
+            await pushNotif(id, `🏷️ Você recebeu uma nova tag: ${texto}`);
+            await pushAudit({
+                tipo: 'tag',
+                user: uLog?.nome || 'REITORIA',
+                alvo: id,
+                msg: `Tag adicionada: ${texto}`
+            });
+            renderAdmLists();
+        },
+
+        admEditTag: async () => {
+            const id = document.getElementById('adm-p-sel').value;
+            if (!id) return;
+            const snap = await get(ref(db, `jogadores/${id}/tags`));
+            const tags = snap.val() || {};
+            const keys = Object.keys(tags);
+            if (!keys.length) return alert("Sem tags.");
+            const selected = prompt(`Digite a chave da tag para editar:\n${keys.join(', ')}`);
+            if (!selected || !tags[selected]) return;
+            const novoTexto = prompt("Novo texto da tag:", tags[selected].texto || '');
+            const novaCor = prompt("Nova cor da tag (hex):", tags[selected].cor || '#C0C0C0');
+            await update(ref(db, `jogadores/${id}/tags/${selected}`), {
+                texto: novoTexto || tags[selected].texto,
+                cor: novaCor || tags[selected].cor
+            });
+            await pushAudit({
+                tipo: 'tag',
+                user: uLog?.nome || 'REITORIA',
+                alvo: id,
+                msg: `Tag editada`
+            });
+            renderAdmLists();
+        },
+
+        admRemoveTag: async () => {
+            const id = document.getElementById('adm-p-sel').value;
+            if (!id) return;
+            const snap = await get(ref(db, `jogadores/${id}/tags`));
+            const tags = snap.val() || {};
+            const keys = Object.keys(tags);
+            if (!keys.length) return alert("Sem tags.");
+            const selected = prompt(`Chave da tag para excluir:\n${keys.join(', ')}`);
+            if (!selected || !tags[selected]) return;
+            await remove(ref(db, `jogadores/${id}/tags/${selected}`));
+            await pushAudit({
+                tipo: 'tag',
+                user: uLog?.nome || 'REITORIA',
+                alvo: id,
+                msg: `Tag excluída`
+            });
+            renderAdmLists();
+        },
+
+        admAddInventory: async () => {
+            const id = document.getElementById('adm-p-sel').value;
+            const nome = document.getElementById('adm-inv-n').value.trim();
+            const descricao = document.getElementById('adm-inv-d').value.trim();
+            const valid = parseInt(document.getElementById('adm-inv-v').value) || 0;
+            const img = document.getElementById('adm-inv-img').value.trim();
+            if (!id || !nome) return;
+            await push(ref(db, `jogadores/${id}/mochila`), {
+                nome,
+                descricao,
+                img,
+                expiresAt: Date.now() + valid * 7 * 24 * 60 * 60 * 1000
+            });
+            await pushAudit({
+                tipo: 'inventario',
+                user: uLog?.nome || 'REITORIA',
+                alvo: id,
+                item: nome,
+                msg: 'Item adicionado ao inventário'
+            });
+            renderAdmLists();
+        },
+
+        admRemoveInventory: async () => {
+            const id = document.getElementById('adm-p-sel').value;
+            if (!id) return;
+            const snap = await get(ref(db, `jogadores/${id}/mochila`));
+            const inv = snap.val() || {};
+            const keys = Object.keys(inv);
+            if (!keys.length) return alert("Sem itens.");
+            const selected = prompt(`Chave do item para excluir:\n${keys.join(', ')}`);
+            if (!selected || !inv[selected]) return;
+            await remove(ref(db, `jogadores/${id}/mochila/${selected}`));
+            await pushAudit({
+                tipo: 'inventario',
+                user: uLog?.nome || 'REITORIA',
+                alvo: id,
+                msg: 'Item removido do inventário'
+            });
+            renderAdmLists();
+        },
+
+        admAddFixo: async () => {
+            const id = document.getElementById('adm-p-sel').value;
+            const nome = document.getElementById('adm-f-n').value.trim();
+            const descricao = document.getElementById('adm-f-d').value.trim();
+            const valor = parseInt(document.getElementById('adm-f-v').value) || 0;
+            const tag = document.getElementById('adm-f-tag').value.trim();
+            const cor = document.getElementById('adm-f-cor').value;
+            if (!id || !nome) return;
+            await push(ref(db, `jogadores/${id}/fixos`), { nome, descricao, valor, tag, cor });
+            await pushNotif(id, `💼 Novo fixo aplicado: ${nome}`);
+            await pushAudit({
+                tipo: 'fixo',
+                user: uLog?.nome || 'REITORIA',
+                alvo: id,
+                valor,
+                msg: `Fixo adicionado: ${nome}`
+            });
+            renderAdmLists();
+        },
+
+        admEditFixo: async () => {
+            const id = document.getElementById('adm-p-sel').value;
+            if (!id) return;
+            const snap = await get(ref(db, `jogadores/${id}/fixos`));
+            const fx = snap.val() || {};
+            const keys = Object.keys(fx);
+            if (!keys.length) return alert("Sem fixos.");
+            const selected = prompt(`Chave do fixo para editar:\n${keys.join(', ')}`);
+            if (!selected || !fx[selected]) return;
+            const nome = prompt("Nome:", fx[selected].nome || '');
+            const descricao = prompt("Descrição:", fx[selected].descricao || '');
+            const valor = parseInt(prompt("Valor:", fx[selected].valor || 0));
+            const tag = prompt("Tag:", fx[selected].tag || '');
+            const cor = prompt("Cor:", fx[selected].cor || '#C0C0C0');
+            await update(ref(db, `jogadores/${id}/fixos/${selected}`), {
+                nome: nome ?? fx[selected].nome,
+                descricao: descricao ?? fx[selected].descricao,
+                valor: Number.isFinite(valor) ? valor : fx[selected].valor,
+                tag: tag ?? fx[selected].tag,
+                cor: cor ?? fx[selected].cor
+            });
+            await pushAudit({
+                tipo: 'fixo',
+                user: uLog?.nome || 'REITORIA',
+                alvo: id,
+                msg: 'Fixo editado'
+            });
+            renderAdmLists();
+        },
+
+        admRemoveFixo: async () => {
+            const id = document.getElementById('adm-p-sel').value;
+            if (!id) return;
+            const snap = await get(ref(db, `jogadores/${id}/fixos`));
+            const fx = snap.val() || {};
+            const keys = Object.keys(fx);
+            if (!keys.length) return alert("Sem fixos.");
+            const selected = prompt(`Chave do fixo para excluir:\n${keys.join(', ')}`);
+            if (!selected || !fx[selected]) return;
+            await remove(ref(db, `jogadores/${id}/fixos/${selected}`));
+            await pushAudit({
+                tipo: 'fixo',
+                user: uLog?.nome || 'REITORIA',
+                alvo: id,
+                msg: 'Fixo excluído'
+            });
+            renderAdmLists();
+        },
+
+        admAddVariavel: async () => {
+            const id = document.getElementById('adm-p-sel').value;
+            const nome = document.getElementById('adm-var-n').value.trim();
+            const descricao = document.getElementById('adm-var-d').value.trim();
+            const valor = parseInt(document.getElementById('adm-var-v').value) || 0;
+            const tag = document.getElementById('adm-var-tag').value.trim();
+            const cor = document.getElementById('adm-var-cor').value;
+            if (!id || !nome) return;
+
+            const snap = await get(ref(db, `jogadores/${id}`));
+            const d = snap.val() || {};
+
+            await push(ref(db, `jogadores/${id}/variaveis`), { nome, descricao, valor, tag, cor });
+            await update(ref(db, `jogadores/${id}`), { saldo: Number(d.saldo || 0) + valor });
+            await pushHistory(id, 'variável', valor, descricao || nome);
+            await pushNotif(id, `📌 Movimento variável aplicado: ${nome}`);
+            await pushAudit({
+                tipo: 'variavel',
+                user: uLog?.nome || 'REITORIA',
+                alvo: id,
+                valor,
+                msg: `Variável aplicada: ${nome}`
+            });
+            renderAdmLists();
+        },
+
+        admRemoveVariavel: async () => {
+            const id = document.getElementById('adm-p-sel').value;
+            if (!id) return;
+            const snap = await get(ref(db, `jogadores/${id}/variaveis`));
+            const vars = snap.val() || {};
+            const keys = Object.keys(vars);
+            if (!keys.length) return alert("Sem variáveis.");
+            const selected = prompt(`Chave da variável para excluir:\n${keys.join(', ')}`);
+            if (!selected || !vars[selected]) return;
+            await remove(ref(db, `jogadores/${id}/variaveis/${selected}`));
+            await pushAudit({
+                tipo: 'variavel',
+                user: uLog?.nome || 'REITORIA',
+                alvo: id,
+                msg: 'Variável removida'
+            });
+            renderAdmLists();
+        },
+
+        admAddMarket: async () => {
+            const nome = document.getElementById('adm-m-n').value.trim();
+            const preco = parseInt(document.getElementById('adm-m-p').value) || 0;
+            const img = document.getElementById('adm-m-i').value.trim();
+            const descricao = document.getElementById('adm-m-d').value.trim();
+            const estoque = parseInt(document.getElementById('adm-m-q').value) || 0;
+            const duracao = parseInt(document.getElementById('adm-m-v').value) || 0;
+            const tag = document.getElementById('adm-m-t').value.trim();
+            const cor = document.getElementById('adm-m-c').value;
+            if (!nome) return;
+            await push(ref(db, 'loja'), { nome, preco, img, descricao, estoque, duracao, tag, cor });
+            await pushAudit({
+                tipo: 'mercado',
+                user: uLog?.nome || 'REITORIA',
+                item: nome,
+                valor: preco,
+                msg: 'Item criado no mercado'
+            });
+            alert("Item criado.");
+        },
+
+        admPostNews: async () => {
+            const titulo = document.getElementById('adm-n-t').value.trim();
+            const img = document.getElementById('adm-n-i').value.trim();
+            const texto = document.getElementById('adm-n-x').value.trim();
+            const tags = parseNewsTags();
+            if (!titulo) return;
+            await push(ref(db, 'editorial'), {
+                titulo,
+                img,
+                texto,
+                tags,
+                comentarios: {}
+            });
+            await pushAudit({
+                tipo: 'noticia',
+                user: uLog?.nome || 'REITORIA',
+                msg: `Notícia publicada: ${titulo}`
+            });
+            alert("Notícia publicada.");
+        },
+
+        admAddJob: async () => {
+            const titulo = document.getElementById('adm-j-t').value.trim();
+            const img = document.getElementById('adm-j-i').value.trim();
+            const descricao = document.getElementById('adm-j-d').value.trim();
+            const salario = parseInt(document.getElementById('adm-j-s').value) || 0;
+            if (!titulo) return;
+            await push(ref(db, 'vagas'), {
+                titulo,
+                img,
+                descricao,
+                salario,
+                candidaturas: {}
+            });
+            await pushAudit({
+                tipo: 'vaga',
+                user: uLog?.nome || 'REITORIA',
+                vaga: titulo,
+                msg: 'Vaga criada'
+            });
+            alert("Vaga criada.");
+        },
+
+        approveLoan: async (loanId) => {
+            const snap = await get(ref(db, `emprestimos_pendentes/${loanId}`));
+            const loan = snap.val();
+            if (!loan) return;
+            const uid = loan.uid;
+            const userSnap = await get(ref(db, `jogadores/${uid}`));
+            const u = userSnap.val();
+            if (!u) return;
+
+            const total = Math.round(Number(loan.valor || 0) * 1.2);
+            const loanKey = push(ref(db, `jogadores/${uid}/emprestimos`)).key;
+
+            await update(ref(db, `jogadores/${uid}`), {
+                saldo: Number(u.saldo || 0) + Number(loan.valor || 0),
+                divida: Number(u.divida || 0) + total
+            });
+
+            await set(ref(db, `jogadores/${uid}/emprestimos/${loanKey}`), {
+                titulo: "Empréstimo aprovado",
+                valor: Number(loan.valor || 0),
+                restante: total,
+                parcelas: Number(loan.parcelas || 1),
+                status: 'ativo',
+                juros: 0.2,
+                ts: Date.now()
+            });
+
+            await pushNotif(uid, `✅ Seu empréstimo de ${money(loan.valor)} foi aprovado pela reitoria.`);
+            await pushAudit({
+                tipo: 'emprestimo_aprovado',
+                user: u.nome,
+                valor: loan.valor,
+                msg: 'Empréstimo aprovado pela reitoria'
+            });
+            await remove(ref(db, `emprestimos_pendentes/${loanId}`));
+        },
+
+        denyLoan: async (loanId) => {
+            const snap = await get(ref(db, `emprestimos_pendentes/${loanId}`));
+            const loan = snap.val();
+            if (!loan) return;
+            await pushNotif(loan.uid, `❌ Seu empréstimo foi negado pela reitoria.`);
+            await pushAudit({
+                tipo: 'emprestimo_negado',
+                user: loan.nome,
+                valor: loan.valor,
+                msg: 'Empréstimo negado pela reitoria'
+            });
+            await remove(ref(db, `emprestimos_pendentes/${loanId}`));
+        },
+
+        approveApplication: async (appId) => {
+            const snap = await get(ref(db, `candidaturas/${appId}`));
+            const appData = snap.val();
+            if (!appData) return;
+            const uid = appData.uid;
+            const salary = Number(appData.salario || 0);
+            const userSnap = await get(ref(db, `jogadores/${uid}`));
+            const u = userSnap.val();
+            if (!u) return;
+
+            await push(ref(db, `jogadores/${uid}/fixos`), {
+                nome: `Salário - ${appData.titulo}`,
+                descricao: `Salário aprovado para a vaga ${appData.titulo}`,
+                valor: salary,
+                tag: "Emprego",
+                cor: "#C0C0C0"
+            });
+
+            await pushNotif(uid, `🎉 Você foi aceito na vaga "${appData.titulo}". Vá à reitoria para iniciar as atividades.`);
+            await pushAudit({
+                tipo: 'vaga_aprovada',
+                user: u.nome,
+                vaga: appData.titulo,
+                msg: 'Candidatura aprovada pela reitoria'
+            });
+            await remove(ref(db, `candidaturas/${appId}`));
+        },
+
+        denyApplication: async (appId) => {
+            const snap = await get(ref(db, `candidaturas/${appId}`));
+            const appData = snap.val();
+            if (!appData) return;
+            await pushNotif(appData.uid, `❌ Sua candidatura para "${appData.titulo}" não foi aprovada.`);
+            await pushAudit({
+                tipo: 'vaga_negada',
+                user: appData.user,
+                vaga: appData.titulo,
+                msg: 'Candidatura negada pela reitoria'
+            });
+            await remove(ref(db, `candidaturas/${appId}`));
+        }
+    };
+
     window.app.deleteMarketItem = async (id) => {
-        if (confirm("Excluir item do mercado?")) await remove(ref(db, `loja/${id}`));
+        if (confirm("Excluir item do mercado?")) {
+            await remove(ref(db, `loja/${id}`));
+            await pushAudit({
+                tipo: 'mercado',
+                user: uLog?.nome || 'REITORIA',
+                msg: 'Item excluído do mercado'
+            });
+        }
     };
 
     window.app.deleteJob = async (id) => {
-        if (confirm("Excluir vaga?")) await remove(ref(db, `vagas/${id}`));
+        if (confirm("Excluir vaga?")) {
+            await remove(ref(db, `vagas/${id}`));
+            await pushAudit({
+                tipo: 'vaga',
+                user: uLog?.nome || 'REITORIA',
+                msg: 'Vaga excluída'
+            });
+        }
     };
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            document.getElementById('profile-modal').style.display = 'none';
+        }
+    });
 </script>
 </body>
 </html>
