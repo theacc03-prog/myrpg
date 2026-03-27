@@ -6,103 +6,109 @@
     <title>ERA ACADEMY | Sovereign System</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --prata: #C0C0C0; --azul-royal: #0A192F; --azul-card: #112240; --white: #F8F9FA; --gold: #D4AF37; --red: #8B0000; --glass: rgba(192, 192, 192, 0.05); }
+        :root { --prata: #C0C0C0; --azul-royal: #0A192F; --azul-card: #112240; --white: #F8F9FA; --gold: #D4AF37; --red: #8B0000; }
         body { background: var(--azul-royal); color: var(--white); font-family: 'Montserrat', sans-serif; margin: 0; min-height: 100vh; overflow-x: hidden; }
-        header { padding: 30px; text-align: center; background: #02060C; border-bottom: 2px solid var(--prata); }
-        h1 { font-family: 'Cinzel', serif; color: var(--prata); letter-spacing: 4px; margin: 0; }
-        nav { display: none; background: #050A14; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid var(--glass); position: sticky; top: 0; z-index: 100; padding: 0 10px; }
-        .nav-btn { background: none; border: none; color: var(--prata); padding: 15px 12px; font-size: 10px; font-weight: bold; cursor: pointer; opacity: 0.6; text-transform: uppercase; }
+        header { padding: 25px; text-align: center; background: #02060C; border-bottom: 2px solid var(--prata); }
+        h1 { font-family: 'Cinzel', serif; color: var(--prata); letter-spacing: 4px; margin: 0; font-size: 1.5rem; }
+        
+        nav { display: none; background: #050A14; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid rgba(192,192,192,0.1); sticky: top; z-index: 100; }
+        .nav-btn { background: none; border: none; color: var(--prata); padding: 15px; font-size: 9px; font-weight: bold; cursor: pointer; opacity: 0.6; text-transform: uppercase; }
         .nav-btn.active { opacity: 1; border-bottom: 2px solid var(--prata); color: #fff; }
-        .container { max-width: 900px; margin: 20px auto; padding-bottom: 100px; }
-        .card { background: var(--azul-card); border: 1px solid var(--glass); border-radius: 12px; padding: 25px; margin: 0 15px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; }
-        .balance { font-family: 'Cinzel'; font-size: 3rem; color: var(--prata); margin: 10px 0; }
-        .tag { padding: 4px 10px; border-radius: 4px; font-size: 9px; font-weight: bold; margin: 3px; display: inline-block; color: #000; }
+
+        .container { max-width: 850px; margin: 20px auto; padding: 0 15px 100px; }
+        .card { background: var(--azul-card); border: 1px solid rgba(192,192,192,0.1); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.5); text-align: center; }
+        
+        .balance { font-family: 'Cinzel'; font-size: 2.5rem; color: var(--prata); margin: 10px 0; }
+        .tag { padding: 3px 8px; border-radius: 4px; font-size: 9px; font-weight: bold; margin: 2px; display: inline-block; color: #000; }
+        
         input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; background: #02060C; border: 1px solid #1d3557; color: white; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: var(--prata); color: var(--azul-royal); border: none; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin-top: 5px; }
+        button { width: 100%; padding: 14px; background: var(--prata); color: var(--azul-royal); border: none; font-weight: bold; border-radius: 5px; cursor: pointer; text-transform: uppercase; margin-top: 5px; }
         .btn-sec { background: none; border: 1px solid var(--prata); color: var(--prata); }
         .hidden { display: none !important; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
-        .news-img { width: 100%; border-radius: 8px; margin-bottom: 15px; max-height: 300px; object-fit: cover; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <header>
-    <img src="era.png" alt="ERA" style="max-height:70px; margin-bottom:10px" onerror="this.style.display='none'">
+    <img src="era.png" alt="" style="max-height:60px; margin-bottom:10px" onerror="this.style.display='none'">
     <h1>ERA ACADEMY</h1>
 </header>
 
 <nav id="main-nav">
-    <button class="nav-btn active" onclick="changeTab('tab-dash', this)">DASHBOARD</button>
-    <button class="nav-btn" onclick="changeTab('tab-news', this)">EDITORIAL</button>
-    <button class="nav-btn" onclick="changeTab('tab-transf', this)">TRANSFERIR</button>
-    <button class="nav-btn" onclick="changeTab('tab-mercado', this)">MERCADO</button>
-    <button class="nav-btn" onclick="changeTab('tab-rank', this)">RANKING</button>
-    <button class="nav-btn" id="btn-adm" style="color:var(--gold); display:none" onclick="changeTab('tab-adm', this)">REITORIA</button>
+    <button class="nav-btn active" onclick="app.showTab('tab-dash', this)">DASHBOARD</button>
+    <button class="nav-btn" onclick="app.showTab('tab-news', this)">EDITORIAL</button>
+    <button class="nav-btn" onclick="app.showTab('tab-transf', this)">TRANSFERIR</button>
+    <button class="nav-btn" onclick="app.showTab('tab-mercado', this)">MERCADO</button>
+    <button class="nav-btn" onclick="app.showTab('tab-rank', this)">RANKING</button>
+    <button class="nav-btn" onclick="app.showTab('tab-vagas', this)">VAGAS</button>
+    <button class="nav-btn" id="btn-adm" style="color:var(--gold); display:none" onclick="app.showTab('tab-adm', this)">REITORIA</button>
 </nav>
 
-<div id="auth-area" class="container">
+<div id="auth-screen" class="container">
     <div class="card" id="login-box" style="max-width:380px; margin:auto">
         <h2 style="font-family:'Cinzel'">Login Acadêmico</h2>
         <input type="email" id="email" placeholder="E-mail">
         <input type="password" id="pass" placeholder="Senha">
-        <button onclick="handleLogin()">Entrar</button>
-        <p style="font-size:11px; margin-top:15px; cursor:pointer" onclick="toggleAuth()">Não possui conta? Solicite aqui</p>
+        <button onclick="app.handleLogin()">Acessar</button>
+        <p style="font-size:11px; margin-top:15px; cursor:pointer" onclick="app.toggleAuth()">Solicitar Matrícula</p>
     </div>
     <div class="card hidden" id="register-box" style="max-width:380px; margin:auto">
         <h2 style="font-family:'Cinzel'">Nova Matrícula</h2>
         <input type="text" id="reg-name" placeholder="Nome do Personagem">
         <input type="email" id="reg-email" placeholder="E-mail">
         <input type="password" id="reg-pass" placeholder="Senha">
-        <button onclick="handleRegister()">Registrar</button>
-        <p style="font-size:11px; margin-top:15px; cursor:pointer" onclick="toggleAuth()">Voltar ao Login</p>
+        <button onclick="app.handleRegister()">Matricular</button>
+        <p style="font-size:11px; margin-top:15px; cursor:pointer" onclick="app.toggleAuth()">Voltar</p>
     </div>
 </div>
 
-<div id="app-area" class="container hidden">
+<div id="app-screen" class="container hidden">
     <div id="tab-dash" class="tab-content">
         <div class="card">
-            <div style="text-align:right"><button class="btn-sec" style="width:auto; padding:5px 10px" onclick="toggleSettings()">⚙️ SETTINGS</button></div>
-            <img id="u-foto" src="" style="width:120px; height:120px; border-radius:50%; border:2px solid var(--prata); object-fit:cover">
-            <h2 id="u-nome" style="font-family:'Cinzel'">---</h2>
+            <div style="text-align:right"><button class="btn-sec" style="width:auto; font-size:10px" onclick="app.toggleSettings()">⚙️ SETTINGS</button></div>
+            <img id="u-foto" src="" style="width:100px; height:100px; border-radius:50%; border:2px solid var(--prata); object-fit:cover; margin-bottom:10px">
+            <h2 id="u-nome" style="font-family:'Cinzel'; margin:5px 0">---</h2>
             <div id="u-tags"></div>
             <div class="balance" id="u-saldo">$ 0</div>
-            
-            <div id="settings-area" class="hidden">
+            <p id="u-bio" style="font-size:12px; opacity:0.7"></p>
+            <div id="settings-area" class="hidden" style="margin-top:15px; border-top:1px solid rgba(255,255,255,0.1); padding-top:15px">
                 <input type="text" id="set-foto" placeholder="URL da Foto">
-                <textarea id="set-bio" placeholder="Sua biografia..."></textarea>
-                <button onclick="updateProfile()">Salvar</button>
-                <button class="btn-sec" onclick="handleLogout()">Sair</button>
+                <textarea id="set-bio" placeholder="Bio do Personagem"></textarea>
+                <button onclick="app.updateProfile()">Salvar Perfil</button>
+                <button class="btn-sec" onclick="app.handleLogout()">Sair</button>
             </div>
         </div>
-        <div class="card"><h3>🎒 INVENTÁRIO</h3><div id="u-inv" class="grid"></div></div>
+        <div class="card"><h3>🎒 MEU INVENTÁRIO</h3><div id="u-inv" class="grid">Nenhum item.</div></div>
     </div>
 
     <div id="tab-news" class="tab-content hidden">
-        <h2 style="font-family:'Cinzel'; text-align:center">Mural de Notícias</h2>
-        <div id="news-feed"></div>
+        <h2 style="font-family:'Cinzel'">Editorial Academy</h2>
+        <div id="news-list"></div>
     </div>
 
-    <div id="tab-transf" class="tab-content hidden">
-        <div class="card">
-            <h2>Transferir Sovereign</h2>
-            <select id="t-dest"></select>
-            <input type="number" id="t-val" placeholder="Valor">
-            <label style="font-size:10px"><input type="checkbox" id="t-anon"> Anônimo (Taxa 20%)</label>
-            <button onclick="processTransfer()">Enviar</button>
-        </div>
+    <div id="tab-mercado" class="tab-content hidden">
+        <h2 style="font-family:'Cinzel'">Mercado de Itens</h2>
+        <div id="market-list" class="grid"></div>
     </div>
 
     <div id="tab-adm" class="tab-content hidden">
         <div class="card" style="border-color:var(--gold)">
-            <h2 style="color:var(--gold)">Painel de Controle</h2>
-            <button onclick="girarCiclo()">⏩ GIRAR CICLO SEMANAL</button>
-            <hr>
-            <h3>Postar Notícia</h3>
+            <h2 style="color:var(--gold); font-family:'Cinzel'">Controle da Reitoria</h2>
+            <button onclick="app.girarCiclo()">⏩ GIRAR CICLO (JUROS 10% + SALÁRIOS)</button>
+            <hr style="opacity:0.2; margin:20px 0">
+            <h3>Gestão Financeira e Tags</h3>
+            <select id="adm-p-sel"></select>
+            <input type="number" id="adm-p-val" placeholder="Valor (ex: 500 ou -500)">
+            <input type="text" id="adm-p-tag" placeholder="Nova Tag">
+            <input type="color" id="adm-p-color" value="#C0C0C0">
+            <button onclick="app.admUpdatePlayer()">Aplicar Alterações</button>
+            <hr style="opacity:0.2; margin:20px 0">
+            <h3>Criar Notícia</h3>
             <input type="text" id="adm-n-t" placeholder="Título">
-            <input type="text" id="adm-n-i" placeholder="URL Imagem">
-            <textarea id="adm-n-x" placeholder="Texto"></textarea>
-            <button onclick="postNews()">Publicar</button>
+            <input type="text" id="adm-n-i" placeholder="URL da Imagem">
+            <textarea id="adm-n-x" placeholder="Texto da Notícia"></textarea>
+            <button onclick="app.admPostNews()">Publicar</button>
         </div>
     </div>
 </div>
@@ -113,107 +119,113 @@
     import { getDatabase, ref, set, get, update, onValue, push, remove } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
     const firebaseConfig = { apiKey: "AIzaSyBt7zjlI1P8lN4JxnxTe_erzNbfu1AHdfE", authDomain: "universityerarpg-6a29d.firebaseapp.com", databaseURL: "https://universityerarpg-6a29d-default-rtdb.firebaseio.com", projectId: "universityerarpg-6a29d", storageBucket: "universityerarpg-6a29d.firebasestorage.app", messagingSenderId: "912095174573", appId: "1:912095174573:web:e4591c65eeb9259ba9cb24" };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
+    const app_init = initializeApp(firebaseConfig);
+    const auth = getAuth(app_init);
+    const db = getDatabase(app_init);
 
-    // FUNÇÕES GLOBAIS (CONECTADAS AOS BOTÕES)
-    window.toggleAuth = () => { document.getElementById('login-box').classList.toggle('hidden'); document.getElementById('register-box').classList.toggle('hidden'); };
-    window.changeTab = (id, btn) => {
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(id).classList.remove('hidden');
-        btn.classList.add('active');
+    // OBJETO GLOBAL PARA EVITAR ERROS DE ESCOPO
+    window.app = {
+        toggleAuth: () => {
+            document.getElementById('login-box').classList.toggle('hidden');
+            document.getElementById('register-box').classList.toggle('hidden');
+        },
+        showTab: (id, btn) => {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.remove('hidden');
+            btn.classList.add('active');
+        },
+        toggleSettings: () => document.getElementById('settings-area').classList.toggle('hidden'),
+
+        handleLogin: () => {
+            const e = document.getElementById('email').value;
+            const p = document.getElementById('pass').value;
+            signInWithEmailAndPassword(auth, e, p).catch(err => alert("Acesso Negado: " + err.message));
+        },
+
+        handleRegister: () => {
+            const n = document.getElementById('reg-name').value;
+            const e = document.getElementById('reg-email').value;
+            const p = document.getElementById('reg-pass').value;
+            createUserWithEmailAndPassword(auth, e, p).then(res => {
+                set(ref(db, `jogadores/${res.user.uid}`), { nome: n, saldo: 1500, divida: 0, role: 'aluno', foto: '', bio: '', despesa: 100, lucro: 200 });
+            }).catch(err => alert(err.message));
+        },
+
+        handleLogout: () => signOut(auth).then(() => location.reload()),
+
+        updateProfile: () => {
+            const f = document.getElementById('set-foto').value;
+            const b = document.getElementById('set-bio').value;
+            const up = {}; if(f) up.foto = f; if(b) up.bio = b;
+            update(ref(db, `jogadores/${auth.currentUser.uid}`), up).then(() => alert("Perfil atualizado!"));
+        },
+
+        admUpdatePlayer: async () => {
+            const id = document.getElementById('adm-p-sel').value;
+            const val = parseInt(document.getElementById('adm-p-val').value) || 0;
+            const tag = document.getElementById('adm-p-tag').value;
+            const cor = document.getElementById('adm-p-color').value;
+            const snap = await get(ref(db, `jogadores/${id}`));
+            if(snap.exists()){
+                const d = snap.val();
+                await update(ref(db, `jogadores/${id}`), { saldo: d.saldo + val });
+                if(tag) await push(ref(db, `jogadores/${id}/tags`), { texto: tag, cor: cor });
+                alert("Dados aplicados com sucesso.");
+            }
+        },
+
+        admPostNews: () => {
+            const t = document.getElementById('adm-n-t').value;
+            const i = document.getElementById('adm-n-i').value;
+            const x = document.getElementById('adm-n-x').value;
+            push(ref(db, 'editorial'), { titulo: t, img: i, texto: x, data: new Date().toLocaleDateString() });
+            alert("Notícia postada.");
+        },
+
+        girarCiclo: async () => {
+            if(!confirm("Isso aplicará Juros e Salários a todos. Confirmar?")) return;
+            const snap = await get(ref(db, 'jogadores'));
+            snap.forEach(c => {
+                const d = c.val();
+                const nSaldo = d.saldo + (d.lucro || 0) - (d.despesa || 0);
+                const nDivida = d.divida * 1.1;
+                update(ref(db, `jogadores/${c.key}`), { saldo: nSaldo, divida: nDivida });
+            });
+            alert("Ciclo girado com sucesso!");
+        }
     };
-    window.toggleSettings = () => document.getElementById('settings-area').classList.toggle('hidden');
 
-    window.handleLogin = () => {
-        const e = document.getElementById('email').value;
-        const p = document.getElementById('pass').value;
-        signInWithEmailAndPassword(auth, e, p).catch(err => alert("Erro: " + err.message));
-    };
-
-    window.handleRegister = () => {
-        const n = document.getElementById('reg-name').value;
-        const e = document.getElementById('reg-email').value;
-        const p = document.getElementById('reg-pass').value;
-        createUserWithEmailAndPassword(auth, e, p).then(r => {
-            set(ref(db, `jogadores/${r.user.uid}`), { nome: n, saldo: 1500, divida: 0, role: 'aluno', foto: '', bio: '' });
-        }).catch(err => alert(err.message));
-    };
-
-    window.handleLogout = () => signOut(auth).then(() => location.reload());
-
-    // OBSERVAR LOGIN
     onAuthStateChanged(auth, user => {
         if(user){
-            document.getElementById('auth-area').classList.add('hidden');
-            document.getElementById('app-area').classList.remove('hidden');
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('app-screen').classList.remove('hidden');
             document.getElementById('main-nav').style.display = 'flex';
             
-            // Dados do Jogador
             onValue(ref(db, `jogadores/${user.uid}`), snap => {
                 const d = snap.val(); if(!d) return;
                 document.getElementById('u-nome').innerText = d.nome;
                 document.getElementById('u-saldo').innerText = `$ ${d.saldo.toLocaleString()}`;
                 document.getElementById('u-foto').src = d.foto || "https://placehold.co/150/0A192F/C0C0C0?text=ERA";
-                if(d.role === 'reitora') document.getElementById('btn-adm').style.display = 'inline-block';
-                
-                // Render Tags
+                document.getElementById('u-bio').innerText = d.bio || "Membro da Sovereign Society.";
                 let th = ""; if(d.tags) Object.values(d.tags).forEach(t => th += `<span class="tag" style="background:${t.cor}">${t.texto}</span>`);
                 document.getElementById('u-tags').innerHTML = th;
+                if(d.role === 'reitora') document.getElementById('btn-adm').style.display = 'inline-block';
             });
 
-            loadGlobalData();
+            // Carregar listas globais
+            onValue(ref(db, 'jogadores'), s => {
+                let h = "<option value=''>Selecionar Jogador...</option>";
+                s.forEach(c => h += `<option value="${c.key}">${c.val().nome}</option>`);
+                document.getElementById('adm-p-sel').innerHTML = h;
+            });
+            onValue(ref(db, 'editorial'), s => {
+                let h = "";
+                s.forEach(c => { const n = c.val(); h += `<div class="card">${n.img?`<img src="${n.img}" style="width:100%">`:''}<h3>${n.titulo}</h3><p>${n.texto}</p></div>`; });
+                document.getElementById('news-list').innerHTML = h || "Nenhuma notícia.";
+            });
         }
     });
-
-    function loadGlobalData(){
-        // Lista para Transferência
-        onValue(ref(db, 'jogadores'), s => {
-            let h = "<option>Selecionar Player...</option>";
-            s.forEach(c => h += `<option value="${c.key}">${c.val().nome}</option>`);
-            document.getElementById('t-dest').innerHTML = h;
-        });
-        // Editorial
-        onValue(ref(db, 'editorial'), s => {
-            let h = "";
-            s.forEach(c => {
-                const n = c.val();
-                h += `<div class="card">${n.img?`<img src="${n.img}" class="news-img">`:''}<h3>${n.titulo}</h3><p>${n.texto}</p></div>`;
-            });
-            document.getElementById('news-feed').innerHTML = h || "Sem notícias.";
-        });
-    }
-
-    window.processTransfer = async () => {
-        const dest = document.getElementById('t-dest').value;
-        const val = parseInt(document.getElementById('t-val').value);
-        if(!dest || val <= 0) return alert("Valor inválido");
-        const s = await get(ref(db, `jogadores/${auth.currentUser.uid}`));
-        if(s.val().saldo < val) return alert("Saldo insuficiente");
-        
-        const taxa = document.getElementById('t-anon').checked ? 0.8 : 1;
-        const d = await get(ref(db, `jogadores/${dest}`));
-        await update(ref(db, `jogadores/${auth.currentUser.uid}`), { saldo: s.val().saldo - val });
-        await update(ref(db, `jogadores/${dest}`), { saldo: d.val().saldo + (val * taxa) });
-        alert("Transferência realizada!");
-    };
-
-    window.postNews = () => {
-        const t = document.getElementById('adm-n-t').value;
-        const i = document.getElementById('adm-n-i').value;
-        const x = document.getElementById('adm-n-x').value;
-        push(ref(db, 'editorial'), { titulo: t, img: i, texto: x });
-        alert("Postado!");
-    };
-
-    window.girarCiclo = async () => {
-        const s = await get(ref(db, 'jogadores'));
-        s.forEach(c => update(ref(db, `jogadores/${c.key}`), { divida: c.val().divida * 1.1 }));
-        alert("Ciclo girado: Juros aplicados.");
-    };
-
 </script>
 </body>
 </html>
