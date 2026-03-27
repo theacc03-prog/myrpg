@@ -22,23 +22,42 @@
 
 <nav class="nav-bar" id="main-nav" style="display:none">
     <button class="nav-btn active" data-tab="home">CONTA</button>
+    <button class="nav-btn" data-tab="editorial">EDITORIAL</button>
+    <button class="nav-btn" data-tab="market">MERCADO</button>
     <button class="nav-btn" data-tab="ranking">ELITE</button>
     <button class="nav-btn btn-gold-nav" id="adm-tab-btn" style="display:none; color:var(--gold)" data-tab="reitoria">REITORIA</button>
 </nav>
 
 <div class="container" id="app-wrap" style="display:none">
-    <div id="home" class="section active">
-        <div id="profile-render"></div>
+    <div id="home" class="section active"><div id="profile-render"></div></div>
+    
+    <div id="editorial" class="section"><div id="news-feed"></div></div>
+    
+    <div id="market" class="section">
+        <h3 class="title-font">Mercado Sovereign</h3>
+        <div id="market-list" style="display:grid; grid-template-columns:1fr 1fr; gap:10px"></div>
     </div>
 
-    <div id="ranking" class="section">
-        <div id="rank-list"></div>
-    </div>
+    <div id="ranking" class="section"><div id="rank-list"></div></div>
 
     <div id="reitoria" class="section">
         <div class="card" style="background:#2D0505; text-align:center; border:1px solid var(--gold)">
             <h3 class="title-font" style="color:var(--gold)">Comando Superior</h3>
             <button id="btn-cycle" class="btn-gold">🔄 GIRAR CICLO ACADÊMICO</button>
+        </div>
+        
+        <div class="card">
+            <h4 class="title-font">Cadastrar no Mercado</h4>
+            <input type="text" id="adm-item-n" placeholder="Nome do Item">
+            <input type="number" id="adm-item-p" placeholder="Preço $">
+            <button id="btn-add-item">Publicar Item</button>
+        </div>
+
+        <div class="card">
+            <h4 class="title-font">Publicar Aviso</h4>
+            <input type="text" id="adm-news-t" placeholder="Título">
+            <textarea id="adm-news-x" placeholder="Mensagem..." rows="3" style="width:100%; background:#000; color:#fff; border:1px solid #1a2233; margin:10px 0; padding:10px"></textarea>
+            <button id="btn-add-news">Enviar Comunicado</button>
         </div>
     </div>
 </div>
