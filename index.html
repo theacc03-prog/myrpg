@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ERA ACADEMY | Sovereign System</title>
+    <!-- FAVICON: troque o href abaixo pela imagem que você quiser usar na aba do navegador -->
+    <link rel="icon" type="image/png" href="era.png">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -385,6 +387,153 @@
             margin-top: -2px;
         }
 
+
+        .market-image-main {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            border-radius: 10px;
+            display: block;
+            cursor: zoom-in;
+            background: rgba(255,255,255,0.03);
+        }
+
+        .market-image-main-wrap {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .market-image-hint {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            background: rgba(0,0,0,0.55);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #fff;
+            font-size: 10px;
+            padding: 5px 8px;
+            border-radius: 999px;
+            backdrop-filter: blur(4px);
+        }
+
+        .thumb-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 10px 0 6px;
+        }
+
+        .thumb-btn {
+            width: auto;
+            margin-top: 0;
+            padding: 0;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        .thumb-btn.active {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 1px rgba(212,175,55,0.25);
+        }
+
+        .thumb-btn img {
+            width: 52px;
+            height: 52px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-modal-body {
+            max-width: 860px !important;
+        }
+
+        .image-modal-image {
+            width: 100%;
+            max-height: 72vh;
+            object-fit: contain;
+            border-radius: 12px;
+            background: rgba(0,0,0,0.25);
+        }
+
+        .feedback-stack {
+            display: grid;
+            gap: 12px;
+        }
+
+        .finance-chip {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .finance-chip.good {
+            background: rgba(42,157,143,0.16);
+            color: #CFF8F1;
+        }
+
+        .finance-chip.warning {
+            background: rgba(212,175,55,0.14);
+            color: #FFE9A8;
+        }
+
+        .finance-chip.danger {
+            background: rgba(139,0,0,0.18);
+            color: #FFD2D2;
+        }
+
+        .sim-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        .adm-checklist {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .adm-check-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 11px;
+        }
+
+        .adm-check-item input {
+            width: auto;
+            margin: 0;
+            accent-color: var(--gold);
+        }
+
+        .market-access-note {
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 8px;
+        }
+
+        .lock-note {
+            margin-bottom: 14px;
+        }
+
+
         @media (max-width: 700px) {
             .grid-2 { grid-template-columns: 1fr; }
             .hero-meta { grid-template-columns: 1fr; }
@@ -409,6 +558,7 @@
     <button class="nav-btn" onclick="app.showTab('tab-fin', this)">FINANCIAMENTO</button>
     <button class="nav-btn" onclick="app.showTab('tab-transf', this)">TRANSFERIR</button>
     <button class="nav-btn" onclick="app.showTab('tab-mercado', this)">MERCADO</button>
+    <button class="nav-btn hidden" id="btn-clan" onclick="app.showTab('tab-clan', this)">MERCADO RESTRITO</button>
     <button class="nav-btn" onclick="app.showTab('tab-rank', this)">RANKING</button>
     <button class="nav-btn" onclick="app.showTab('tab-vagas', this)">VAGAS</button>
     <button class="nav-btn" id="btn-adm" style="color:var(--gold); display:none" onclick="app.showTab('tab-adm', this)">REITORIA</button>
@@ -513,39 +663,112 @@
     <div id="tab-fin" class="tab-content hidden">
         <div class="card left">
             <h2 class="tab-title">Financiamento Estudantil</h2>
+            <div id="fin-feedback" class="status-banner hidden"></div>
+
             <div class="grid-2">
                 <div class="card left" style="margin-bottom:0">
                     <strong>Dívida atual</strong>
                     <div class="balance" id="fin-divida">$ 0</div>
                     <div class="subtle">Saldo de empréstimos, juros e parcelamentos.</div>
+                    <div id="fin-health-chip" class="finance-chip good">equilíbrio financeiro</div>
+                    <div class="subtle" id="fin-health-copy">Seu perfil ainda não chamou atenção do setor financeiro.</div>
                 </div>
                 <div class="card left" style="margin-bottom:0">
                     <strong>Empréstimos ativos</strong>
                     <div id="fin-loans" class="mini">Nenhum empréstimo ativo.</div>
                 </div>
             </div>
+
+            <div class="grid-2" style="margin-top:12px">
+                <div class="card left" style="margin-bottom:0">
+                    <strong>Simulador rápido</strong>
+                    <div class="sim-box mini">
+                        <div>Valor solicitado: <strong id="fin-est-valor">$ 0</strong></div>
+                        <div>Juros estimados: <strong>20%</strong></div>
+                        <div>Total previsto: <strong id="fin-est-total">$ 0</strong></div>
+                        <div>Parcelas: <strong id="fin-est-parcelas">1</strong></div>
+                        <div>Estimativa por parcela: <strong id="fin-est-parcela">$ 0</strong></div>
+                    </div>
+                </div>
+                <div class="card left" style="margin-bottom:0">
+                    <strong>Gestão da dívida</strong>
+                    <div class="subtle" id="fin-debt-copy">Acompanhe amortizações, renegociações e o comportamento da sua conta.</div>
+                    <div class="sim-box mini">
+                        <div>Saldo atual: <strong id="fin-saldo-copy">$ 0</strong></div>
+                        <div>Próxima parcela estimada: <strong id="fin-next-installment">$ 0</strong></div>
+                        <div>Status do perfil: <strong id="fin-status-label">---</strong></div>
+                    </div>
+                </div>
+            </div>
+
             <div class="hr"></div>
-            <button onclick="app.requestLoan()" class="btn-gold">Solicitar Empréstimo</button>
-            <button onclick="app.payDebt()">Amortizar Dívida</button>
-            <button onclick="app.negotiateDebt()" class="btn-sec">Negociar / Parcelar</button>
+
+            <div class="grid-2">
+                <div class="card left" style="margin-bottom:0">
+                    <strong>Solicitar empréstimo</strong>
+                    <input type="number" id="fin-req-valor" placeholder="Valor do empréstimo">
+                    <input type="number" id="fin-req-parcelas" placeholder="Parcelas (mínimo 1)" min="1" value="1">
+                    <div class="subtle">O pedido continua indo para aprovação manual da reitoria.</div>
+                    <button onclick="app.requestLoan()" class="btn-gold">Solicitar Empréstimo</button>
+                </div>
+
+                <div class="card left" style="margin-bottom:0">
+                    <strong>Amortizar e negociar</strong>
+                    <input type="number" id="fin-pay-amount" placeholder="Valor para amortizar">
+                    <div class="row-actions" style="justify-content:flex-start; margin-top:4px">
+                        <button onclick="app.payDebt()">Amortizar Dívida</button>
+                        <button onclick="app.quitAllDebt()" class="btn-red">Quitar Tudo</button>
+                    </div>
+
+                    <input type="number" id="fin-extra-parcelas" placeholder="Parcelas extras para alongar o pagamento" min="1">
+                    <button onclick="app.negotiateDebt()" class="btn-sec">Negociar / Parcelar</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <div id="tab-transf" class="tab-content hidden">
         <div class="card left">
             <h2 class="tab-title">Transferência de Luxo</h2>
-            <select id="tr-dest"></select>
-            <input type="number" id="tr-val" placeholder="Valor">
-            <textarea id="tr-msg" placeholder="Descrição da transferência"></textarea>
-            <button onclick="app.transferirDinheiro()" class="btn-gold">Confirmar Envio</button>
+            <div class="subtle">Você pode enviar valores e também repassar itens do seu inventário para outros jogadores.</div>
+            <div id="transfer-feedback" class="status-banner hidden"></div>
+
+            <div class="grid-2" style="margin-top:15px">
+                <div class="card left" style="margin-bottom:0">
+                    <strong>Enviar dinheiro</strong>
+                    <select id="tr-dest"></select>
+                    <input type="number" id="tr-val" placeholder="Valor">
+                    <textarea id="tr-msg" placeholder="Descrição da transferência"></textarea>
+                    <button onclick="app.transferirDinheiro()" class="btn-gold">Confirmar Envio</button>
+                </div>
+
+                <div class="card left" style="margin-bottom:0">
+                    <strong>Enviar item</strong>
+                    <select id="tr-item"></select>
+                    <textarea id="tr-item-msg" placeholder="Recado junto do item (opcional)"></textarea>
+                    <button onclick="app.transferirItem()" class="btn-sec">Enviar Item</button>
+                    <div class="subtle" style="margin-top:8px">O item sai do inventário de origem e entra no inventário do destinatário com imagem, descrição, validade e tag preservadas.</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <div id="tab-mercado" class="tab-content hidden">
         <div class="card left">
             <h2 class="tab-title">Mercado de Itens</h2>
-            <div class="subtle">Preço, imagem, descrição, estoque e validade só começam após a compra.</div>
+            <div class="subtle">Preço, descrição, validade e estoque continuam funcionando. Agora você também pode ampliar as imagens e navegar entre várias fotos do mesmo item.</div>
+            <div id="market-feedback" class="status-banner hidden"></div>
             <div id="market-list" class="grid"></div>
+        </div>
+    </div>
+
+    <div id="tab-clan" class="tab-content hidden">
+        <div class="card left">
+            <h2 class="tab-title">Mercado Restrito</h2>
+            <div class="subtle">Itens discretos, disponibilidade seletiva e acesso liberado somente para quem a reitoria escolher.</div>
+            <div id="clan-lock" class="status-banner warning lock-note hidden"></div>
+            <div id="clan-feedback" class="status-banner hidden"></div>
+            <div id="clan-market-list" class="grid"></div>
         </div>
     </div>
 
@@ -637,19 +860,41 @@
                 <h3>Gestão do Mercado</h3>
                 <input type="text" id="adm-m-n" placeholder="Nome">
                 <input type="number" id="adm-m-p" placeholder="Valor">
-                <input type="text" id="adm-m-i" placeholder="Link da imagem">
+                <textarea id="adm-m-imgs" placeholder="Links das imagens, um por linha"></textarea>
                 <textarea id="adm-m-d" placeholder="Descrição"></textarea>
                 <input type="number" id="adm-m-q" placeholder="Quantidade disponível">
                 <input type="number" id="adm-m-v" placeholder="Validade em semanas">
                 <input type="text" id="adm-m-t" placeholder="Tag">
                 <input type="color" id="adm-m-c" value="#C0C0C0">
                 <div class="subtle" style="font-size:10px; margin-top:4px">
-                    Dica: cole o link direto da imagem. Exemplo: imagem .jpg, .png ou .webp.
+                    Dica: cole um ou vários links diretos de imagem, um por linha. Itens antigos com imagem única continuam compatíveis.
                 </div>
                 <div class="row-actions">
                     <button onclick="app.admAddMarket()">Adicionar Item</button>
                 </div>
                 <div id="adm-market-list"></div>
+
+                <div class="hr"></div>
+
+                <h3>Mercado Restrito</h3>
+                <input type="text" id="adm-cm-n" placeholder="Nome">
+                <input type="number" id="adm-cm-p" placeholder="Valor">
+                <textarea id="adm-cm-imgs" placeholder="Links das imagens, um por linha"></textarea>
+                <textarea id="adm-cm-d" placeholder="Descrição"></textarea>
+                <input type="number" id="adm-cm-q" placeholder="Quantidade disponível">
+                <input type="number" id="adm-cm-v" placeholder="Validade em semanas">
+                <input type="text" id="adm-cm-t" placeholder="Tag visual do item">
+                <input type="color" id="adm-cm-c" value="#D4AF37">
+                <textarea id="adm-cm-tags" placeholder="Tags com acesso, uma por linha (ex.: círculo interno)"></textarea>
+                <div class="subtle" style="font-size:10px; margin-top:4px">
+                    Você pode liberar por tags, por jogadores específicos, ou pelos dois ao mesmo tempo.
+                </div>
+                <strong style="display:block; margin-top:10px">Jogadores com acesso específico</strong>
+                <div id="adm-cm-users" class="adm-checklist"></div>
+                <div class="row-actions">
+                    <button onclick="app.admAddClandestineMarket()" class="btn-gold">Adicionar Item Restrito</button>
+                </div>
+                <div id="adm-clan-market-list"></div>
             </div>
         </div>
 
@@ -725,6 +970,15 @@
             <div id="pub-mural"></div>
         </div>
     </div>
+
+<div id="image-modal" class="modal" onclick="app.handleImageModalBackdrop(event)">
+    <div class="card left image-modal-body">
+        <div class="row-actions" style="justify-content:flex-end">
+            <button class="btn-sec small-btn" onclick="app.closeModal('image-modal')">Fechar</button>
+        </div>
+        <img id="image-modal-img" class="image-modal-image" src="">
+        <div id="image-modal-caption" class="subtle" style="margin-top:10px"></div>
+    </div>
 </div>
 
 <script type="module">
@@ -770,6 +1024,195 @@
     let playerStreamsBound = false;
     let profileMuralUnsub = null;
     let admSelectedPlayerId = "";
+
+    let playersCache = {};
+    let clanStoreCache = {};
+
+    const jsStr = (s = "") => JSON.stringify(String(s ?? ""));
+    const normalizeMultiline = (value = "") => String(value)
+        .split(/\n|,/)
+        .map(v => v.trim())
+        .filter(Boolean);
+
+    const getItemImages = (item = {}) => {
+        const imgs = Array.isArray(item.imgs)
+            ? item.imgs
+            : item.imgs && typeof item.imgs === "object"
+                ? Object.values(item.imgs)
+                : [];
+
+        const cleaned = imgs.map(v => String(v || "").trim()).filter(Boolean);
+        if (cleaned.length) return cleaned;
+        const single = String(item.img || "").trim();
+        return single ? [single] : [];
+    };
+
+    const buildImagePayload = (raw = "") => {
+        const imgs = normalizeMultiline(raw);
+        return {
+            img: imgs[0] || "",
+            imgs
+        };
+    };
+
+    const getUserTagTexts = (user = {}) => Object.values(user.tags || {})
+        .map(t => String(t?.texto || t?.nome || "").trim().toLowerCase())
+        .filter(Boolean);
+
+    const getAccessTags = (item = {}) => {
+        if (Array.isArray(item.accessTags)) {
+            return item.accessTags.map(v => String(v || "").trim().toLowerCase()).filter(Boolean);
+        }
+
+        if (item.accessTags && typeof item.accessTags === "object") {
+            return Object.values(item.accessTags)
+                .map(v => String(v?.texto || v?.nome || v || "").trim().toLowerCase())
+                .filter(Boolean);
+        }
+
+        return [];
+    };
+
+    const getAllowedUsers = (item = {}) => {
+        if (!item.allowedUsers) return {};
+        if (Array.isArray(item.allowedUsers)) {
+            return item.allowedUsers.reduce((acc, uid) => {
+                if (uid) acc[uid] = true;
+                return acc;
+            }, {});
+        }
+        if (typeof item.allowedUsers === "object") return item.allowedUsers;
+        return {};
+    };
+
+    const userHasClandestineAccess = (user, item) => {
+        if (!user || !item) return false;
+        if (user.role === 'reitora' || user.isAdmin) return true;
+        if (item.visibleToAllClandestine) return true;
+
+        const allowedUsers = getAllowedUsers(item);
+        if (user.id && allowedUsers[user.id]) return true;
+
+        const userTags = getUserTagTexts(user);
+        const accessTags = getAccessTags(item);
+
+        return accessTags.some(tag => userTags.includes(tag));
+    };
+
+    const canSeeClandestineTab = () => {
+        if (uLog?.role === 'reitora' || uLog?.isAdmin) return true;
+        return Object.values(clanStoreCache || {}).some(item => userHasClandestineAccess(uLog, item));
+    };
+
+    const updateClandestineVisibility = () => {
+        const btn = document.getElementById('btn-clan');
+        const lock = document.getElementById('clan-lock');
+        if (!btn) return;
+
+        const allowed = canSeeClandestineTab();
+        btn.classList.toggle('hidden', !allowed);
+
+        if (lock) {
+            if (allowed) {
+                lock.classList.add('hidden');
+                lock.textContent = '';
+            } else {
+                lock.className = 'status-banner warning lock-note';
+                lock.textContent = 'Acesso não liberado para o mercado restrito.';
+                lock.classList.remove('hidden');
+            }
+        }
+    };
+
+    const setInlineFeedback = (id, msg, variant = 'good') => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.className = `status-banner ${variant}`;
+        el.textContent = msg;
+        el.classList.remove('hidden');
+    };
+
+    const clearInlineFeedback = (id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.add('hidden');
+        el.textContent = '';
+    };
+
+    function updateFinanceSimulator() {
+        const valor = Number(document.getElementById('fin-req-valor')?.value || 0);
+        const parcelas = Math.max(1, Number(document.getElementById('fin-req-parcelas')?.value || 1));
+        const total = Math.round(valor * 1.2);
+        const porParcela = parcelas > 0 ? Math.round(total / parcelas) : total;
+
+        const pairs = [
+            ['fin-est-valor', money(valor)],
+            ['fin-est-total', money(total)],
+            ['fin-est-parcelas', String(parcelas)],
+            ['fin-est-parcela', money(porParcela)]
+        ];
+
+        pairs.forEach(([id, value]) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        });
+    }
+
+    function updateFinanceStatus(d) {
+        const saldo = Number(d?.saldo || 0);
+        const divida = Number(d?.divida || 0);
+
+        let chipClass = 'good';
+        let chipLabel = 'equilíbrio financeiro';
+        let copy = 'Seu perfil ainda não chamou atenção do setor financeiro.';
+        let statusLabel = 'estável';
+
+        if (divida > 0 && saldo >= 0) {
+            chipClass = 'warning';
+            chipLabel = 'atenção bancária';
+            copy = 'Você está operando com dívida ativa. O campus ainda tolera, mas observa.';
+            statusLabel = 'atenção';
+        }
+
+        if (saldo < 0 || divida > saldo * 2 && divida > 0) {
+            chipClass = 'danger';
+            chipLabel = 'endividamento alto';
+            copy = 'A conta está em terreno sensível. Vale amortizar ou renegociar logo.';
+            statusLabel = 'crítico';
+        }
+
+        const chip = document.getElementById('fin-health-chip');
+        if (chip) {
+            chip.className = `finance-chip ${chipClass}`;
+            chip.textContent = chipLabel;
+        }
+
+        const copyEl = document.getElementById('fin-health-copy');
+        if (copyEl) copyEl.textContent = copy;
+
+        const statusEl = document.getElementById('fin-status-label');
+        if (statusEl) statusEl.textContent = statusLabel;
+
+        const saldoEl = document.getElementById('fin-saldo-copy');
+        if (saldoEl) saldoEl.textContent = money(saldo);
+
+        const debtCopy = document.getElementById('fin-debt-copy');
+        if (debtCopy) debtCopy.textContent = divida > 0
+            ? 'Sua dívida está ativa. Você pode amortizar, quitar ou alongar parcelas.'
+            : 'Sem dívida relevante no momento. Seu histórico financeiro parece elegante.';
+    }
+
+    function renderClandestineUserChecks(playersObj) {
+        const box = document.getElementById('adm-cm-users');
+        if (!box) return;
+        box.innerHTML = Object.entries(playersObj || {}).map(([uid, p]) => `
+            <label class="adm-check-item">
+                <input type="checkbox" class="adm-clan-user" value="${uid}">
+                <span>${esc(p.nome || 'Sem nome')}</span>
+            </label>
+        `).join('') || `<div class="subtle">Nenhum jogador disponível.</div>`;
+    };
+
 
     const esc = (s = "") => String(s)
         .replaceAll("&", "&amp;")
@@ -909,14 +1352,27 @@
 
     function renderInventory(invObj) {
         if (!invObj || !Object.keys(invObj).length) return `<div class="subtle">Nenhum item.</div>`;
-        return Object.entries(invObj).map(([id, item]) => `
-            <div class="list-item">
-                <strong>${esc(item.nome || 'Item')}</strong><br>
-                <span class="subtle">${esc(item.descricao || '')}</span><br>
-                <span class="pill" style="background: rgba(192,192,192,0.18)">${esc(item.tag || 'Inventário')}</span>
-                <div class="subtle">Validade: ${daysLeft(item.expiresAt)}</div>
-            </div>
-        `).join("");
+        return Object.entries(invObj).map(([id, item]) => {
+            const images = getItemImages(item);
+            const mainImg = images[0] || '';
+            return `
+                <div class="list-item">
+                    ${mainImg ? `<img src="${esc(mainImg)}" alt="" style="width:100%; height:100px; object-fit:cover; border-radius:10px; margin-bottom:10px; cursor:pointer" onclick='app.openImageModalById(${jsStr(`inv-img-${id}`)}, ${jsStr(item.nome || 'Item')})' id="inv-img-${id}">` : ''}
+                    <strong>${esc(item.nome || 'Item')}</strong><br>
+                    <span class="subtle">${esc(item.descricao || '')}</span><br>
+                    <span class="pill" style="background: rgba(192,192,192,0.18)">${esc(item.tag || 'Inventário')}</span>
+                    <div class="subtle">Validade: ${daysLeft(item.expiresAt)}</div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function renderInventoryTransferOptions(invObj) {
+        const base = `<option value="">Selecionar item do inventário...</option>`;
+        if (!invObj || !Object.keys(invObj).length) {
+            return base + `<option value="" disabled>Sem itens disponíveis</option>`;
+        }
+        return base + Object.entries(invObj).map(([id, item]) => `<option value="${id}">${esc(item.nome || 'Item')} · ${esc(item.tag || 'Inventário')}</option>`).join('');
     }
 
     function renderHistory(histObj) {
@@ -930,20 +1386,41 @@
         `).join("");
     }
 
+    
     function renderLoans(loansObj) {
-        if (!loansObj || !Object.keys(loansObj).length) return "Nenhum empréstimo ativo.";
-        return Object.entries(loansObj).map(([id, l]) => `
-            <div class="list-item mini">
-                <strong>${esc(l.titulo || 'Empréstimo')}</strong><br>
-                Valor: ${money(l.valor || 0)}<br>
-                Restante: ${money(l.restante || 0)}<br>
-                Parcelas: ${l.parcelas || 1}<br>
-                Status: ${esc(l.status || 'ativo')}
-            </div>
-        `).join("");
+        if (!loansObj || !Object.keys(loansObj).length) {
+            const nextEl = document.getElementById('fin-next-installment');
+            if (nextEl) nextEl.textContent = money(0);
+            return "Nenhum empréstimo ativo.";
+        }
+
+        const rows = Object.entries(loansObj).map(([id, l]) => {
+            const parcelas = Math.max(1, Number(l.parcelas || 1));
+            const restante = Number(l.restante || 0);
+            const parcelaPrevista = Math.round(restante / parcelas);
+
+            return `
+                <div class="list-item mini">
+                    <strong>${esc(l.titulo || 'Empréstimo')}</strong><br>
+                    Valor inicial: ${money(l.valor || 0)}<br>
+                    Restante: ${money(restante)}<br>
+                    Parcelas: ${parcelas}<br>
+                    Parcela estimada: ${money(parcelaPrevista)}<br>
+                    Status: <span class="pill">${esc(l.status || 'ativo')}</span><br>
+                    ${l.ts ? `<span class="subtle">${new Date(l.ts).toLocaleString("pt-BR")}</span>` : ""}
+                </div>
+            `;
+        }).join("");
+
+        const firstLoan = Object.values(loansObj)[0];
+        const nextInstallment = Math.round(Number(firstLoan?.restante || 0) / Math.max(1, Number(firstLoan?.parcelas || 1)));
+        const nextEl = document.getElementById('fin-next-installment');
+        if (nextEl) nextEl.textContent = money(nextInstallment);
+
+        return rows;
     }
 
-    function renderFixeds(fixosObj) {
+    function renderFixeds(fixosObj) {(fixosObj) {
         if (!fixosObj || !Object.keys(fixosObj).length) return `<div class="subtle">Sem fixos cadastrados.</div>`;
         return Object.entries(fixosObj).map(([id, f]) => `
             <div class="list-item mini">
@@ -1031,24 +1508,77 @@
         }).join("");
     }
 
-    function renderMarket(itemsObj) {
-        if (!itemsObj || !Object.keys(itemsObj).length) return `<div class="subtle">Nenhum item no mercado.</div>`;
-        return Object.entries(itemsObj).map(([id, i]) => `
-            <div class="card left" style="margin-bottom:0">
-                ${i.img ? `<img src="${esc(i.img)}" alt="" style="width:100%; height:100px; object-fit:cover; border-radius:10px">` : ""}
-                <h3 style="margin-bottom:5px">${esc(i.nome || '')}</h3>
-                <div class="subtle">${esc(i.descricao || '')}</div>
-                <div class="hr"></div>
-                <div><strong>${money(i.preco || 0)}</strong></div>
-                <div class="subtle">Estoque: ${i.estoque ?? 0}</div>
-                <div class="subtle">Validade: ${i.duracao ?? 0} semana(s)</div>
-                ${i.tag ? `<span class="tag" style="background:${i.cor || '#C0C0C0'}">${esc(i.tag)}</span>` : ""}
-                <button class="btn-gold" onclick="app.buyItem('${id}')">Comprar</button>
-            </div>
-        `).join("");
+    
+    function renderStore(itemsObj, kind = 'normal') {
+        let entries = Object.entries(itemsObj || {});
+
+        if (kind === 'clan') {
+            entries = entries.filter(([, item]) => userHasClandestineAccess(uLog, item));
+        }
+
+        if (!entries.length) {
+            if (kind === 'clan' && !canSeeClandestineTab()) {
+                return `<div class="subtle">Sem acesso liberado para este catálogo.</div>`;
+            }
+            return `<div class="subtle">Nenhum item no mercado.</div>`;
+        }
+
+        return entries.map(([id, i]) => {
+            const images = getItemImages(i);
+            const cover = images[0] || '';
+            const mainId = `${kind}-main-${id}`;
+            const buyFn = kind === 'clan' ? 'buyClandestineItem' : 'buyItem';
+
+            const thumbs = images.length > 1
+                ? `<div class="thumb-row">
+                    ${images.map((img, idx) => `
+                        <button class="thumb-btn ${idx === 0 ? 'active' : ''}" type="button" onclick='app.swapItemImage(${jsStr(mainId)}, ${jsStr(img)}, this)'>
+                            <img src="${esc(img)}" alt="Miniatura ${idx + 1}">
+                        </button>
+                    `).join('')}
+                </div>`
+                : '';
+
+            return `
+                <div class="card left" style="margin-bottom:0">
+                    ${cover ? `
+                        <div class="market-image-main-wrap">
+                            <img
+                                id="${mainId}"
+                                src="${esc(cover)}"
+                                alt="${esc(i.nome || 'Item')}"
+                                class="market-image-main"
+                                onclick='app.openImageModalById(${jsStr(mainId)}, ${jsStr(i.nome || 'Item')})'
+                            >
+                            <div class="market-image-hint">clique para ampliar</div>
+                        </div>
+                    ` : ''}
+                    ${thumbs}
+                    <h3 style="margin-bottom:5px">${esc(i.nome || '')}</h3>
+                    <div class="subtle">${esc(i.descricao || '')}</div>
+                    <div class="hr"></div>
+                    <div><strong>${money(i.preco || 0)}</strong></div>
+                    <div class="subtle">Estoque: ${i.estoque ?? 0}</div>
+                    <div class="subtle">Validade: ${i.duracao ?? 0} semana(s)</div>
+                    ${i.tag ? `<span class="tag" style="background:${i.cor || '#C0C0C0'}">${esc(i.tag)}</span>` : ""}
+                    ${kind === 'clan'
+                        ? `<div class="market-access-note">Acesso filtrado pela reitoria.</div>`
+                        : ``}
+                    <button class="btn-gold" onclick="app.${buyFn}('${id}')">Comprar</button>
+                </div>
+            `;
+        }).join("");
     }
 
-    function renderRanking(playersObj) {
+    function renderMarket(itemsObj) {
+        return renderStore(itemsObj, 'normal');
+    }
+
+    function renderClandestineMarket(itemsObj) {
+        return renderStore(itemsObj, 'clan');
+    }
+
+    function renderRanking(playersObj) {(playersObj) {
         if (!playersObj) return `<div class="subtle">Sem jogadores.</div>`;
         const arr = Object.entries(playersObj).map(([id, p]) => ({ id, ...p }))
             .sort((a, b) => (b.saldo || 0) - (a.saldo || 0));
@@ -1192,7 +1722,9 @@
     function renderGlobalData() {
         listen(ref(db, 'jogadores'), snap => {
             const players = snap.val() || {};
+            playersCache = players;
             fillAdmPlayers(players);
+            renderClandestineUserChecks(players);
 
             const destSelect = document.getElementById('tr-dest');
             if (destSelect) {
@@ -1205,6 +1737,8 @@
 
             const rankEl = document.getElementById('rank-list');
             if (rankEl) rankEl.innerHTML = renderRanking(players);
+
+            updateClandestineVisibility();
         });
 
         listen(ref(db, 'editorial'), snap => {
@@ -1229,21 +1763,46 @@
         });
 
         listen(ref(db, 'loja'), snap => {
-            const marketEl = document.getElementById('market-list');
-            if (marketEl) marketEl.innerHTML = renderMarket(snap.val());
-
             const items = snap.val() || {};
+            const marketEl = document.getElementById('market-list');
+            if (marketEl) marketEl.innerHTML = renderMarket(items);
+
             const admMarket = document.getElementById('adm-market-list');
             if (admMarket) {
                 admMarket.innerHTML = Object.entries(items).reverse().map(([id, i]) => `
                     <div class="list-item">
                         <strong>${esc(i.nome || '')}</strong> · ${money(i.preco || 0)}<br>
                         <span class="subtle">${esc(i.descricao || '')}</span>
+                        <div class="subtle">Imagens: ${getItemImages(i).length || 0}</div>
                         <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
                             <button class="btn-red small-btn" onclick="app.deleteMarketItem('${id}')">Excluir</button>
                         </div>
                     </div>
                 `).join("");
+            }
+        });
+
+        listen(ref(db, 'loja_clandestina'), snap => {
+            const items = snap.val() || {};
+            clanStoreCache = items;
+            updateClandestineVisibility();
+
+            const clanEl = document.getElementById('clan-market-list');
+            if (clanEl) clanEl.innerHTML = renderClandestineMarket(items);
+
+            const admClan = document.getElementById('adm-clan-market-list');
+            if (admClan) {
+                admClan.innerHTML = Object.entries(items).reverse().map(([id, i]) => `
+                    <div class="list-item">
+                        <strong>${esc(i.nome || '')}</strong> · ${money(i.preco || 0)}<br>
+                        <span class="subtle">${esc(i.descricao || '')}</span><br>
+                        <span class="subtle">Tags de acesso: ${getAccessTags(i).join(', ') || 'nenhuma'}</span><br>
+                        <span class="subtle">Usuários liberados: ${Object.keys(getAllowedUsers(i)).length}</span>
+                        <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                            <button class="btn-red small-btn" onclick="app.deleteClandestineMarketItem('${id}')">Excluir</button>
+                        </div>
+                    </div>
+                `).join("") || `<div class="subtle">Nenhum item restrito cadastrado.</div>`;
             }
         });
 
@@ -1339,8 +1898,12 @@
         });
 
         listen(ref(db, `jogadores/${uid}/mochila`), s => {
+            const inventory = s.val() || {};
             const box = document.getElementById('u-inv');
-            if (box) box.innerHTML = renderInventory(s.val());
+            if (box) box.innerHTML = renderInventory(inventory);
+
+            const itemSelect = document.getElementById('tr-item');
+            if (itemSelect) itemSelect.innerHTML = renderInventoryTransferOptions(inventory);
         });
 
         listen(ref(db, `jogadores/${uid}/emprestimos`), s => {
@@ -1361,6 +1924,9 @@
         document.getElementById('u-divida-mini').innerText = money(d.divida || 0);
         document.getElementById('u-rep-mini').innerText = reputationMood(d);
         setStatusBanner(d);
+        updateFinanceStatus(d);
+        updateFinanceSimulator();
+        updateClandestineVisibility();
 
         if (d.role === 'reitora') document.getElementById('btn-adm').style.display = 'inline-block';
         else document.getElementById('btn-adm').style.display = 'none';
@@ -1414,6 +1980,7 @@
             document.getElementById('auth-screen').classList.remove('hidden');
             document.getElementById('app-screen').classList.add('hidden');
             document.getElementById('main-nav').style.display = 'none';
+            document.getElementById('btn-clan')?.classList.add('hidden');
         }
     });
 
@@ -1424,6 +1991,11 @@
         },
 
         showTab: (id, btn) => {
+            if (id === 'tab-clan' && !canSeeClandestineTab()) {
+                setInlineFeedback('clan-feedback', 'Seu acesso ao mercado restrito ainda não foi liberado.', 'warning');
+                return;
+            }
+
             document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.remove('hidden');
@@ -1440,6 +2012,44 @@
                     profileMuralUnsub();
                     profileMuralUnsub = null;
                 }
+            }
+
+            if (id === 'image-modal') {
+                const img = document.getElementById('image-modal-img');
+                const cap = document.getElementById('image-modal-caption');
+                if (img) img.src = '';
+                if (cap) cap.textContent = '';
+            }
+        },
+
+        handleImageModalBackdrop: (event) => {
+            if (event.target?.id === 'image-modal') {
+                app.closeModal('image-modal');
+            }
+        },
+
+        openImageModal: (src, caption = '') => {
+            const img = document.getElementById('image-modal-img');
+            const cap = document.getElementById('image-modal-caption');
+            if (!img) return;
+            img.src = src || '';
+            cap.textContent = caption || '';
+            document.getElementById('image-modal').style.display = 'flex';
+        },
+
+        openImageModalById: (imgId, caption = '') => {
+            const img = document.getElementById(imgId);
+            if (!img) return;
+            app.openImageModal(img.src, caption);
+        },
+
+        swapItemImage: (imgId, src, thumbBtn = null) => {
+            const img = document.getElementById(imgId);
+            if (img) img.src = src || '';
+            if (thumbBtn) {
+                const row = thumbBtn.closest('.thumb-row');
+                row?.querySelectorAll('.thumb-btn').forEach(btn => btn.classList.remove('active'));
+                thumbBtn.classList.add('active');
             }
         },
 
@@ -1567,14 +2177,81 @@
 
             document.getElementById('tr-val').value = '';
             document.getElementById('tr-msg').value = '';
-            alert("Transferência concluída.");
+            setInlineFeedback('transfer-feedback', `Transferência concluída para ${d.nome}.`, 'good');
         },
+
+        transferirItem: async () => {
+            const dId = document.getElementById('tr-dest').value;
+            const itemId = document.getElementById('tr-item').value;
+            const msg = document.getElementById('tr-item-msg').value.trim();
+
+            if (!uLog || !dId || !itemId) {
+                setInlineFeedback('transfer-feedback', 'Escolha destinatário e item para concluir o envio.', 'warning');
+                return;
+            }
+            if (dId === uLog.id) {
+                setInlineFeedback('transfer-feedback', 'Não dá para enviar um item para si mesmo.', 'warning');
+                return;
+            }
+
+            const [destSnap, itemSnap] = await Promise.all([
+                get(ref(db, `jogadores/${dId}`)),
+                get(ref(db, `jogadores/${uLog.id}/mochila/${itemId}`))
+            ]);
+
+            const d = destSnap.val();
+            const item = itemSnap.val();
+
+            if (!d) {
+                setInlineFeedback('transfer-feedback', 'Jogador inválido.', 'danger');
+                return;
+            }
+
+            if (!item) {
+                setInlineFeedback('transfer-feedback', 'Esse item não está mais no seu inventário.', 'warning');
+                return;
+            }
+
+            const clonedItem = {
+                ...item,
+                img: getItemImages(item)[0] || item.img || '',
+                imgs: getItemImages(item),
+                transferredAt: Date.now(),
+                transferredBy: uLog.nome || ''
+            };
+
+            const newItemRef = push(ref(db, `jogadores/${dId}/mochila`));
+            await set(newItemRef, clonedItem);
+            await remove(ref(db, `jogadores/${uLog.id}/mochila/${itemId}`));
+
+            await pushHistory(uLog.id, 'item enviado', 0, `${item.nome || 'Item'} enviado para ${d.nome}${msg ? ` · ${msg}` : ''}`);
+            await pushHistory(dId, 'item recebido', 0, `${item.nome || 'Item'} recebido de ${uLog.nome}${msg ? ` · ${msg}` : ''}`);
+
+            await pushNotif(dId, `📦 ${uLog.nome} enviou o item ${item.nome || 'Item'} para você.${msg ? ' Recado: ' + msg : ''}`);
+            await pushAudit({
+                tipo: 'transferencia_item',
+                de: uLog.nome,
+                para: d.nome,
+                item: item.nome || 'Item',
+                msg: msg || 'Item transferido entre jogadores'
+            });
+
+            document.getElementById('tr-item').value = '';
+            document.getElementById('tr-item-msg').value = '';
+            setInlineFeedback('transfer-feedback', `Item enviado para ${d.nome}: ${item.nome || 'Item'}.`, 'good');
+        },
+
 
         requestLoan: async () => {
             if (!uLog) return;
-            const valor = parseInt(prompt("Valor do empréstimo:"));
-            const parcelas = parseInt(prompt("Em quantas parcelas? (mínimo 1)")) || 1;
-            if (!valor || valor <= 0) return;
+
+            const valor = parseInt(document.getElementById('fin-req-valor')?.value) || parseInt(prompt("Valor do empréstimo:"));
+            const parcelas = Math.max(1, parseInt(document.getElementById('fin-req-parcelas')?.value) || parseInt(prompt("Em quantas parcelas? (mínimo 1)")) || 1);
+
+            if (!valor || valor <= 0) {
+                setInlineFeedback('fin-feedback', 'Informe um valor válido para o empréstimo.', 'warning');
+                return;
+            }
 
             const loanId = push(ref(db, `emprestimos_pendentes`)).key;
             await set(ref(db, `emprestimos_pendentes/${loanId}`), {
@@ -1596,13 +2273,22 @@
                 msg: 'Pedido de empréstimo enviado para aprovação'
             });
 
-            alert("Pedido enviado para aprovação.");
+            document.getElementById('fin-req-valor').value = '';
+            document.getElementById('fin-req-parcelas').value = 1;
+            updateFinanceSimulator();
+            setInlineFeedback('fin-feedback', 'Pedido enviado para aprovação da reitoria.', 'good');
         },
 
-        payDebt: async () => {
+        payDebt: async (forcedAmount = null) => {
             if (!uLog) return;
-            const pago = parseInt(prompt(`Quanto deseja amortizar? Dívida atual: ${money(uLog.divida || 0)}`));
-            if (!pago || pago <= 0) return;
+            const fieldAmount = parseInt(document.getElementById('fin-pay-amount')?.value) || 0;
+            const pago = Number(forcedAmount || fieldAmount || parseInt(prompt(`Quanto deseja amortizar? Dívida atual: ${money(uLog.divida || 0)}`)));
+
+            if (!pago || pago <= 0) {
+                setInlineFeedback('fin-feedback', 'Informe um valor válido para amortizar.', 'warning');
+                return;
+            }
+
             const saldo = Number(uLog.saldo || 0);
             const divida = Number(uLog.divida || 0);
             const efetivo = Math.min(pago, saldo, divida);
@@ -1633,13 +2319,32 @@
                 msg: 'Amortização realizada'
             });
 
-            alert("Dívida amortizada.");
+            if (document.getElementById('fin-pay-amount')) {
+                document.getElementById('fin-pay-amount').value = '';
+            }
+
+            setInlineFeedback('fin-feedback', `Amortização registrada em ${money(efetivo)}.`, 'good');
+        },
+
+        quitAllDebt: async () => {
+            if (!uLog) return;
+            const saldo = Number(uLog.saldo || 0);
+            const divida = Number(uLog.divida || 0);
+            const quitacao = Math.min(saldo, divida);
+            if (quitacao <= 0) {
+                setInlineFeedback('fin-feedback', 'Não há valor disponível para quitar a dívida agora.', 'warning');
+                return;
+            }
+            await app.payDebt(quitacao);
         },
 
         negotiateDebt: async () => {
             if (!uLog) return;
-            const extra = parseInt(prompt("Parcelas extras para alongar o pagamento:")) || 0;
-            if (extra <= 0) return;
+            const extra = parseInt(document.getElementById('fin-extra-parcelas')?.value) || parseInt(prompt("Parcelas extras para alongar o pagamento:")) || 0;
+            if (extra <= 0) {
+                setInlineFeedback('fin-feedback', 'Informe quantas parcelas extras deseja adicionar.', 'warning');
+                return;
+            }
 
             const snap = await get(ref(db, `jogadores/${uLog.id}/emprestimos`));
             const loans = snap.val() || {};
@@ -1659,7 +2364,11 @@
                 msg: `Parcelamento ajustado em +${extra} parcelas`
             });
 
-            alert("Empréstimo renegociado.");
+            if (document.getElementById('fin-extra-parcelas')) {
+                document.getElementById('fin-extra-parcelas').value = '';
+            }
+
+            setInlineFeedback('fin-feedback', `Parcelamento atualizado para ${loan.parcelas} parcelas.`, 'good');
         },
 
         buyItem: async (id) => {
@@ -1675,13 +2384,15 @@
 
             const expiresAt = Date.now() + (Number(item.duracao || 0) * 7 * 24 * 60 * 60 * 1000);
             const invId = push(ref(db, `jogadores/${uLog.id}/mochila`)).key;
+            const images = getItemImages(item);
 
             await update(ref(db, `jogadores/${uLog.id}`), { saldo: Number(uLog.saldo || 0) - price });
             await update(ref(db, `loja/${id}`), { estoque: stock - 1 });
             await set(ref(db, `jogadores/${uLog.id}/mochila/${invId}`), {
                 nome: item.nome,
                 descricao: item.descricao || '',
-                img: item.img || '',
+                img: images[0] || item.img || '',
+                imgs: images,
                 tag: item.tag || 'Mercado',
                 cor: item.cor || '#C0C0C0',
                 expiresAt
@@ -1697,7 +2408,53 @@
                 msg: 'Compra de item no mercado'
             });
 
-            alert("Compra realizada.");
+            setInlineFeedback('market-feedback', `Compra realizada: ${item.nome}.`, 'good');
+        },
+
+        buyClandestineItem: async (id) => {
+            if (!uLog) return;
+
+            const s = await get(ref(db, `loja_clandestina/${id}`));
+            const item = s.val();
+            if (!item) return;
+
+            if (!userHasClandestineAccess(uLog, item)) {
+                setInlineFeedback('clan-feedback', 'A reitoria não liberou esse item para o seu perfil.', 'warning');
+                return;
+            }
+
+            const stock = Number(item.estoque || 0);
+            const price = Number(item.preco || 0);
+            if (stock <= 0) return alert("Item esgotado.");
+            if (Number(uLog.saldo || 0) < price) return alert("Saldo insuficiente.");
+
+            const expiresAt = Date.now() + (Number(item.duracao || 0) * 7 * 24 * 60 * 60 * 1000);
+            const invId = push(ref(db, `jogadores/${uLog.id}/mochila`)).key;
+            const images = getItemImages(item);
+
+            await update(ref(db, `jogadores/${uLog.id}`), { saldo: Number(uLog.saldo || 0) - price });
+            await update(ref(db, `loja_clandestina/${id}`), { estoque: stock - 1 });
+            await set(ref(db, `jogadores/${uLog.id}/mochila/${invId}`), {
+                nome: item.nome,
+                descricao: item.descricao || '',
+                img: images[0] || item.img || '',
+                imgs: images,
+                tag: item.tag || 'Restrito',
+                cor: item.cor || '#D4AF37',
+                expiresAt
+            });
+
+            await pushHistory(uLog.id, 'compra restrita', -price, `Compra de ${item.nome}`);
+            await pushNotif(uLog.id, `🕶️ Você comprou ${item.nome} no mercado restrito.`);
+            await pushAudit({
+                tipo: 'compra_clandestina',
+                user: uLog.nome,
+                item: item.nome,
+                valor: price,
+                msg: 'Compra de item no mercado restrito'
+            });
+
+            setInlineFeedback('clan-feedback', `Compra discreta concluída: ${item.nome}.`, 'good');
         },
 
         openProfile: async (id) => {
@@ -2168,18 +2925,19 @@
             renderAdmLists();
         },
 
+
         admAddMarket: async () => {
             const nome = document.getElementById('adm-m-n').value.trim();
             const preco = parseInt(document.getElementById('adm-m-p').value) || 0;
-            const img = document.getElementById('adm-m-i').value.trim();
             const descricao = document.getElementById('adm-m-d').value.trim();
             const estoque = parseInt(document.getElementById('adm-m-q').value) || 0;
             const duracao = parseInt(document.getElementById('adm-m-v').value) || 0;
             const tag = document.getElementById('adm-m-t').value.trim();
             const cor = document.getElementById('adm-m-c').value;
+            const imagePayload = buildImagePayload(document.getElementById('adm-m-imgs').value);
             if (!nome) return;
 
-            await push(ref(db, 'loja'), { nome, preco, img, descricao, estoque, duracao, tag, cor });
+            await push(ref(db, 'loja'), { nome, preco, descricao, estoque, duracao, tag, cor, ...imagePayload });
 
             const notifMessages = [
                 "🚨 Novo item chegou no mercado. Corre antes que vire história!",
@@ -2206,7 +2964,60 @@
                 msg: 'Item criado no mercado'
             });
 
+            ['adm-m-n','adm-m-p','adm-m-imgs','adm-m-d','adm-m-q','adm-m-v','adm-m-t'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+
             alert("Item criado e notificações enviadas.");
+        },
+
+        admAddClandestineMarket: async () => {
+            const nome = document.getElementById('adm-cm-n').value.trim();
+            const preco = parseInt(document.getElementById('adm-cm-p').value) || 0;
+            const descricao = document.getElementById('adm-cm-d').value.trim();
+            const estoque = parseInt(document.getElementById('adm-cm-q').value) || 0;
+            const duracao = parseInt(document.getElementById('adm-cm-v').value) || 0;
+            const tag = document.getElementById('adm-cm-t').value.trim();
+            const cor = document.getElementById('adm-cm-c').value;
+            const accessTags = normalizeMultiline(document.getElementById('adm-cm-tags').value)
+                .map(v => v.toLowerCase());
+            const allowedUsers = {};
+            document.querySelectorAll('.adm-clan-user:checked').forEach(box => {
+                if (box.value) allowedUsers[box.value] = true;
+            });
+            const imagePayload = buildImagePayload(document.getElementById('adm-cm-imgs').value);
+
+            if (!nome) return;
+
+            await push(ref(db, 'loja_clandestina'), {
+                nome,
+                preco,
+                descricao,
+                estoque,
+                duracao,
+                tag,
+                cor,
+                accessTags,
+                allowedUsers,
+                ...imagePayload
+            });
+
+            await pushAudit({
+                tipo: 'mercado_restrito',
+                user: uLog?.nome || 'REITORIA',
+                item: nome,
+                valor: preco,
+                msg: 'Item criado no mercado restrito'
+            });
+
+            ['adm-cm-n','adm-cm-p','adm-cm-imgs','adm-cm-d','adm-cm-q','adm-cm-v','adm-cm-t','adm-cm-tags'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            document.querySelectorAll('.adm-clan-user:checked').forEach(box => box.checked = false);
+
+            alert("Item restrito criado.");
         },
 
         admPostNews: async () => {
@@ -2375,9 +3186,26 @@
         }
     };
 
+    window.app.deleteClandestineMarketItem = async (id) => {
+        if (confirm("Excluir item do mercado restrito?")) {
+            await remove(ref(db, `loja_clandestina/${id}`));
+            await pushAudit({
+                tipo: 'mercado_restrito',
+                user: uLog?.nome || 'REITORIA',
+                msg: 'Item excluído do mercado restrito'
+            });
+        }
+    };
+
+    ['fin-req-valor', 'fin-req-parcelas'].forEach(id => {
+        document.getElementById(id)?.addEventListener('input', updateFinanceSimulator);
+    });
+    updateFinanceSimulator();
+
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             document.getElementById('profile-modal').style.display = 'none';
+            document.getElementById('image-modal').style.display = 'none';
             currentProfileId = null;
             if (profileMuralUnsub) {
                 profileMuralUnsub();
