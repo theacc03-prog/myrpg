@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ERA ACADEMY | Sovereign System</title>
     <link rel="icon" type="image/png" href="era-favicon.png"><!-- troque aqui o favicon -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&family=Special+Elite&display=swap" rel="stylesheet">
     <style>
         :root {
             --prata: #C0C0C0;
@@ -441,6 +441,106 @@
     .loan-status-warning { border-left: 3px solid var(--gold); }
     .loan-status-danger { border-left: 3px solid var(--red); }
 
+    #tab-mercado-ilegal .card {
+        border-color: rgba(139,0,0,0.35);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.55), 0 0 0 1px rgba(139,0,0,0.12);
+    }
+
+    .illegal-hero {
+        position: relative;
+        overflow: hidden;
+        background:
+            radial-gradient(circle at top right, rgba(139,0,0,0.28) 0%, transparent 28%),
+            radial-gradient(circle at bottom left, rgba(255,255,255,0.05) 0%, transparent 20%),
+            linear-gradient(135deg, #120307 0%, #22050A 42%, #05060C 100%);
+        border: 1px solid rgba(139,0,0,0.55);
+        text-align: center;
+    }
+
+    .illegal-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+        pointer-events: none;
+    }
+
+    .illegal-emblem {
+        font-size: 26px;
+        color: #F6D6D8;
+        opacity: 0.9;
+        margin-bottom: 8px;
+    }
+
+    .illegal-pill {
+        border-color: rgba(255,255,255,0.12);
+        background: rgba(139,0,0,0.18);
+        color: #F6D6D8;
+    }
+
+    .illegal-shell {
+        background:
+            radial-gradient(circle at top left, rgba(139,0,0,0.16) 0%, transparent 24%),
+            linear-gradient(180deg, rgba(20,6,10,0.98) 0%, rgba(8,9,16,0.98) 100%);
+    }
+
+    .illegal-admin-card {
+        background:
+            radial-gradient(circle at top left, rgba(139,0,0,0.18) 0%, transparent 26%),
+            linear-gradient(180deg, rgba(20,6,10,0.98) 0%, rgba(8,9,16,0.98) 100%);
+        border-color: rgba(139,0,0,0.45);
+    }
+
+    .illegal-admin-note {
+        font-size: 11px;
+        color: rgba(255,230,230,0.78);
+        margin: 6px 0 2px;
+    }
+
+    .illegal-access-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin: 10px 0 14px;
+        max-height: 240px;
+        overflow-y: auto;
+        padding-right: 4px;
+    }
+
+    .illegal-user-chip {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(139,0,0,0.22);
+    }
+
+    .illegal-user-chip input {
+        width: auto;
+        margin: 0;
+        accent-color: #8B0000;
+    }
+
+    .illegal-user-chip span {
+        font-size: 11px;
+        color: rgba(255,235,235,0.9);
+    }
+
+    .illegal-title-font {
+        font-family: 'Special Elite', cursive;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .audit-scroll {
+        margin-top: 12px;
+        max-height: 320px;
+        overflow-y: auto;
+        padding-right: 6px;
+    }
+
     @media (max-width: 700px) {
         .grid-2 { grid-template-columns: 1fr; }
         .hero-meta { grid-template-columns: 1fr; }
@@ -462,7 +562,7 @@
     <button class="nav-btn" onclick="app.showTab('tab-fin', this)">FINANCIAMENTO</button>
     <button class="nav-btn" onclick="app.showTab('tab-transf', this)">TRANSFERIR</button>
     <button class="nav-btn" onclick="app.showTab('tab-mercado', this)">MERCADO</button>
-    <button class="nav-btn hidden" id="btn-mercado-restrito" onclick="app.showTab('tab-mercado-restrito', this)">MERCADO RESTRITO</button>
+    <button class="nav-btn hidden" id="btn-mercado-ilegal" onclick="app.showTab('tab-mercado-ilegal', this)">MERCADO ILEGAL</button>
     <button class="nav-btn" onclick="app.showTab('tab-rank', this)">RANKING</button>
     <button class="nav-btn" onclick="app.showTab('tab-vagas', this)">VAGAS</button>
     <button class="nav-btn" id="btn-adm" style="color:var(--gold); display:none" onclick="app.showTab('tab-adm', this)">REITORIA</button>
@@ -619,11 +719,22 @@
     </div>
 </div>
 
-<div id="tab-mercado-restrito" class="tab-content hidden">
-    <div class="card left">
-        <h2 class="tab-title">Mercado Restrito</h2>
-        <div class="subtle">Acesso controlado pela reitoria. Nem todos podem ver o que circula aqui.</div>
-        <div id="clandestine-list" class="grid"></div>
+<div id="tab-mercado-ilegal" class="tab-content hidden">
+    <div class="card illegal-hero">
+        <div class="illegal-emblem">✦</div>
+        <h2 class="tab-title illegal-title-font" style="margin-bottom:6px; color:#F6D6D8">Mercado Ilegal</h2>
+        <div class="subtle" style="color:rgba(255,230,230,0.8)">Acesso seletivo, negociações discretas e itens que não circulam no mercado comum.</div>
+        <div class="row-actions" style="justify-content:center; margin-top:12px">
+            <span class="pill illegal-pill">acesso controlado</span>
+            <span class="pill illegal-pill">circulação privada</span>
+            <span class="pill illegal-pill">registro sensível</span>
+        </div>
+    </div>
+
+    <div class="card left illegal-shell">
+        <h2 class="tab-title illegal-title-font" style="color:#F6D6D8">Catálogo Ilegal</h2>
+        <div class="subtle" style="color:rgba(255,230,230,0.76)">Só aparece para quem a reitoria decidiu deixar entrar.</div>
+        <div id="illegal-list" class="grid"></div>
     </div>
 </div>
 
@@ -772,9 +883,9 @@
     </div>
 
     <div class="grid-2">
-        <div class="card left">
-            <h3>Mercado Restrito</h3>
-            <input type="text" id="adm-c-n" placeholder="Nome do item restrito">
+        <div class="card left illegal-admin-card">
+            <h3 class="illegal-title-font" style="color:#F6D6D8">Mercado Ilegal</h3>
+            <input type="text" id="adm-c-n" placeholder="Nome do item ilegal">
             <input type="number" id="adm-c-p" placeholder="Valor">
             <textarea id="adm-c-i" placeholder="Links das imagens, um por linha"></textarea>
             <textarea id="adm-c-d" placeholder="Descrição"></textarea>
@@ -782,15 +893,24 @@
             <input type="number" id="adm-c-v" placeholder="Validade em semanas">
             <input type="text" id="adm-c-t" placeholder="Tag visual do item">
             <input type="color" id="adm-c-cor" value="#8B0000">
-            <textarea id="adm-c-access-tags" placeholder="Tags com acesso, uma por linha"></textarea>
-            <textarea id="adm-c-allowed-users" placeholder="UIDs de jogadores liberados, um por linha"></textarea>
-            <button onclick="app.admAddClandestine()" class="btn-red">Adicionar Item Restrito</button>
-            <div id="adm-clandestine-list"></div>
+            <div class="illegal-admin-note">Selecione abaixo exatamente quais jogadores podem ver e comprar esse item. Não precisa preencher UID manualmente.</div>
+            <div class="row-actions" style="justify-content:flex-start; margin:8px 0 4px">
+                <button class="btn-sec small-btn" onclick="app.markIllegalAccess(true)">Selecionar todos</button>
+                <button class="btn-sec small-btn" onclick="app.markIllegalAccess(false)">Limpar seleção</button>
+            </div>
+            <div id="adm-illegal-user-list" class="illegal-access-grid"></div>
+            <button onclick="app.admAddIllegal()" class="btn-red">Adicionar Item Ilegal</button>
+            <div id="adm-illegal-list"></div>
         </div>
 
         <div class="card left">
-            <h3>Auditoria Fiscal</h3>
-            <div id="audit-feed"></div>
+            <div class="row-actions" style="justify-content:space-between; align-items:center">
+                <h3 style="margin:0">Auditoria Fiscal</h3>
+                <button id="audit-toggle-btn" class="btn-sec small-btn" onclick="app.toggleAudit()">Minimizar</button>
+            </div>
+            <div id="audit-wrap" class="audit-scroll">
+                <div id="audit-feed"></div>
+            </div>
         </div>
     </div>
 
@@ -869,6 +989,8 @@
     let playerStreamsBound = false;
     let profileMuralUnsub = null;
     let admSelectedPlayerId = "";
+    let latestPlayersCache = {};
+    let latestIllegalStore = {};
 
     const esc = (s = "") => String(s)
         .replaceAll("&", "&amp;")
@@ -1164,10 +1286,20 @@
     }
 
     function renderClandestine(itemsObj) {
-        if (!itemsObj || !Object.keys(itemsObj).length) return `<div class="subtle">Nenhum item restrito disponível.</div>`;
+        if (!itemsObj || !Object.keys(itemsObj).length) return `<div class="subtle">Nenhum item ilegal disponível.</div>`;
         const filtered = Object.entries(itemsObj).filter(([, item]) => userCanSeeRestrictedItem(item, uLog));
         if (!filtered.length) return `<div class="subtle">Sem acesso liberado no momento.</div>`;
         return filtered.map(([id, i]) => renderItemCard(i, id, 'buyRestrictedItem')).join('');
+    }
+
+    function renderPlayerAccessSelector(playersObj, selectedUsers = {}) {
+        if (!playersObj || !Object.keys(playersObj).length) return `<div class="subtle">Sem jogadores cadastrados.</div>`;
+        return Object.entries(playersObj).map(([uid, p]) => `
+            <label class="illegal-user-chip">
+                <input type="checkbox" name="illegal-allowed-user" value="${uid}" ${selectedUsers[uid] ? 'checked' : ''}>
+                <span>${esc(p.nome || 'Sem nome')}</span>
+            </label>
+        `).join('');
     }
 
     function renderRanking(playersObj) {
@@ -1337,15 +1469,20 @@
     }
 
     function syncRestrictedTabVisibility() {
-        const btn = document.getElementById('btn-mercado-restrito');
+        const btn = document.getElementById('btn-mercado-ilegal');
         if (!btn) return;
-        const canSeeAny = uLog && (uLog.role === 'reitora' || uLog.isAdmin || uLog.canSeeRestrictedMarket);
+        const canSeeAny = !!uLog && (
+            uLog.role === 'reitora' ||
+            uLog.isAdmin ||
+            Object.values(latestIllegalStore || {}).some(item => userCanSeeRestrictedItem(item, uLog))
+        );
         btn.classList.toggle('hidden', !canSeeAny);
     }
 
     function renderGlobalData() {
         listen(ref(db, 'jogadores'), snap => {
             const players = snap.val() || {};
+            latestPlayersCache = players;
             fillAdmPlayers(players);
             const destSelect = document.getElementById('tr-dest');
             if (destSelect) {
@@ -1357,6 +1494,12 @@
             }
             const rankEl = document.getElementById('rank-list');
             if (rankEl) rankEl.innerHTML = renderRanking(players);
+
+            const currentSelected = Object.fromEntries(
+                Array.from(document.querySelectorAll('#adm-illegal-user-list input[name="illegal-allowed-user"]:checked')).map(el => [el.value, true])
+            );
+            const illegalUserList = document.getElementById('adm-illegal-user-list');
+            if (illegalUserList) illegalUserList.innerHTML = renderPlayerAccessSelector(players, currentSelected);
         });
 
         listen(ref(db, 'editorial'), snap => {
@@ -1399,16 +1542,17 @@
 
         listen(ref(db, 'loja_clandestina'), snap => {
             const items = snap.val() || {};
-            const clEl = document.getElementById('clandestine-list');
+            latestIllegalStore = items;
+            const clEl = document.getElementById('illegal-list');
             if (clEl) clEl.innerHTML = renderClandestine(items);
-            const adm = document.getElementById('adm-clandestine-list');
+            const adm = document.getElementById('adm-illegal-list');
             if (adm) {
                 adm.innerHTML = Object.entries(items).reverse().map(([id, i]) => `
                     <div class="list-item">
                         <strong>${esc(i.nome || '')}</strong> · ${money(i.preco || 0)}<br>
                         <span class="subtle">${esc(i.descricao || '')}</span>
                         <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
-                            <button class="btn-red small-btn" onclick="app.deleteClandestineItem('${id}')">Excluir</button>
+                            <button class="btn-red small-btn" onclick="app.deleteIllegalItem('${id}')">Excluir</button>
                         </div>
                     </div>
                 `).join('');
@@ -2236,7 +2380,7 @@
             alert('Item criado e notificações enviadas.');
         },
 
-        admAddClandestine: async () => {
+        admAddIllegal: async () => {
             const nome = document.getElementById('adm-c-n').value.trim();
             const preco = parseInt(document.getElementById('adm-c-p').value) || 0;
             const imgsList = parseLines(document.getElementById('adm-c-i').value);
@@ -2245,16 +2389,39 @@
             const duracao = parseInt(document.getElementById('adm-c-v').value) || 0;
             const tag = document.getElementById('adm-c-t').value.trim();
             const cor = document.getElementById('adm-c-cor').value;
-            const accessTagsArr = parseLines(document.getElementById('adm-c-access-tags').value);
-            const allowedUsersArr = parseLines(document.getElementById('adm-c-allowed-users').value);
+            const checkedUsers = Array.from(document.querySelectorAll('#adm-illegal-user-list input[name="illegal-allowed-user"]:checked')).map(el => el.value);
             if (!nome) return;
-            const accessTags = {};
-            accessTagsArr.forEach(t => accessTags[makeId()] = t);
             const allowedUsers = {};
-            allowedUsersArr.forEach(uid => allowedUsers[uid] = true);
-            await push(ref(db, 'loja_clandestina'), { nome, preco, img: imgsList[0] || '', imgs: imgsList, descricao, estoque, duracao, tag, cor, accessTags, allowedUsers });
-            await pushAudit({ tipo: 'mercado_restrito', user: uLog?.nome || 'REITORIA', item: nome, valor: preco, msg: 'Item criado no mercado restrito' });
-            alert('Item restrito criado.');
+            checkedUsers.forEach(uid => allowedUsers[uid] = true);
+            await push(ref(db, 'loja_clandestina'), {
+                nome,
+                preco,
+                img: imgsList[0] || '',
+                imgs: imgsList,
+                descricao,
+                estoque,
+                duracao,
+                tag,
+                cor,
+                accessTags: {},
+                allowedUsers
+            });
+            await pushAudit({ tipo: 'mercado_ilegal', user: uLog?.nome || 'REITORIA', item: nome, valor: preco, msg: 'Item criado no mercado ilegal' });
+            alert('Item ilegal criado.');
+        },
+
+        markIllegalAccess: (selectAll) => {
+            document.querySelectorAll('#adm-illegal-user-list input[name="illegal-allowed-user"]').forEach(el => {
+                el.checked = !!selectAll;
+            });
+        },
+
+        toggleAudit: () => {
+            const wrap = document.getElementById('audit-wrap');
+            const btn = document.getElementById('audit-toggle-btn');
+            if (!wrap || !btn) return;
+            wrap.classList.toggle('hidden');
+            btn.textContent = wrap.classList.contains('hidden') ? 'Expandir' : 'Minimizar';
         },
 
         admPostNews: async () => {
@@ -2338,10 +2505,10 @@
         }
     };
 
-    window.app.deleteClandestineItem = async (id) => {
-        if (confirm('Excluir item restrito?')) {
+    window.app.deleteIllegalItem = async (id) => {
+        if (confirm('Excluir item ilegal?')) {
             await remove(ref(db, `loja_clandestina/${id}`));
-            await pushAudit({ tipo: 'mercado_restrito', user: uLog?.nome || 'REITORIA', msg: 'Item excluído do mercado restrito' });
+            await pushAudit({ tipo: 'mercado_ilegal', user: uLog?.nome || 'REITORIA', msg: 'Item excluído do mercado ilegal' });
         }
     };
 
