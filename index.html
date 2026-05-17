@@ -1,49 +1,6 @@
 <!-- ========================= -->
-<!-- REGISTRO COM HERDEIRO/BOLSISTA -->
-<!-- SUBSTITUA O REGISTER-BOX INTEIRO POR ESSE -->
-<!-- ========================= -->
-
-<div class="card hidden" id="register-box" style="max-width:380px; margin:auto">
-
-    <h2 style="font-family:'Cinzel'">Nova Matrícula</h2>
-
-    <input type="text" id="reg-name" placeholder="Nome do Personagem">
-
-    <input type="email" id="reg-email" placeholder="E-mail / Login">
-
-    <input type="password" id="reg-pass" placeholder="Senha">
-
-    <select id="reg-origem">
-        <option value="bolsista">📚 Bolsista</option>
-        <option value="herdeiro">💎 Herdeiro</option>
-    </select>
-
-    <select id="reg-frat">
-        <option value="">Sem fraternidade</option>
-        <option value="montriel">🦁 Montriel</option>
-        <option value="veridian">🦁 Veridian</option>
-        <option value="aurleis">🦅 Aurleis</option>
-        <option value="echelon">🦉 Echelon</option>
-        <option value="novaire">🐍 Novaire</option>
-        <option value="velmora">🦊 Velmora</option>
-    </select>
-
-    <button onclick="app.handleRegister()">
-        Matricular
-    </button>
-
-    <p style="font-size:11px; margin-top:15px; cursor:pointer"
-       onclick="app.toggleAuth()">
-       Voltar
-    </p>
-
-</div>
-
-
-
-<!-- ========================= -->
-<!-- BOTÃO DA ABA FRATERNIDADES -->
-<!-- ADICIONE NO NAV -->
+<!-- BOTÃO FRATERNIDADES -->
+<!-- COLE NO MENU/NAV -->
 <!-- ========================= -->
 
 <button class="nav-btn"
@@ -54,8 +11,8 @@ FRATERNIDADES
 
 
 <!-- ========================= -->
-<!-- TAB DAS FRATERNIDADES -->
-<!-- COLE ANTES DO TAB-ADM -->
+<!-- ABA FRATERNIDADES -->
+<!-- COLE ANTES DA TAB ADM -->
 <!-- ========================= -->
 
 <div id="tab-frat" class="tab-content hidden">
@@ -63,21 +20,29 @@ FRATERNIDADES
     <div class="card left">
 
         <h2 class="tab-title">
-            🏛️ Fraternidades
+            Fraternidades
         </h2>
 
         <div id="frat-ranking"></div>
 
     </div>
 
-    <div class="card left">
+    <div class="grid-2">
 
-        <h2 class="tab-title">
-            🛒 Loja Institucional
-        </h2>
+        <div class="card left">
 
-        <div id="frat-market-list"
-             class="grid">
+            <h3>Banco da Fraternidade</h3>
+
+            <div id="frat-bank-view"></div>
+
+        </div>
+
+        <div class="card left">
+
+            <h3>Loja Institucional</h3>
+
+            <div id="frat-market-list"></div>
+
         </div>
 
     </div>
@@ -87,20 +52,169 @@ FRATERNIDADES
 
 
 <!-- ========================= -->
-<!-- TROQUE O BOTÃO MERCADO ILEGAL -->
+<!-- REGISTER BOX -->
+<!-- SUBSTITUA APENAS O BLOCO -->
 <!-- ========================= -->
 
-<button class="nav-btn hidden"
-id="btn-mercado-ilegal"
-onclick="app.showTab('tab-mercado-ilegal', this)">
-🔒 MERCADO ILEGAL
-</button>
+<div class="card hidden"
+id="register-box"
+style="max-width:380px; margin:auto">
+
+    <h2 style="font-family:'Cinzel'">
+        Nova Matrícula
+    </h2>
+
+    <input type="text"
+    id="reg-name"
+    placeholder="Nome do Personagem">
+
+    <input type="email"
+    id="reg-email"
+    placeholder="E-mail / Login">
+
+    <input type="password"
+    id="reg-pass"
+    placeholder="Senha">
+
+    <select id="reg-origem">
+
+        <option value="bolsista">
+            Bolsista
+        </option>
+
+        <option value="herdeiro">
+            Herdeiro
+        </option>
+
+    </select>
+
+    <select id="reg-frat">
+
+        <option value="">
+            Sem fraternidade
+        </option>
+
+        <option value="montriel">
+            Montriel
+        </option>
+
+        <option value="veridian">
+            Veridian
+        </option>
+
+        <option value="aurleis">
+            Aurleis
+        </option>
+
+        <option value="echelon">
+            Echelon
+        </option>
+
+        <option value="novaire">
+            Novaire
+        </option>
+
+        <option value="velmora">
+            Velmora
+        </option>
+
+    </select>
+
+    <button onclick="app.handleRegister()">
+        Matricular
+    </button>
+
+    <p style="font-size:11px;
+              margin-top:15px;
+              cursor:pointer"
+       onclick="app.toggleAuth()">
+       Voltar
+    </p>
+
+</div>
 
 
 
 <!-- ========================= -->
-<!-- SUBSTITUA O HANDLE REGISTER -->
+<!-- COLE TUDO ABAIXO DENTRO -->
+<!-- <script type=\"module\"> -->
 <!-- ========================= -->
+
+
+
+const fraternidadesPadrao = {
+
+    montriel: {
+        nome: 'Montriel',
+        saldo: 0,
+        presidente: '',
+        mensalidade: 250,
+        membros: {}
+    },
+
+    veridian: {
+        nome: 'Veridian',
+        saldo: 0,
+        presidente: '',
+        mensalidade: 250,
+        membros: {}
+    },
+
+    aurleis: {
+        nome: 'Aurleis',
+        saldo: 0,
+        presidente: '',
+        mensalidade: 250,
+        membros: {}
+    },
+
+    echelon: {
+        nome: 'Echelon',
+        saldo: 0,
+        presidente: '',
+        mensalidade: 250,
+        membros: {}
+    },
+
+    novaire: {
+        nome: 'Novaire',
+        saldo: 0,
+        presidente: '',
+        mensalidade: 250,
+        membros: {}
+    },
+
+    velmora: {
+        nome: 'Velmora',
+        saldo: 0,
+        presidente: '',
+        mensalidade: 250,
+        membros: {}
+    }
+
+};
+
+
+
+async function ensureFraternities() {
+
+    const snap =
+    await get(ref(db, 'fraternidades'));
+
+    if (!snap.exists()) {
+
+        await set(
+            ref(db, 'fraternidades'),
+            fraternidadesPadrao
+        );
+
+    }
+
+}
+
+ensureFraternities();
+
+
 
 handleRegister: async () => {
 
@@ -154,8 +268,6 @@ handleRegister: async () => {
 
                 fraternidade: fraternidade,
 
-                cargoFraternidade: "",
-
                 modificadorMensal: 0,
 
                 contaCongelada: false,
@@ -189,47 +301,29 @@ handleRegister: async () => {
 
         if (fraternidade) {
 
-            const fratSnap =
-            await get(
-                ref(db,
-                `fraternidades/${fraternidade}`)
+            await update(
+                ref(
+                    db,
+                    `fraternidades/${fraternidade}/membros`
+                ),
+                {
+                    [res.user.uid]: true
+                }
             );
-
-            const frat =
-            fratSnap.val();
-
-            if (frat) {
-
-                await update(
-                    ref(db,
-                    `fraternidades/${fraternidade}/membros`),
-                    {
-                        [res.user.uid]: true
-                    }
-                );
-
-            }
 
         }
 
-        await pushAudit({
-            tipo: 'registro',
-            user: n,
-            msg: 'Novo aluno registrado'
-        });
+        alert('Conta criada.');
 
     } catch (err) {
 
         alert(err.message);
 
     }
+
 },
 
 
-
-<!-- ========================= -->
-<!-- SUBSTITUA O GIRAR CICLO -->
-<!-- ========================= -->
 
 girarCiclo: async () => {
 
@@ -282,17 +376,16 @@ girarCiclo: async () => {
         ? 0.15
         : 0.05;
 
-        const valorImposto =
-        saldo * imposto;
-
-        saldo -= valorImposto;
+        saldo -= saldo * imposto;
 
         if (p.fraternidade) {
 
             const fratSnap =
             await get(
-                ref(db,
-                `fraternidades/${p.fraternidade}`)
+                ref(
+                    db,
+                    `fraternidades/${p.fraternidade}`
+                )
             );
 
             const frat =
@@ -346,11 +439,6 @@ girarCiclo: async () => {
         `jogadores/${uid}/divida`
         ] = divida;
 
-        await pushNotif(
-            uid,
-            `🏛️ Ciclo financeiro aplicado`
-        );
-
     }
 
     await update(
@@ -358,21 +446,11 @@ girarCiclo: async () => {
         batch
     );
 
-    await pushAudit({
-        tipo: 'ciclo',
-        user: 'REITORIA',
-        msg: 'Ciclo executado'
-    });
-
     alert('Ciclo concluído.');
 
 },
 
 
-
-<!-- ========================= -->
-<!-- FUNÇÃO RANKING FRAT -->
-<!-- ========================= -->
 
 function renderFratRanking(fratsObj) {
 
@@ -411,45 +489,29 @@ function renderFratRanking(fratsObj) {
 
 
 
-<!-- ========================= -->
-<!-- ADICIONE NO renderGlobalData -->
-<!-- ========================= -->
+listen(
+    ref(db, 'fraternidades'),
+    snap => {
 
-listen(ref(db, 'fraternidades'),
-snap => {
+        const frats =
+        snap.val() || {};
 
-    const frats =
-    snap.val() || {};
+        const ranking =
+        document.getElementById(
+            'frat-ranking'
+        );
 
-    const box =
-    document.getElementById(
-        'frat-ranking'
-    );
+        if (ranking) {
 
-    if (box)
-        box.innerHTML =
-        renderFratRanking(frats);
+            ranking.innerHTML =
+            renderFratRanking(frats);
 
-});
+        }
 
-
-
-<!-- ========================= -->
-<!-- SISTEMA PRESIDENTE -->
-<!-- ========================= -->
-
-function isPresident(user, frat) {
-
-    return frat.presidente
-    === user.id;
-
-}
+    }
+);
 
 
-
-<!-- ========================= -->
-<!-- FUNÇÃO MULTA -->
-<!-- ========================= -->
 
 async function multarJogador(
     uid,
@@ -458,16 +520,22 @@ async function multarJogador(
 
     const snap =
     await get(
-        ref(db,
-        `jogadores/${uid}`)
+        ref(
+            db,
+            `jogadores/${uid}`
+        )
     );
 
     const p =
     snap.val();
 
+    if (!p) return;
+
     await update(
-        ref(db,
-        `jogadores/${uid}`),
+        ref(
+            db,
+            `jogadores/${uid}`
+        ),
         {
             saldo:
             Number(
@@ -477,25 +545,17 @@ async function multarJogador(
         }
     );
 
-    await pushNotif(
-        uid,
-        `⚠️ Você recebeu
-        multa de ${money(valor)}`
-    );
-
 }
 
 
 
-<!-- ========================= -->
-<!-- FUNÇÃO CONGELAR -->
-<!-- ========================= -->
-
 async function congelarConta(uid) {
 
     await update(
-        ref(db,
-        `jogadores/${uid}`),
+        ref(
+            db,
+            `jogadores/${uid}`
+        ),
         {
             contaCongelada: true
         }
@@ -505,23 +565,17 @@ async function congelarConta(uid) {
 
 
 
-<!-- ========================= -->
-<!-- ADICIONE NO INÍCIO DAS TRANSFERÊNCIAS -->
-<!-- ========================= -->
+function isPresident(
+    user,
+    frat
+) {
 
-if (uLog.contaCongelada) {
-
-    return alert(
-    "Sua conta está congelada."
-    );
+    return frat.presidente
+    === user.id;
 
 }
 
 
-
-<!-- ========================= -->
-<!-- LOJA DAS FRATERNIDADES -->
-<!-- ========================= -->
 
 async function buyFraternityItem(id) {
 
@@ -544,7 +598,7 @@ async function buyFraternityItem(id) {
     ) {
 
         return alert(
-            "Apenas o presidente compra."
+            'Somente o presidente pode comprar.'
         );
 
     }
@@ -560,12 +614,14 @@ async function buyFraternityItem(id) {
     const item =
     itemSnap.val();
 
+    if (!item) return;
+
     if (
         frat.saldo < item.preco
     ) {
 
         return alert(
-            "Saldo insuficiente."
+            'Saldo insuficiente.'
         );
 
     }
@@ -580,12 +636,6 @@ async function buyFraternityItem(id) {
             frat.saldo
             - item.preco
         }
-    );
-
-    await pushNotif(
-        uLog.id,
-        `🏛️ Compra institucional:
-        ${item.nome}`
     );
 
 }
