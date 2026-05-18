@@ -1,0 +1,33 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+
+import {
+    getAuth
+} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+import {
+    getDatabase
+} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+
+const firebaseConfig = {
+
+    apiKey: "SUA_KEY",
+
+    authDomain: "SEU_DOMINIO",
+
+    databaseURL: "SUA_DATABASE",
+
+    projectId: "SEU_ID",
+
+    storageBucket: "SEU_BUCKET",
+
+    messagingSenderId: "SEU_SENDER",
+
+    appId: "SEU_APP_ID"
+
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+
+export const auth = getAuth(firebaseApp);
+
+export const db = getDatabase(firebaseApp);
