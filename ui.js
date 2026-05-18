@@ -1,0 +1,15 @@
+window.app = {
+
+    showTab: (id) => {
+
+        document.querySelectorAll('.tab-content').forEach(tab => {
+
+            tab.classList.add('hidden');
+
+        });
+
+        document.getElementById(id).classList.remove('hidden');
+
+    }
+
+};
