@@ -2640,19 +2640,23 @@
 
         fillStaticFraternitySelects();
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth, async user => {
 
-    clearSubs();
-    sessionBootstrapped = false;
-    playerStreamsBound = false;
-    currentProfileId = null;
+    if (user) {
 
-    if (clockTimer) {
-        clearInterval(clockTimer);
-        clockTimer = null;
+        ...
+
+        clockTimer = setInterval(() => {
+            const c = document.getElementById("clock");
+            if (c) c.innerText = nowClock();
+        }, 1000);
+
+    } else {
+
+        ...
     }
 
-    if (!user) {
+});
 
         document.getElementById("auth-screen").classList.remove("hidden");
         document.getElementById("app-screen").classList.add("hidden");
