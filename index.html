@@ -2739,9 +2739,9 @@
                 thumb.classList.add("active");
             },
 
-            handleLogin: async () => {
-                const e = document.getElementById("email").value.trim();
-                const p = document.getElementById("reg-pass").value.trim();
+handleLogin: async () => {
+    const e = document.getElementById("email").value.trim();
+    const p = document.getElementById("pass").value.trim();
                 if (!e || !p) return alert("Preencha e-mail e senha.");
                 try {
                     await signInWithEmailAndPassword(auth, e, p);
@@ -2751,70 +2751,42 @@
             },
 
 handleRegister: async () => {
-    const n = document.getElementById("reg-name").value.trim();
-    const e = document.getElementById("reg-email").value.trim();
-    const p = document.getElementById("reg-password").value.trim();
-    const classe = document.getElementById("reg-class").value;
-const fraternityId = document.getElementById("reg-frat").value;
+            title: "Estudante Financeiro",
+            criadoEm: Date.now()
+        });
 
-    if (!n || !e || !p || !classe || !fraternityId) {
-        alert("Preencha todos os campos.");
-        return;
-    }
+        await update(ref(db), {
+            [`fraternidades/${fraternityId}/membros/${res.user.uid}`]: true
+        });
 
-    try {
-        const cred = await createUserWithEmailAndPassword(auth, e, p);
-
-        const classData = {
-            herdeiro: {
-                saldo: 3000,
-                tag: "HERDEIRO"
-            },
-            bolsista: {
-                saldo: 1500,
-                tag: "BOLSISTA"
-            }
-        };
-
-        const userClass = classData[classe];
-
-        await setDoc(doc(db, "usuarios", cred.user.uid), {
-            uid: cred.user.uid,
-            nome: n,
-            email: e,
-            classe: classe,
-            tag: userClass.tag,
-            saldo: userClass.saldo,
-            fraternidade: fraternityId,
-            createdAt: serverTimestamp()
+        await pushAudit({
+            tipo: "registro",
+            user: n,
+            msg: `Novo aluno registrado como ${classData.label} em ${getFraternityName(fraternityId)}`
         });
 
         uLog = {
-            uid: cred.user.uid,
+            id: res.user.uid,
             nome: n,
-            email: e,
-            classe: classe,
-            tag: userClass.tag,
-            saldo: userClass.saldo,
-            fraternidade: fraternityId
+            saldo: classData.saldo,
+            fraternidade: fraternityId,
+            origemFinanceira: socialClass,
+            tags: tagMapWithIdentity(socialClass, fraternityId)
         };
 
-        document.getElementById("user-name").textContent = n;
+        const nomeDash = document.getElementById("u-nome");
+        if (nomeDash) nomeDash.innerText = n;
 
-        const saldoEl = document.getElementById("user-balance");
+        const saldoDash = document.getElementById("u-saldo");
+        if (saldoDash) saldoDash.innerText = `SVR ${classData.saldo}`;
 
-        if (saldoEl) {
-            saldoEl.textContent = userClass.saldo.toLocaleString("pt-BR");
-        }
+        const fratDash = document.getElementById("u-frat-mini");
+        if (fratDash) fratDash.innerText = getFraternityName(fraternityId);
 
         document.getElementById("auth-screen").classList.add("hidden");
         document.getElementById("app-screen").classList.remove("hidden");
 
-        const nav = document.getElementById("main-nav");
-
-        if (nav) {
-            nav.style.display = "flex";
-        }
+        document.getElementById("main-nav").style.display = "flex";
 
         alert("Matrícula realizada com sucesso.");
 
@@ -2822,7 +2794,7 @@ const fraternityId = document.getElementById("reg-frat").value;
         console.error(err);
         alert(err.message);
     }
-}
+},
 
             handleLogout: async () => {
                 await signOut(auth);
