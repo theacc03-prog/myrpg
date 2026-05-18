@@ -2750,61 +2750,79 @@
                 }
             },
 
-            handleRegister: async () => {
-                const n = document.getElementById("reg-name").value.trim();
-                const e = document.getElementById("reg-email").value.trim();
-                const p = document.getElementById("reg-pass").value.trim();
-                const socialClass = document.getElementById("reg-class").value;
-                const fraternityId = document.getElementById("reg-frat").value;
-                if (!n || !e || !p || !socialClass || !fraternityId) {
-                    return alert("Preencha nome, e-mail, senha, origem financeira e fraternidade.");
-                }
-                try {
-                    await ensureFraternitiesSeeded();
-                    const classData = SOCIAL_CLASSES[socialClass] || SOCIAL_CLASSES.bolsista;
-                    const res = await createUserWithEmailAndPassword(auth, e, p);
-                    await set(ref(db, `jogadores/${res.user.uid}`), {
-                        nome: n,
-                        saldo: classData.saldo,
-                        divida: 0,
-                        role: "aluno",
-                        foto: "",
-                        bio: "",
-                        origemFinanceira: socialClass,
-                        fraternidade: fraternityId,
-                        trancada: false,
-                        tags: tagMapWithIdentity(socialClass, fraternityId),
-                        mochila: {},
-                        fixos: {},
-                        variaveis: {},
-                        percentuais: {},
-                        academicos: {},
-                        punicoes: {},
-                        historico: {},
-                        notificacoes: {},
-                        emprestimos: {},
-                        title: "Estudante Financeiro",
-                        criadoEm: Date.now()
-                    });
-                    await update(ref(db), {
-                        [`fraternidades/${fraternityId}/membros/${res.user.uid}`]: true
-                    });
-                    await pushAudit({
-                        tipo: "registro",
-                        user: n,
-                        msg: `Novo aluno registrado como ${classData.label} em ${getFraternityName(fraternityId)}`
-                    });
-                    alert("Matrícula realizada com sucesso.");
+handleRegister: async () => {
+    const n = document.getElementById("reg-name").value.trim();
+    const e = document.getElementById("reg-email").value.trim();
+    const p = document.getElementById("reg-password").value.trim();
+    const classe = document.getElementById("reg-class").value;
+    const fraternityId = document.getElementById("reg-fraternity").value;
 
-setTimeout(() => {
-    document.getElementById("auth-screen").classList.add("hidden");
-    document.getElementById("app-screen").classList.remove("hidden");
-    document.getElementById("main-nav").style.display = "flex";
-}, 500);
-                } catch (err) {
-                    alert(err.message);
-                }
+    if (!n || !e || !p || !classe || !fraternityId) {
+        alert("Preencha todos os campos.");
+        return;
+    }
+
+    try {
+        const cred = await createUserWithEmailAndPassword(auth, e, p);
+
+        const classData = {
+            herdeiro: {
+                saldo: 3000,
+                tag: "HERDEIRO"
             },
+            bolsista: {
+                saldo: 1500,
+                tag: "BOLSISTA"
+            }
+        };
+
+        const userClass = classData[classe];
+
+        await setDoc(doc(db, "usuarios", cred.user.uid), {
+            uid: cred.user.uid,
+            nome: n,
+            email: e,
+            classe: classe,
+            tag: userClass.tag,
+            saldo: userClass.saldo,
+            fraternidade: fraternityId,
+            createdAt: serverTimestamp()
+        });
+
+        uLog = {
+            uid: cred.user.uid,
+            nome: n,
+            email: e,
+            classe: classe,
+            tag: userClass.tag,
+            saldo: userClass.saldo,
+            fraternidade: fraternityId
+        };
+
+        document.getElementById("user-name").textContent = n;
+
+        const saldoEl = document.getElementById("user-balance");
+
+        if (saldoEl) {
+            saldoEl.textContent = userClass.saldo.toLocaleString("pt-BR");
+        }
+
+        document.getElementById("auth-screen").classList.add("hidden");
+        document.getElementById("app-screen").classList.remove("hidden");
+
+        const nav = document.getElementById("main-nav");
+
+        if (nav) {
+            nav.style.display = "flex";
+        }
+
+        alert("Matrícula realizada com sucesso.");
+
+    } catch (err) {
+        console.error(err);
+        alert(err.message);
+    }
+}
 
             handleLogout: async () => {
                 await signOut(auth);
