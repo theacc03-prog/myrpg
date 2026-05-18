@@ -2703,12 +2703,12 @@ onAuthStateChanged(auth, async (user) => {
 
     }
 
-});
-                clockTimer = setInterval(() => {
-                    const c = document.getElementById("clock");
-                    if (c) c.innerText = nowClock();
-                }, 1000);
-            } else {
+    clockTimer = setInterval(() => {
+        const c = document.getElementById("clock");
+        if (c) c.innerText = nowClock();
+    }, 1000);
+
+} else {
                 uLog = null;
                 document.getElementById("auth-screen").classList.remove("hidden");
                 document.getElementById("login-box").classList.remove("hidden");
