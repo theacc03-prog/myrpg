@@ -962,22 +962,17 @@
             <input type="text" id="reg-name" placeholder="Nome do Personagem">
             <input type="email" id="reg-email" placeholder="E-mail / Login">
             <input type="password" id="reg-pass" placeholder="Senha">
-
-           <select id="reg-class">
-    <option value="">Selecione a origem financeira</option>
-    <option value="herdeiro">Herdeiro</option>
-    <option value="bolsista">Bolsista</option>
-</select>
+            <label class="form-label" for="reg-class">Origem financeira</label>
+            <select id="reg-class">
+                <option value="">Selecione a origem financeira</option>
+                <option value="herdeiro">Herdeiro:</option>
+                <option value="bolsista">Bolsista:</option>
+            </select>
             <label class="form-label" for="reg-frat">Fraternidade inicial</label>
-            <select id="reg-frat">
-    <option value="">Selecione a fraternidade</option>
-    <option value="montriel">Montriel</option>
-    <option value="veridian">Veridian</option>
-    <option value="novaire">Novaire</option>
-    <option value="echelon">Echelon</option>
-    <option value="velmora">Velmora</option>
-    <option value="aurelis">Aurelis</option>
-</select>
+            <select id="reg-frat"></select>
+            <div class="inline-feedback">
+                Selecione corretamente sua origem e fraternidade.
+            </div>
             <button onclick="app.handleRegister()">Matricular</button>
             <p style="font-size:11px; margin-top:15px; cursor:pointer" onclick="app.focusLogin()">Já tenho conta</p>
         </div>
@@ -1532,7 +1527,6 @@
             }
         };
 
-        
         const subs = [];
         let clockTimer = null;
         let uLog = null;
@@ -2640,70 +2634,46 @@
 
         fillStaticFraternitySelects();
 
-onAuthStateChanged(auth, async (user) => {
-
-    clearSubs();
-    sessionBootstrapped = false;
-    playerStreamsBound = false;
-    currentProfileId = null;
-
-    if (clockTimer) {
-        clearInterval(clockTimer);
-        clockTimer = null;
-    }
-
-    if (!user) {
-
-        document.getElementById("auth-screen").classList.remove("hidden");
-        document.getElementById("app-screen").classList.add("hidden");
-
-        return;
-    }
-
-    try {
-
-        const snap = await get(ref(db, `jogadores/${user.uid}`));
-
-        if (!snap.exists()) {
-            console.error("Usuário não encontrado.");
-            return;
-        }
-
-        const d = snap.val();
-
-        uLog = {
-            id: user.uid,
-            ...d
-        };
-
-        console.log("USER LOADED:", uLog);
-
-        if (d.trancada && !isAdmin(uLog)) {
-
-            document.getElementById("app-screen").classList.add("hidden");
-            document.getElementById("main-nav").style.display = "none";
-            document.getElementById("auth-screen").classList.remove("hidden");
-
-            alert("Sua conta está trancada pela reitoria.");
-
-            await signOut(auth);
-
-            return;
-        }
-
-        document.getElementById("auth-screen").classList.add("hidden");
-        document.getElementById("app-screen").classList.remove("hidden");
-        document.getElementById("main-nav").style.display = "flex";
-
-        renderAll?.();
-
-    } catch (err) {
-
-        console.error(err);
-
-    }
-
-});
+        onAuthStateChanged(auth, user => {
+            clearSubs();
+            sessionBootstrapped = false;
+            playerStreamsBound = false;
+            currentProfileId = null;
+            if (clockTimer) {
+                clearInterval(clockTimer);
+                clockTimer = null;
+            }
+            if (user) {
+                document.getElementById("auth-screen").classList.add("hidden");
+                document.getElementById("app-screen").classList.remove("hidden");
+                document.getElementById("main-nav").style.display = "flex";
+                listen(ref(db, `jogadores/${user.uid}`), async snap => {
+                    const d = snap.val();
+                    if (!d) return;
+                    uLog = { id: user.uid, ...d };
+                    if (d.trancada && !isAdmin(uLog)) {
+                        document.getElementById("app-screen").classList.add("hidden");
+                        document.getElementById("main-nav").style.display = "none";
+                        document.getElementById("auth-screen").classList.remove("hidden");
+                        document.getElementById("login-box").classList.remove("hidden");
+                        document.getElementById("register-box").classList.remove("hidden");
+                        alert("Sua conta está trancada pela reitoria.");
+                        await signOut(auth);
+                        return;
+                    }
+                    refreshMyProfileUI(d);
+                    document.getElementById("set-nome").value = d.nome || "";
+                    document.getElementById("set-foto").value = d.foto || "";
+                    document.getElementById("set-bio").value = d.bio || "";
+                    if (!sessionBootstrapped) {
+                        sessionBootstrapped = true;
+                        renderGlobalData();
+                    }
+                    if (!playerStreamsBound) {
+                        playerStreamsBound = true;
+                        bindPlayerStreams(user.uid);
+                    }
+                });
                 clockTimer = setInterval(() => {
                     const c = document.getElementById("clock");
                     if (c) c.innerText = nowClock();
@@ -2772,9 +2742,9 @@ onAuthStateChanged(auth, async (user) => {
                 thumb.classList.add("active");
             },
 
-handleLogin: async () => {
-    const e = document.getElementById("email").value.trim();
-    const p = document.getElementById("pass").value.trim();
+            handleLogin: async () => {
+                const e = document.getElementById("email").value.trim();
+                const p = document.getElementById("pass").value.trim();
                 if (!e || !p) return alert("Preencha e-mail e senha.");
                 try {
                     await signInWithEmailAndPassword(auth, e, p);
@@ -2783,104 +2753,69 @@ handleLogin: async () => {
                 }
             },
 
-handleRegister: async () => {
-    const n = document.getElementById("reg-name").value.trim();
-    const e = document.getElementById("reg-email").value.trim();
-    const p = document.getElementById("reg-pass").value.trim();
-    const socialClass = document.getElementById("reg-class").value;
-    const fraternityId = document.getElementById("reg-frat").value;
-    
-    const classData = SOCIAL_CLASSES[socialClass] || SOCIAL_CLASSES.bolsista;
+            handleRegister: async () => {
+                const n = document.getElementById("reg-name").value.trim();
+                const e = document.getElementById("reg-email").value.trim();
+                const p = document.getElementById("reg-pass").value.trim();
+                const socialClass = document.getElementById("reg-class").value;
+                const fraternityId = document.getElementById("reg-frat").value;
+                if (!n || !e || !p || !socialClass || !fraternityId) {
+                    return alert("Preencha nome, e-mail, senha, origem financeira e fraternidade.");
+                }
+                try {
+                    await ensureFraternitiesSeeded();
+                    const classData = SOCIAL_CLASSES[socialClass] || SOCIAL_CLASSES.bolsista;
+                    const res = await createUserWithEmailAndPassword(auth, e, p);
+                    await set(ref(db, `jogadores/${res.user.uid}`), {
+                        nome: n,
+                        saldo: classData.saldo,
+                        divida: 0,
+                        role: "aluno",
+                        foto: "",
+                        bio: "",
+                        origemFinanceira: socialClass,
+                        fraternidade: fraternityId,
+                        trancada: false,
+                        tags: tagMapWithIdentity(socialClass, fraternityId),
+                        mochila: {},
+                        fixos: {},
+                        variaveis: {},
+                        percentuais: {},
+                        academicos: {},
+                        punicoes: {},
+                        historico: {},
+                        notificacoes: {},
+                        emprestimos: {},
+                        title: "Estudante Financeiro",
+                        criadoEm: Date.now()
+                    });
+                    await update(ref(db), {
+                        [`fraternidades/${fraternityId}/membros/${res.user.uid}`]: true
+                    });
+                    await pushAudit({
+                        tipo: "registro",
+                        user: n,
+                        msg: `Novo aluno registrado como ${classData.label} em ${getFraternityName(fraternityId)}`
+                    });
+                } catch (err) {
+                    alert(err.message);
+                }
+            },
 
-    if (!n || !e || !p || !socialClass || !fraternityId) {
-        return alert("Preencha nome, e-mail, senha, origem financeira e fraternidade.");
-    }
-
-    try {
-
-        await ensureFraternitiesSeeded();
-
-        const classData = SOCIAL_CLASSES[socialClass] || SOCIAL_CLASSES.bolsista;
-
-        const res = await createUserWithEmailAndPassword(auth, e, p);
-
-        await set(ref(db, `jogadores/${res.user.uid}`), {
-            nome: n,
-            saldo: classData.saldo,
-            divida: 0,
-            role: "aluno",
-            foto: "",
-            bio: "",
-            origemFinanceira: socialClass,
-            fraternidade: fraternityId,
-            trancada: false,
-            tags: tagMapWithIdentity(socialClass, fraternityId),
-            mochila: {},
-            fixos: {},
-            variaveis: {},
-            percentuais: {},
-            academicos: {},
-            punicoes: {},
-            historico: {},
-            notificacoes: {},
-            emprestimos: {},
-            title: "Estudante Financeiro",
-            criadoEm: Date.now()
-        });
-
-        await update(ref(db), {
-            [`fraternidades/${fraternityId}/membros/${res.user.uid}`]: true
-        });
-
-        await pushAudit({
-            tipo: "registro",
-            user: n,
-            msg: `Novo aluno registrado como ${classData.label} em ${getFraternityName(fraternityId)}`
-        });
-
-        uLog = {
-            id: res.user.uid,
-            nome: n,
-            saldo: classData.saldo,
-            fraternidade: fraternityId,
-            origemFinanceira: socialClass,
-            tags: tagMapWithIdentity(socialClass, fraternityId)
-        };
-
-        alert("Matrícula realizada com sucesso.");
-
-        document.getElementById("auth-screen").classList.add("hidden");
-        document.getElementById("app-screen").classList.remove("hidden");
-
-        const nav = document.getElementById("main-nav");
-
-        if (nav) {
-            nav.style.display = "flex";
-        }
-
-    } catch (err) {
-        console.error(err);
-        alert(err.message);
-    }
-},
-
-handleLogout: async () => {
+            handleLogout: async () => {
                 await signOut(auth);
                 clearSubs();
                 if (clockTimer) clearInterval(clockTimer);
                 location.reload();
             },
 
-updateProfile: async () => {
-    if (!auth.currentUser || !ensureAccountOpen()) return;
-
-    const up = {};
-
-    const nomeInput = document.getElementById("set-nome").value.trim();
-    const nome = nomeInput || uLog.nome;
+            updateProfile: async () => {
+                if (!auth.currentUser || !ensureAccountOpen()) return;
+                const up = {};
+                const nome = document.getElementById("set-nome").value.trim();
                 const fotoUrl = document.getElementById("set-foto").value.trim();
                 const bio = document.getElementById("set-bio").value.trim();
-                up.nome = nome;
+                if (nome) up.nome = nome;
                 if (fotoUrl) up.foto = fotoUrl;
                 if (bio) up.bio = bio;
                 await update(ref(db, `jogadores/${auth.currentUser.uid}`), up);
