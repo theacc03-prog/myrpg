@@ -1,170 +1,285 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ERA ACADEMY</title>
+    <title>ERA ACADEMY | Sovereign System</title>
+
+    <link rel="icon" type="image/png" href="era-favicon.png">
 
     <link rel="stylesheet" href="styles.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&family=Special+Elite&display=swap" rel="stylesheet">
 
 </head>
+
 <body>
 
 <header>
+
+    <img src="era.png"
+         alt=""
+         style="max-height:60px; margin-bottom:10px"
+         onerror="this.style.display='none'">
+
     <h1>ERA ACADEMY</h1>
+
 </header>
 
-<nav>
+<nav id="main-nav">
 
-    <button onclick="app.showTab('tab-dashboard')">DASHBOARD</button>
-
-    <button onclick="app.showTab('tab-financeiro')">
-        FINANCEIRO
+    <button class="nav-btn active"
+            onclick="app.showTab('tab-dash', this)">
+        DASHBOARD
     </button>
 
-    <button onclick="app.showTab('tab-fraternidades')">
-        FRATERNIDADES
+    <button class="nav-btn"
+            onclick="app.showTab('tab-notif', this)">
+        NOTIFICAÇÕES
     </button>
 
-    <button onclick="app.showTab('tab-mercado')">
+    <button class="nav-btn"
+            onclick="app.showTab('tab-news', this)">
+        EDITORIAL
+    </button>
+
+    <button class="nav-btn"
+            onclick="app.showTab('tab-fin', this)">
+        FINANCIAMENTO
+    </button>
+
+    <button class="nav-btn"
+            onclick="app.showTab('tab-transf', this)">
+        TRANSFERIR
+    </button>
+
+    <button class="nav-btn"
+            onclick="app.showTab('tab-mercado', this)">
         MERCADO
     </button>
 
-    <button onclick="app.showTab('tab-reitoria')">
+    <button class="nav-btn hidden"
+            id="btn-mercado-ilegal"
+            onclick="app.showTab('tab-mercado-ilegal', this)">
+        MERCADO ILEGAL
+    </button>
+
+    <button class="nav-btn"
+            onclick="app.showTab('tab-frat', this)">
+        FRATERNIDADES
+    </button>
+
+    <button class="nav-btn"
+            onclick="app.showTab('tab-rank', this)">
+        RANKING
+    </button>
+
+    <button class="nav-btn"
+            onclick="app.showTab('tab-vagas', this)">
+        VAGAS
+    </button>
+
+    <button class="nav-btn"
+            id="btn-adm"
+            style="color:var(--gold); display:none"
+            onclick="app.showTab('tab-adm', this)">
         REITORIA
     </button>
 
 </nav>
 
-<div id="auth-screen">
+<div id="auth-screen" class="container">
 
-    <div class="card auth-card">
+    <!-- LOGIN -->
 
-        <h2>Login</h2>
+    <div class="card"
+         id="login-box"
+         style="max-width:380px; margin:auto">
 
-        <input type="email" id="email" placeholder="Email">
+        <h2 style="font-family:'Cinzel'">
+            Login Acadêmico
+        </h2>
 
-        <input type="password" id="password" placeholder="Senha">
+        <input type="email"
+               id="email"
+               placeholder="E-mail / Login">
 
-        <button onclick="authSystem.login()">
-            Entrar
+        <input type="password"
+               id="pass"
+               placeholder="Senha">
+
+        <button onclick="app.handleLogin()">
+            Acessar
         </button>
 
-        <div class="divider"></div>
+        <p class="switch-auth"
+           onclick="app.toggleAuth()">
 
-        <h2>Inscrição</h2>
+            Solicitar Matrícula
 
-        <input type="text" id="reg-name" placeholder="Nome">
+        </p>
 
-        <input type="email" id="reg-email" placeholder="Email">
+    </div>
 
-        <input type="password" id="reg-password" placeholder="Senha">
+    <!-- REGISTER -->
 
+    <div class="card hidden"
+         id="register-box"
+         style="max-width:380px; margin:auto">
+
+        <h2 style="font-family:'Cinzel'">
+            Nova Matrícula
+        </h2>
+
+        <input type="text"
+               id="reg-name"
+               placeholder="Nome do Personagem">
+
+        <input type="email"
+               id="reg-email"
+               placeholder="E-mail / Login">
+
+        <input type="password"
+               id="reg-pass"
+               placeholder="Senha">
+
+        <!-- NOVO -->
         <select id="reg-origem">
-            <option value="">Categoria</option>
-            <option value="herdeiro">Herdeiro</option>
-            <option value="bolsista">Bolsista</option>
+
+            <option value="">
+                Categoria Acadêmica
+            </option>
+
+            <option value="herdeiro">
+                Herdeiro
+            </option>
+
+            <option value="bolsista">
+                Bolsista
+            </option>
+
         </select>
 
+        <!-- NOVO -->
         <select id="reg-frat">
 
-            <option value="">Fraternidade</option>
+            <option value="">
+                Fraternidade
+            </option>
 
-            <option value="montriel">Montriel</option>
-            <option value="veridian">Veridian</option>
-            <option value="novaire">Novaire</option>
-            <option value="echelon">Echelon</option>
-            <option value="velmora">Velmora</option>
-            <option value="aurelis">Aurelis</option>
+            <option value="montriel">
+                Montriel
+            </option>
+
+            <option value="veridian">
+                Veridian
+            </option>
+
+            <option value="novaire">
+                Novaire
+            </option>
+
+            <option value="echelon">
+                Echelon
+            </option>
+
+            <option value="velmora">
+                Velmora
+            </option>
+
+            <option value="aurelis">
+                Aurelis
+            </option>
 
         </select>
 
-        <button onclick="authSystem.register()">
-            Registrar
+        <button onclick="app.handleRegister()">
+            Matricular
         </button>
+
+        <p class="switch-auth"
+           onclick="app.toggleAuth()">
+
+            Voltar
+
+        </p>
 
     </div>
 
 </div>
 
-<div id="app-screen" class="hidden">
+<!-- APP -->
 
-    <section id="tab-dashboard" class="tab-content">
+<div id="app-screen"
+     class="container hidden">
 
-        <div class="card">
+    <!-- DASHBOARD -->
 
-            <h2 id="player-name"></h2>
+    <div id="tab-dash"
+         class="tab-content">
 
-            <div id="player-tags"></div>
+        <!-- MANTER TODO SEU DASHBOARD ORIGINAL -->
 
-            <div class="balance" id="player-balance"></div>
+    </div>
 
-        </div>
+    <!-- FRATERNIDADES -->
 
-    </section>
+    <div id="tab-frat"
+         class="tab-content hidden">
 
-    <section id="tab-financeiro" class="tab-content hidden">
+        <div class="card left">
 
-        <div class="card">
-
-            <h2>Financeiro</h2>
-
-            <div id="finance-data"></div>
-
-        </div>
-
-    </section>
-
-    <section id="tab-fraternidades" class="tab-content hidden">
-
-        <div class="card">
-
-            <h2>Fraternidades</h2>
+            <h2 class="tab-title">
+                FRATERNIDADES
+            </h2>
 
             <div id="frat-list"></div>
 
         </div>
 
-    </section>
+    </div>
 
-    <section id="tab-mercado" class="tab-content hidden">
-
-        <div class="card">
-
-            <h2>Mercado</h2>
-
-            <div id="market-list"></div>
-
-        </div>
-
-    </section>
-
-    <section id="tab-reitoria" class="tab-content hidden">
-
-        <div class="card">
-
-            <h2>Reitoria</h2>
-
-            <div id="admin-panel"></div>
-
-        </div>
-
-    </section>
+    <!-- RESTO DAS TABS -->
 
 </div>
 
+<!-- MODAIS -->
+
+<div id="profile-modal"
+     class="modal">
+
+    <!-- manter modal original -->
+
+</div>
+
+<div id="image-modal"
+     class="modal">
+
+    <!-- manter modal original -->
+
+</div>
+
+<!-- IMPORTS -->
+
 <script type="module" src="firebase.js"></script>
+
 <script type="module" src="utils.js"></script>
-<script type="module" src="ui.js"></script>
-<script type="module" src="financeiro.js"></script>
-<script type="module" src="fraternidades.js"></script>
-<script type="module" src="mercado.js"></script>
-<script type="module" src="reitoria.js"></script>
+
 <script type="module" src="auth.js"></script>
+
+<script type="module" src="ui.js"></script>
+
+<script type="module" src="financeiro.js"></script>
+
+<script type="module" src="mercado.js"></script>
+
+<script type="module" src="fraternidades.js"></script>
+
+<script type="module" src="reitoria.js"></script>
+
 <script type="module" src="app.js"></script>
 
 </body>
