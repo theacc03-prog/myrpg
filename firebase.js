@@ -1,4 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 
 import {
     getAuth
@@ -8,26 +10,62 @@ import {
     getDatabase
 } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
+/* =========================
+   FIREBASE CONFIG
+========================= */
+
 const firebaseConfig = {
 
-    apiKey: "SUA_KEY",
+    apiKey:
+        "AIzaSyBt7zjlI1P8lN4JxnxTe_erzNbfu1AHdfE",
 
-    authDomain: "SEU_DOMINIO",
+    authDomain:
+        "universityerarpg-6a29d.firebaseapp.com",
 
-    databaseURL: "SUA_DATABASE",
+    databaseURL:
+        "https://universityerarpg-6a29d-default-rtdb.firebaseio.com",
 
-    projectId: "SEU_ID",
+    projectId:
+        "universityerarpg-6a29d",
 
-    storageBucket: "SEU_BUCKET",
+    storageBucket:
+        "universityerarpg-6a29d.firebasestorage.app",
 
-    messagingSenderId: "SEU_SENDER",
+    messagingSenderId:
+        "912095174573",
 
-    appId: "SEU_APP_ID"
+    appId:
+        "1:912095174573:web:e4591c65eeb9259ba9cb24"
 
 };
 
-const firebaseApp = initializeApp(firebaseConfig);
+/* =========================
+   INITIALIZE
+========================= */
 
-export const auth = getAuth(firebaseApp);
+const fbApp =
+    initializeApp(firebaseConfig);
 
-export const db = getDatabase(firebaseApp);
+/* =========================
+   SERVICES
+========================= */
+
+const auth =
+    getAuth(fbApp);
+
+const db =
+    getDatabase(fbApp);
+
+/* =========================
+   EXPORTS
+========================= */
+
+export {
+    auth,
+    db,
+    fbApp
+};
+
+console.log(
+    'Firebase conectado.'
+);
