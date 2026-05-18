@@ -1,0 +1,142 @@
+:root {
+
+    --gold: #D4AF37;
+    --silver: #C0C0C0;
+    --dark: #07111F;
+    --card: #102038;
+    --white: #F5F5F5;
+
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+
+    margin: 0;
+
+    background:
+    linear-gradient(
+        180deg,
+        #07111F 0%,
+        #050A14 100%
+    );
+
+    font-family: 'Montserrat', sans-serif;
+
+    color: white;
+
+}
+
+header {
+
+    padding: 30px;
+
+    text-align: center;
+
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+
+}
+
+h1 {
+
+    font-family: 'Cinzel', serif;
+
+    letter-spacing: 4px;
+
+    color: var(--silver);
+
+}
+
+nav {
+
+    display: flex;
+
+    gap: 10px;
+
+    padding: 15px;
+
+    justify-content: center;
+
+}
+
+button {
+
+    background: var(--gold);
+
+    border: none;
+
+    padding: 12px 18px;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+.card {
+
+    background: var(--card);
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    margin: 20px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+}
+
+.hidden {
+    display: none;
+}
+
+.balance {
+
+    font-size: 2rem;
+
+    color: var(--gold);
+
+    margin-top: 15px;
+
+}
+
+.tag {
+
+    display: inline-block;
+
+    padding: 6px 12px;
+
+    border-radius: 999px;
+
+    margin: 5px;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+}
+
+input,
+select,
+textarea {
+
+    width: 100%;
+
+    padding: 12px;
+
+    margin-top: 10px;
+
+    background: #02060C;
+
+    color: white;
+
+    border: 1px solid rgba(255,255,255,0.1);
+
+    border-radius: 8px;
+
+}
