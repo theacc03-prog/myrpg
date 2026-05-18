@@ -1,0 +1,1 @@
+console.log('ERA ACADEMY iniciado');
