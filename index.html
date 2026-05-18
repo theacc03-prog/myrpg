@@ -2741,7 +2741,7 @@
 
             handleLogin: async () => {
                 const e = document.getElementById("email").value.trim();
-                const p = document.getElementById("pass").value.trim();
+                const p = document.getElementById("reg-pass").value.trim();
                 if (!e || !p) return alert("Preencha e-mail e senha.");
                 try {
                     await signInWithEmailAndPassword(auth, e, p);
