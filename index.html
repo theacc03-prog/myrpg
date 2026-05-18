@@ -2640,46 +2640,70 @@
 
         fillStaticFraternitySelects();
 
-onAuthStateChanged(auth, user => {
-            clearSubs();
-            sessionBootstrapped = false;
-            playerStreamsBound = false;
-            currentProfileId = null;
-            if (clockTimer) {
-                clearInterval(clockTimer);
-                clockTimer = null;
-            }
-            if (user) {
-                document.getElementById("auth-screen").classList.add("hidden");
-                document.getElementById("app-screen").classList.remove("hidden");
-                document.getElementById("main-nav").style.display = "flex";
-                listen(ref(db, `jogadores/${user.uid}`), async snap => {
-                    const d = snap.val();
-                    if (!d) return;
-                    uLog = { id: user.uid, ...d };
-                    if (d.trancada && !isAdmin(uLog)) {
-                        document.getElementById("app-screen").classList.add("hidden");
-                        document.getElementById("main-nav").style.display = "none";
-                        document.getElementById("auth-screen").classList.remove("hidden");
-                        document.getElementById("login-box").classList.remove("hidden");
-                        document.getElementById("register-box").classList.remove("hidden");
-                        alert("Sua conta está trancada pela reitoria.");
-                        await signOut(auth);
-                        return;
-                    }
-                    refreshMyProfileUI(d);
-                    document.getElementById("set-nome").value = d.nome || "";
-                    document.getElementById("set-foto").value = d.foto || "";
-                    document.getElementById("set-bio").value = d.bio || "";
-                    if (!sessionBootstrapped) {
-                        sessionBootstrapped = true;
-                        renderGlobalData();
-                    }
-                    if (!playerStreamsBound) {
-                        playerStreamsBound = true;
-                        bindPlayerStreams(user.uid);
-                    }
-                });
+onAuthStateChanged(auth, async (user) => {
+
+    clearSubs();
+    sessionBootstrapped = false;
+    playerStreamsBound = false;
+    currentProfileId = null;
+
+    if (clockTimer) {
+        clearInterval(clockTimer);
+        clockTimer = null;
+    }
+
+    if (!user) {
+
+        document.getElementById("auth-screen").classList.remove("hidden");
+        document.getElementById("app-screen").classList.add("hidden");
+
+        return;
+    }
+
+    try {
+
+        const snap = await get(ref(db, `jogadores/${user.uid}`));
+
+        if (!snap.exists()) {
+            console.error("Usuário não encontrado.");
+            return;
+        }
+
+        const d = snap.val();
+
+        uLog = {
+            id: user.uid,
+            ...d
+        };
+
+        console.log("USER LOADED:", uLog);
+
+        if (d.trancada && !isAdmin(uLog)) {
+
+            document.getElementById("app-screen").classList.add("hidden");
+            document.getElementById("main-nav").style.display = "none";
+            document.getElementById("auth-screen").classList.remove("hidden");
+
+            alert("Sua conta está trancada pela reitoria.");
+
+            await signOut(auth);
+
+            return;
+        }
+
+        document.getElementById("auth-screen").classList.add("hidden");
+        document.getElementById("app-screen").classList.remove("hidden");
+        document.getElementById("main-nav").style.display = "flex";
+
+        renderAll?.();
+
+    } catch (err) {
+
+        console.error(err);
+
+    }
+
+});
                 clockTimer = setInterval(() => {
                     const c = document.getElementById("clock");
                     if (c) c.innerText = nowClock();
