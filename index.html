@@ -2759,6 +2759,44 @@ handleLogin: async () => {
             },
 
 handleRegister: async () => {
+    const n = document.getElementById("reg-name").value.trim();
+    const e = document.getElementById("reg-email").value.trim();
+    const p = document.getElementById("pass").value.trim();
+    const socialClass = document.getElementById("reg-class").value;
+    const fraternityId = document.getElementById("reg-frat").value;
+
+    if (!n || !e || !p || !socialClass || !fraternityId) {
+        return alert("Preencha nome, e-mail, senha, origem financeira e fraternidade.");
+    }
+
+    try {
+
+        await ensureFraternitiesSeeded();
+
+        const classData = SOCIAL_CLASSES[socialClass] || SOCIAL_CLASSES.bolsista;
+
+        const res = await createUserWithEmailAndPassword(auth, e, p);
+
+        await set(ref(db, `jogadores/${res.user.uid}`), {
+            nome: n,
+            saldo: classData.saldo,
+            divida: 0,
+            role: "aluno",
+            foto: "",
+            bio: "",
+            origemFinanceira: socialClass,
+            fraternidade: fraternityId,
+            trancada: false,
+            tags: tagMapWithIdentity(socialClass, fraternityId),
+            mochila: {},
+            fixos: {},
+            variaveis: {},
+            percentuais: {},
+            academicos: {},
+            punicoes: {},
+            historico: {},
+            notificacoes: {},
+            emprestimos: {},
             title: "Estudante Financeiro",
             criadoEm: Date.now()
         });
@@ -2782,21 +2820,16 @@ handleRegister: async () => {
             tags: tagMapWithIdentity(socialClass, fraternityId)
         };
 
-        const nomeDash = document.getElementById("u-nome");
-        if (nomeDash) nomeDash.innerText = n;
-
-        const saldoDash = document.getElementById("u-saldo");
-        if (saldoDash) saldoDash.innerText = `SVR ${classData.saldo}`;
-
-        const fratDash = document.getElementById("u-frat-mini");
-        if (fratDash) fratDash.innerText = getFraternityName(fraternityId);
+        alert("Matrícula realizada com sucesso.");
 
         document.getElementById("auth-screen").classList.add("hidden");
         document.getElementById("app-screen").classList.remove("hidden");
 
-        document.getElementById("main-nav").style.display = "flex";
+        const nav = document.getElementById("main-nav");
 
-        alert("Matrícula realizada com sucesso.");
+        if (nav) {
+            nav.style.display = "flex";
+        }
 
     } catch (err) {
         console.error(err);
