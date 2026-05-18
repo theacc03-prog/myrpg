@@ -2796,7 +2796,7 @@ handleRegister: async () => {
     }
 },
 
-            handleLogout: async () => {
+handleLogout: async () => {
                 await signOut(auth);
                 clearSubs();
                 if (clockTimer) clearInterval(clockTimer);
