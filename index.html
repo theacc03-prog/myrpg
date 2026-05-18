@@ -963,16 +963,13 @@
             <input type="email" id="reg-email" placeholder="E-mail / Login">
             <input type="password" id="reg-pass" placeholder="Senha">
             <label class="form-label" for="reg-class">Origem financeira</label>
-            <select id="reg-class">
-                <option value="">Selecione a origem financeira</option>
-                <option value="herdeiro">Herdeiro: começa com 3.000 Sovereigns</option>
-                <option value="bolsista">Bolsista: começa com 1.500 Sovereigns</option>
-            </select>
+           <select id="reg-class">
+    <option value="">Selecione a origem financeira</option>
+    <option value="herdeiro">Herdeiro</option>
+    <option value="bolsista">Bolsista</option>
+</select>
             <label class="form-label" for="reg-frat">Fraternidade inicial</label>
             <select id="reg-frat"></select>
-            <div class="inline-feedback">
-                A matrícula já aplica automaticamente a tag de origem financeira e a tag da fraternidade escolhida.
-            </div>
             <button onclick="app.handleRegister()">Matricular</button>
             <p style="font-size:11px; margin-top:15px; cursor:pointer" onclick="app.focusLogin()">Já tenho conta</p>
         </div>
@@ -2797,6 +2794,13 @@
                         user: n,
                         msg: `Novo aluno registrado como ${classData.label} em ${getFraternityName(fraternityId)}`
                     });
+                    alert("Matrícula realizada com sucesso.");
+
+setTimeout(() => {
+    document.getElementById("auth-screen").classList.add("hidden");
+    document.getElementById("app-screen").classList.remove("hidden");
+    document.getElementById("main-nav").style.display = "flex";
+}, 500);
                 } catch (err) {
                     alert(err.message);
                 }
@@ -2809,13 +2813,16 @@
                 location.reload();
             },
 
-            updateProfile: async () => {
-                if (!auth.currentUser || !ensureAccountOpen()) return;
-                const up = {};
-                const nome = document.getElementById("set-nome").value.trim();
+updateProfile: async () => {
+    if (!auth.currentUser || !ensureAccountOpen()) return;
+
+    const up = {};
+
+    const nomeInput = document.getElementById("set-nome").value.trim();
+    const nome = nomeInput || uLog.nome;
                 const fotoUrl = document.getElementById("set-foto").value.trim();
                 const bio = document.getElementById("set-bio").value.trim();
-                if (nome) up.nome = nome;
+                up.nome = nome;
                 if (fotoUrl) up.foto = fotoUrl;
                 if (bio) up.bio = bio;
                 await update(ref(db, `jogadores/${auth.currentUser.uid}`), up);
