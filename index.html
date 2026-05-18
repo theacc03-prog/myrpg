@@ -1532,6 +1532,16 @@
             }
         };
 
+        const SOCIAL_CLASSES = {
+    herdeiro: {
+        saldo: 3000
+    },
+
+    bolsista: {
+        saldo: 1500
+    }
+};
+        
         const subs = [];
         let clockTimer = null;
         let uLog = null;
@@ -2764,6 +2774,8 @@ handleRegister: async () => {
     const p = document.getElementById("reg-pass").value.trim();
     const socialClass = document.getElementById("reg-class").value;
     const fraternityId = document.getElementById("reg-frat").value;
+    
+    const classData = SOCIAL_CLASSES[socialClass] || SOCIAL_CLASSES.bolsista;
 
     if (!n || !e || !p || !socialClass || !fraternityId) {
         return alert("Preencha nome, e-mail, senha, origem financeira e fraternidade.");
