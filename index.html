@@ -2638,18 +2638,24 @@
             syncRestrictedTabVisibility();
         }
 
-fillStaticFraternitySelects();
+        fillStaticFraternitySelects();
 
-onAuthStateChanged(auth, async user => {
+onAuthStateChanged(auth, async (user) => {
+
+    clearSubs();
+    sessionBootstrapped = false;
+    playerStreamsBound = false;
+    currentProfileId = null;
+
+    if (clockTimer) {
+        clearInterval(clockTimer);
+        clockTimer = null;
+    }
 
     if (!user) {
 
-        uLog = null;
         document.getElementById("auth-screen").classList.remove("hidden");
-        document.getElementById("login-box").classList.remove("hidden");
-        document.getElementById("register-box").classList.remove("hidden");
         document.getElementById("app-screen").classList.add("hidden");
-        document.getElementById("main-nav").style.display = "none";
 
         return;
     }
@@ -2689,7 +2695,7 @@ onAuthStateChanged(auth, async user => {
         document.getElementById("app-screen").classList.remove("hidden");
         document.getElementById("main-nav").style.display = "flex";
 
-        refreshMyProfileUI(uLog);
+        renderAll?.();
 
     } catch (err) {
 
@@ -2697,12 +2703,20 @@ onAuthStateChanged(auth, async user => {
 
     }
 
-    clockTimer = setInterval(() => {
-        const c = document.getElementById("clock");
-        if (c) c.innerText = nowClock();
-    }, 1000);
-
 });
+                clockTimer = setInterval(() => {
+                    const c = document.getElementById("clock");
+                    if (c) c.innerText = nowClock();
+                }, 1000);
+            } else {
+                uLog = null;
+                document.getElementById("auth-screen").classList.remove("hidden");
+                document.getElementById("login-box").classList.remove("hidden");
+                document.getElementById("register-box").classList.remove("hidden");
+                document.getElementById("app-screen").classList.add("hidden");
+                document.getElementById("main-nav").style.display = "none";
+            
+        });
 
         document.getElementById("loan-valor")?.addEventListener("input", updateLoanSimulation);
         document.getElementById("loan-parcelas")?.addEventListener("input", updateLoanSimulation);
