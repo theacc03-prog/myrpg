@@ -1,0 +1,88 @@
+import {
+
+    db
+
+} from './firebase.js';
+
+import {
+
+    ref,
+    onValue,
+    update
+
+} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+
+import {
+
+    money,
+    FRATERNIDADES
+
+} from './utils.js';
+
+function renderFraternidades(data) {
+
+    return Object.entries(data).map(([id, f]) => {
+
+        return `
+
+            <div class="card">
+
+                <h2>
+                    ${f.nome}
+                </h2>
+
+                <div>
+                    ${f.descricao || ''}
+                </div>
+
+                <br>
+
+                <strong>
+                    Saldo:
+                </strong>
+
+                ${money(f.saldo || 0)}
+
+                <br><br>
+
+                <strong>
+                    Mensalidade:
+                </strong>
+
+                ${money(f.mensalidade || 0)}
+
+                <br><br>
+
+                <strong>
+                    Presidente:
+                </strong>
+
+                ${f.presidenteNome || 'Não definido'}
+
+            </div>
+
+        `;
+
+    }).join('');
+
+}
+
+onValue(ref(db, 'fraternidades'), snap => {
+
+    const data = snap.val() || {};
+
+    document.getElementById('frat-list').innerHTML = renderFraternidades(data);
+
+});
+
+window.nomearPresidente = async (fratId, uid, nome) => {
+
+    await update(ref(db, `fraternidades/${fratId}`), {
+
+        presidente: uid,
+
+        presidenteNome: nome
+
+    });
+
+};
