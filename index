@@ -1,0 +1,3933 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERA ACADEMY | Sovereign System</title>
+    <link rel="icon" type="image/png" href="era-favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600;800&family=Special+Elite&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --prata: #C0C0C0;
+            --azul-royal: #0A192F;
+            --azul-card: #112240;
+            --white: #F8F9FA;
+            --gold: #D4AF37;
+            --red: #8B0000;
+            --muted: rgba(255,255,255,0.72);
+            --good: #2A9D8F;
+            --pink: #F5A3C7;
+            --green: #2A9D55;
+            --orange: #C46A2B;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background: radial-gradient(circle at top, #112240 0%, var(--azul-royal) 58%, #050A14 100%);
+            color: var(--white);
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            padding: 25px 15px;
+            text-align: center;
+            background: rgba(2, 6, 12, 0.98);
+            border-bottom: 2px solid var(--prata);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--prata);
+            letter-spacing: 4px;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        nav {
+            display: none;
+            background: rgba(5, 10, 20, 0.98);
+            overflow-x: auto;
+            white-space: nowrap;
+            border-bottom: 1px solid rgba(192,192,192,0.1);
+            position: sticky;
+            top: 96px;
+            z-index: 999;
+            scrollbar-width: none;
+            backdrop-filter: blur(10px);
+        }
+
+        nav::-webkit-scrollbar { display: none; }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: var(--prata);
+            padding: 15px 14px;
+            font-size: 9px;
+            font-weight: 800;
+            cursor: pointer;
+            opacity: 0.62;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            width: auto;
+            margin-top: 0;
+        }
+
+        .nav-btn.active {
+            opacity: 1;
+            border-bottom: 2px solid var(--prata);
+            color: #fff;
+        }
+
+        .container {
+            max-width: 980px;
+            margin: 20px auto;
+            padding: 0 15px 100px;
+        }
+
+        #auth-screen {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            align-items: start;
+        }
+
+        .card {
+            background: linear-gradient(180deg, rgba(17,34,64,0.96) 0%, rgba(10,25,47,0.96) 100%);
+            border: 1px solid rgba(192,192,192,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .card.left { text-align: left; }
+
+        .card.soft {
+            background: linear-gradient(180deg, #13294E 0%, #0A192F 100%);
+        }
+
+        .balance {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--prata);
+            margin: 10px 0;
+        }
+
+        .tag {
+            padding: 4px 9px;
+            border-radius: 999px;
+            font-size: 9px;
+            font-weight: 800;
+            margin: 2px;
+            display: inline-block;
+            color: #000;
+        }
+
+        .subtle {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .status-banner {
+            margin: 12px 0 0;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+            color: #fff;
+            font-size: 12px;
+        }
+
+        .warning { border-left: 3px solid var(--gold); }
+        .danger { border-left: 3px solid var(--red); }
+        .good { border-left: 3px solid var(--good); }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            background: #02060C;
+            border: 1px solid #1d3557;
+            color: white;
+            border-radius: 6px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        input[type="color"] {
+            min-height: 44px;
+            padding: 4px;
+        }
+
+        .form-label {
+            display: block;
+            margin: 12px 0 2px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .7px;
+            color: var(--prata);
+            text-transform: uppercase;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: var(--prata);
+            color: var(--azul-royal);
+            border: none;
+            font-weight: 800;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 5px;
+            transition: .2s ease;
+            letter-spacing: 0.4px;
+            font-family: inherit;
+        }
+
+        button:hover {
+            filter: brightness(1.05);
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: .5;
+            transform: none;
+        }
+
+        .btn-sec {
+            background: none;
+            border: 1px solid var(--prata);
+            color: var(--prata);
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #111;
+        }
+
+        .btn-red {
+            background: var(--red);
+            color: #fff;
+        }
+
+        .hidden { display: none !important; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .mini {
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .hr {
+            height: 1px;
+            background: rgba(255,255,255,0.08);
+            margin: 16px 0;
+        }
+
+        .row-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .row-actions button {
+            width: auto;
+            padding: 10px 12px;
+            font-size: 10px;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 10px;
+            border: 1px solid rgba(255,255,255,0.15);
+            margin: 3px 3px 0 0;
+            color: #fff;
+        }
+
+        .list-item {
+            text-align: left;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        .list-item strong { color: var(--prata); }
+
+        .comment-box {
+            text-align: left;
+            padding: 10px;
+            border-left: 3px solid var(--prata);
+            background: rgba(255,255,255,0.03);
+            margin-top: 8px;
+            border-radius: 6px;
+        }
+
+        .comment-meta {
+            font-size: 10px;
+            opacity: 0.7;
+            margin-bottom: 6px;
+        }
+
+        .clickable { cursor: pointer; }
+
+        .profile-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid var(--prata);
+            object-fit: cover;
+            margin-bottom: 10px;
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.03);
+        }
+
+        .title-badge {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            font-size: 11px;
+            color: var(--prata);
+        }
+
+        .ranking-top {
+            border: 1px solid rgba(255,255,255,0.16);
+            box-shadow: 0 0 0 1px rgba(192,192,192,0.1), 0 8px 25px rgba(0,0,0,0.45);
+        }
+
+        .ranking-bottom {
+            border: 1px solid rgba(139,0,0,0.5);
+            box-shadow: 0 0 0 1px rgba(139,0,0,0.2), 0 8px 25px rgba(0,0,0,0.45);
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.88);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            padding: 20px;
+            backdrop-filter: blur(6px);
+        }
+
+        .modal .card {
+            max-width: 560px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .small-btn {
+            width: auto;
+            padding: 8px 10px;
+            font-size: 9px;
+            margin-top: 0;
+        }
+
+        .tab-title {
+            font-family: 'Cinzel', serif;
+            margin: 0 0 10px;
+        }
+
+        .sticky-note {
+            font-size: 10px;
+            opacity: 0.8;
+        }
+
+        .hero-meta {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .hero-box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 11px;
+        }
+
+        .hero-box strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--prata);
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+        }
+
+        .market-main-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .thumb-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .thumb-row img {
+            width: 42px;
+            height: 42px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.12);
+            cursor: pointer;
+            opacity: 0.72;
+        }
+
+        .thumb-row img.active {
+            opacity: 1;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 1px rgba(212,175,55,0.25);
+        }
+
+        .image-modal-card {
+            max-width: 900px !important;
+            background: linear-gradient(180deg, rgba(17,34,64,0.98) 0%, rgba(10,25,47,0.98) 100%);
+        }
+
+        .image-modal-img {
+            width: 100%;
+            max-height: 72vh;
+            object-fit: contain;
+            border-radius: 12px;
+            background: rgba(0,0,0,0.25);
+        }
+
+        .inline-feedback {
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+        }
+
+        .loan-status-good { border-left: 3px solid var(--good); }
+        .loan-status-warning { border-left: 3px solid var(--gold); }
+        .loan-status-danger { border-left: 3px solid var(--red); }
+
+        .finance-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .finance-metric {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 11px;
+        }
+
+        .finance-metric strong {
+            display: block;
+            color: var(--prata);
+            margin-bottom: 4px;
+            font-family: 'Cinzel', serif;
+        }
+
+        .market-toolbar {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 8px;
+            align-items: end;
+            margin-top: 14px;
+        }
+
+        .market-toolbar button {
+            width: auto;
+            white-space: nowrap;
+        }
+
+        .market-card {
+            position: relative;
+        }
+
+        .market-labels {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 8px 0;
+        }
+
+        .condition-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #fff;
+            font-size: 9px;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        .seller-tag {
+            border-color: rgba(212,175,55,0.35);
+            color: #F7E7A8;
+        }
+
+        .price-old {
+            text-decoration: line-through;
+            color: rgba(255,255,255,0.48);
+            font-size: 11px;
+            margin-right: 6px;
+        }
+
+        .price-new {
+            color: var(--prata);
+            font-weight: 800;
+        }
+
+        .seller-box {
+            margin-top: 8px;
+            padding: 8px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.035);
+            border: 1px solid rgba(255,255,255,0.07);
+            font-size: 11px;
+        }
+
+        .illegal-page {
+            background:
+                linear-gradient(180deg, rgba(30,3,8,0.98), rgba(5,5,10,0.98)),
+                radial-gradient(circle at top right, rgba(139,0,0,0.45), transparent 32%);
+            border-color: rgba(139,0,0,0.55);
+            box-shadow: 0 0 0 1px rgba(139,0,0,0.18), 0 14px 40px rgba(0,0,0,0.7);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .illegal-page::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 5px);
+            opacity: .2;
+            pointer-events: none;
+        }
+
+        .illegal-title {
+            color: #FFCDD2;
+            font-family: 'Special Elite', cursive;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .illegal-lock-screen {
+            text-align: center;
+            padding: 26px 18px;
+            border: 1px solid rgba(255,70,70,0.24);
+            border-radius: 10px;
+            background: rgba(0,0,0,0.32);
+            box-shadow: inset 0 0 35px rgba(139,0,0,0.18);
+        }
+
+        .illegal-lock-screen img {
+            width: 82px;
+            height: 82px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 18px rgba(255,70,70,0.28));
+            margin-bottom: 12px;
+        }
+
+        .illegal-card {
+            background:
+                radial-gradient(circle at top, rgba(139,0,0,0.22), transparent 32%),
+                linear-gradient(180deg, rgba(25,5,8,0.96), rgba(8,8,12,0.98));
+            border-color: rgba(139,0,0,0.5);
+        }
+
+        .frat-card {
+            border-color: rgba(255,255,255,0.16);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .frat-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--frat-a), var(--frat-b));
+        }
+
+        .frat-swatch {
+            width: 18px;
+            height: 18px;
+            display: inline-block;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.2);
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        .frat-detail-banner {
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: linear-gradient(90deg, var(--frat-a), var(--frat-b));
+            color: var(--frat-text);
+        }
+
+        .frat-detail-banner h3 {
+            margin: 0;
+            font-family: 'Cinzel', serif;
+        }
+
+        .locked-screen {
+            border: 1px solid rgba(139,0,0,0.5);
+            background: linear-gradient(180deg, rgba(45,6,10,0.95), rgba(10,10,16,0.95));
+        }
+
+        body {
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0) 240px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 96px),
+                linear-gradient(135deg, #08090D 0%, #11131A 45%, #171116 100%);
+            line-height: 1.45;
+        }
+
+        header {
+            padding: 18px 15px 16px;
+            background: rgba(5, 6, 9, 0.96);
+            border-bottom: 1px solid rgba(212,175,55,0.34);
+            box-shadow: 0 12px 36px rgba(0,0,0,0.36);
+        }
+
+        header img {
+            max-height: 50px !important;
+            margin-bottom: 8px !important;
+        }
+
+        h1 {
+            font-size: 1.35rem;
+            letter-spacing: 5px;
+            color: #E4E6EA;
+        }
+
+        nav {
+            top: 87px;
+            background: rgba(9, 10, 14, 0.94);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 10px 26px rgba(0,0,0,0.24);
+        }
+
+        .nav-btn {
+            color: rgba(245,245,245,0.76);
+            opacity: 1;
+            padding: 14px 13px;
+        }
+
+        .nav-btn.active {
+            color: #fff;
+            background: linear-gradient(180deg, rgba(212,175,55,0.10), rgba(255,255,255,0.02));
+            border-bottom-color: var(--gold);
+        }
+
+        .container {
+            max-width: 1120px;
+            margin-top: 24px;
+        }
+
+        .card {
+            border-radius: 8px;
+            background:
+                linear-gradient(180deg, rgba(28,31,40,0.94), rgba(12,14,20,0.96));
+            border: 1px solid rgba(255,255,255,0.10);
+            box-shadow: 0 18px 38px rgba(0,0,0,0.34);
+        }
+
+        .card.soft {
+            background:
+                linear-gradient(180deg, rgba(30,33,42,0.96), rgba(13,15,21,0.98));
+            border-color: rgba(212,175,55,0.24);
+        }
+
+        .tab-title {
+            color: #ECEEF2;
+            letter-spacing: .8px;
+        }
+
+        input, textarea, select {
+            background: rgba(5,6,10,0.9);
+            border-color: rgba(255,255,255,0.14);
+            border-radius: 6px;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: rgba(212,175,55,0.62);
+            box-shadow: 0 0 0 3px rgba(212,175,55,0.10);
+        }
+
+        button {
+            border-radius: 6px;
+        }
+
+        .btn-sec {
+            background: rgba(255,255,255,0.025);
+        }
+
+        .list-item,
+        .comment-box,
+        .hero-box,
+        .finance-metric,
+        .inline-feedback {
+            border-radius: 8px;
+            background: rgba(255,255,255,0.045);
+            border-color: rgba(255,255,255,0.09);
+        }
+
+        .balance {
+            color: #E6E8EC;
+        }
+
+        .grid {
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        }
+
+        .frat-overview {
+            background:
+                linear-gradient(180deg, rgba(28,31,40,0.96), rgba(12,14,20,0.98));
+        }
+
+        .frat-grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .frat-card {
+            min-height: 238px;
+            padding: 18px;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.025)),
+                linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.20));
+            border-color: rgba(255,255,255,0.14);
+        }
+
+        .frat-card::before {
+            height: 7px;
+        }
+
+        .frat-card::after {
+            content: "";
+            position: absolute;
+            inset: 7px 0 auto 0;
+            height: 1px;
+            background: rgba(255,255,255,0.16);
+        }
+
+        .frat-card-head,
+        .frat-banner-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .frat-monogram {
+            width: 52px;
+            height: 52px;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            background: linear-gradient(135deg, var(--frat-a), var(--frat-b));
+            color: var(--frat-text, #fff);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255,255,255,0.22);
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.18), 0 10px 22px rgba(0,0,0,0.28);
+        }
+
+        .frat-monogram.large {
+            width: 68px;
+            height: 68px;
+            font-size: 1.15rem;
+        }
+
+        .frat-name {
+            margin: 0;
+            font-family: 'Cinzel', serif;
+            font-size: 1.05rem;
+            letter-spacing: .9px;
+            color: #fff;
+        }
+
+        .frat-sub {
+            margin-top: 2px;
+            color: rgba(255,255,255,0.62);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .9px;
+        }
+
+        .frat-ledger-grid,
+        .frat-profile-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .frat-metric,
+        .frat-profile-cell {
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.18);
+            border: 1px solid rgba(255,255,255,0.09);
+            min-height: 58px;
+        }
+
+        .frat-metric span,
+        .frat-profile-cell span {
+            display: block;
+            color: rgba(255,255,255,0.56);
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            margin-bottom: 4px;
+        }
+
+        .frat-metric strong,
+        .frat-profile-cell strong {
+            color: #F3F4F6;
+            font-size: 12px;
+        }
+
+        .frat-president-line {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.09);
+            font-size: 11px;
+            color: rgba(255,255,255,0.72);
+        }
+
+        .frat-workspace {
+            align-items: start;
+        }
+
+        .frat-detail-banner {
+            border-radius: 8px;
+            padding: 18px;
+            background:
+                linear-gradient(135deg, color-mix(in srgb, var(--frat-a) 78%, #000 22%), color-mix(in srgb, var(--frat-b) 76%, #000 24%));
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.16);
+        }
+
+        .frat-detail-banner h3 {
+            font-size: 1.45rem;
+            letter-spacing: 1px;
+        }
+
+        .frat-member-roster {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .frat-member-roster .pill {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.12);
+        }
+
+        .ledger-list {
+            display: grid;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .ledger-entry {
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            font-size: 11px;
+        }
+
+        .ledger-entry strong {
+            color: #EEF0F3;
+        }
+
+        .ledger-entry .amount {
+            float: right;
+            color: #F7E7A8;
+            font-weight: 800;
+        }
+
+        .frat-president-panel {
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 8px;
+            background: rgba(212,175,55,0.06);
+            border: 1px solid rgba(212,175,55,0.18);
+        }
+
+        .market-card,
+        .ranking-top,
+        .ranking-bottom {
+            border-radius: 8px;
+        }
+
+        @media (max-width: 760px) {
+            #auth-screen, .grid-2, .grid-3, .hero-meta, .finance-grid, .market-toolbar, .frat-ledger-grid, .frat-profile-grid { grid-template-columns: 1fr; }
+            .balance { font-size: 2rem; }
+            h1 { font-size: 1.1rem; }
+            nav { top: 78px; }
+            .container { padding-bottom: 70px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="era.png" alt="" style="max-height:60px; margin-bottom:10px" onerror="this.style.display='none'">
+        <h1>ERA ACADEMY</h1>
+    </header>
+
+    <nav id="main-nav">
+        <button class="nav-btn active" onclick="app.showTab('tab-dash', this)">Dashboard</button>
+        <button class="nav-btn" onclick="app.showTab('tab-notif', this)">Notificações</button>
+        <button class="nav-btn" onclick="app.showTab('tab-news', this)">Editorial</button>
+        <button class="nav-btn" onclick="app.showTab('tab-fin', this)">Financiamento</button>
+        <button class="nav-btn" onclick="app.showTab('tab-transf', this)">Transferir</button>
+        <button class="nav-btn" onclick="app.showTab('tab-mercado', this)">Mercado</button>
+        <button class="nav-btn hidden" id="btn-mercado-ilegal" onclick="app.showTab('tab-mercado-ilegal', this)">Mercado Ilegal</button>
+        <button class="nav-btn" onclick="app.showTab('tab-frat', this)">Fraternidades</button>
+        <button class="nav-btn" onclick="app.showTab('tab-rank', this)">Ranking</button>
+        <button class="nav-btn" onclick="app.showTab('tab-vagas', this)">Vagas</button>
+        <button class="nav-btn" id="btn-adm" style="color:var(--gold); display:none" onclick="app.showTab('tab-adm', this)">Reitoria</button>
+    </nav>
+
+    <div id="auth-screen" class="container">
+        <div class="card" id="login-box" style="max-width:390px; width:100%; margin:auto">
+            <h2 style="font-family:'Cinzel'">Login Acadêmico</h2>
+            <input type="email" id="email" placeholder="E-mail / Login">
+            <input type="password" id="pass" placeholder="Senha">
+            <button onclick="app.handleLogin()">Acessar</button>
+            <p style="font-size:11px; margin-top:15px; cursor:pointer" onclick="app.toggleAuth()">Ver formulário de matrícula</p>
+        </div>
+
+        <div class="card" id="register-box" style="max-width:430px; width:100%; margin:auto">
+            <h2 style="font-family:'Cinzel'">Nova Matrícula</h2>
+            <input type="text" id="reg-name" placeholder="Nome do Personagem">
+            <input type="email" id="reg-email" placeholder="E-mail / Login">
+            <input type="password" id="reg-pass" placeholder="Senha">
+            <label class="form-label" for="reg-class">Origem financeira</label>
+            <select id="reg-class">
+                <option value="">Selecione a origem financeira</option>
+                <option value="herdeiro">Herdeiro:</option>
+                <option value="bolsista">Bolsista:</option>
+            </select>
+            <label class="form-label" for="reg-frat">Fraternidade inicial</label>
+            <select id="reg-frat"></select>
+            <div class="inline-feedback">
+                Selecione corretamente sua origem e fraternidade.
+            </div>
+            <button onclick="app.handleRegister()">Matricular</button>
+            <p style="font-size:11px; margin-top:15px; cursor:pointer" onclick="app.focusLogin()">Já tenho conta</p>
+        </div>
+    </div>
+
+    <div id="app-screen" class="container hidden">
+        <div id="tab-dash" class="tab-content">
+            <div class="card soft">
+                <div style="text-align:right">
+                    <button class="btn-sec small-btn" onclick="app.toggleSettings()">Settings</button>
+                </div>
+
+                <div id="clock" class="sticky-note">00:00:00</div>
+                <img id="u-foto" src="" class="profile-photo" onerror="this.src='https://placehold.co/150/0A192F/C0C0C0?text=ERA'">
+                <div class="subtle">perfil institucional</div>
+
+                <h2 id="u-nome" style="font-family:'Cinzel'; margin:8px 0 5px">---</h2>
+                <div id="u-tags"></div>
+                <div class="title-badge" id="u-title">---</div>
+
+                <div class="balance" id="u-saldo">SVR 0</div>
+                <p id="u-bio" style="font-size:12px; opacity:0.85"></p>
+                <div id="u-warning" class="status-banner hidden"></div>
+
+                <div class="hero-meta">
+                    <div class="hero-box">
+                        <strong>Status</strong>
+                        <span id="u-status-mini">---</span>
+                    </div>
+                    <div class="hero-box">
+                        <strong>Dívida</strong>
+                        <span id="u-divida-mini">SVR 0</span>
+                    </div>
+                    <div class="hero-box">
+                        <strong>Fraternidade</strong>
+                        <span id="u-frat-mini">---</span>
+                    </div>
+                </div>
+
+                <div id="settings-area" class="hidden" style="margin-top:15px; border-top:1px solid rgba(255,255,255,0.1); padding-top:15px">
+                    <input type="text" id="set-nome" placeholder="Novo nome">
+                    <input type="text" id="set-foto" placeholder="Link direto da foto">
+                    <textarea id="set-bio" placeholder="Bio do Personagem"></textarea>
+                    <button onclick="app.updateProfile()">Salvar Perfil</button>
+                    <button class="btn-sec" onclick="app.handleLogout()">Sair</button>
+                    <button class="btn-red" onclick="app.deleteMe()">Excluir Minha Conta</button>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card left">
+                    <h3 class="tab-title">Meu Inventário</h3>
+                    <div id="u-inv" class="grid"></div>
+                </div>
+
+                <div class="card left">
+                    <h3 class="tab-title">Histórico de Ações</h3>
+                    <div id="u-history" class="mini">Nenhuma ação registrada.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-notif" class="tab-content hidden">
+            <div class="card left">
+                <h2 class="tab-title">Notificações</h2>
+                <div id="notif-list">Nenhuma notificação.</div>
+            </div>
+        </div>
+
+        <div id="tab-news" class="tab-content hidden">
+            <div class="card left">
+                <h2 class="tab-title">Editorial Academy</h2>
+                <div class="subtle">Notícias, comentários e movimentos sociais do seu universo.</div>
+                <div id="news-list"></div>
+            </div>
+        </div>
+
+        <div id="tab-fin" class="tab-content hidden">
+            <div class="card left">
+                <h2 class="tab-title">Financiamento Estudantil</h2>
+                <div class="grid-2">
+                    <div class="card left" style="margin-bottom:0">
+                        <strong>Dívida atual</strong>
+                        <div class="balance" id="fin-divida">SVR 0</div>
+                        <div class="subtle">Saldo de empréstimos, juros e parcelamentos.</div>
+                        <div id="fin-health" class="inline-feedback loan-status-good">Situação saudável.</div>
+                        <div class="finance-grid">
+                            <div class="finance-metric">
+                                <strong>Score</strong>
+                                <span id="fin-score">---</span>
+                            </div>
+                            <div class="finance-metric">
+                                <strong>Limite sugerido</strong>
+                                <span id="fin-limit">SVR 0</span>
+                            </div>
+                            <div class="finance-metric">
+                                <strong>Risco</strong>
+                                <span id="fin-risk">baixo</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card left" style="margin-bottom:0">
+                        <strong>Empréstimos ativos</strong>
+                        <div id="fin-loans" class="mini">Nenhum empréstimo ativo.</div>
+                    </div>
+                </div>
+                <div class="hr"></div>
+                <div class="grid-2">
+                    <div class="card left" style="margin-bottom:0">
+                        <h3 style="margin-top:0">Solicitar empréstimo</h3>
+                        <input type="number" id="loan-valor" placeholder="Valor solicitado">
+                        <input type="number" id="loan-parcelas" placeholder="Quantidade de parcelas" min="1" value="1">
+                        <select id="loan-purpose">
+                            <option value="mensalidade">Mensalidade e vida acadêmica</option>
+                            <option value="investimento">Investimento em carreira</option>
+                            <option value="emergencia">Emergência financeira</option>
+                            <option value="fraternidade">Apoio à fraternidade</option>
+                            <option value="outro">Outro motivo</option>
+                        </select>
+                        <textarea id="loan-motivo" placeholder="Justificativa curta para a reitoria"></textarea>
+                        <div id="loan-sim" class="inline-feedback">Preencha valor e parcelas para ver a simulação.</div>
+                        <button onclick="app.requestLoanFromForm()" class="btn-gold">Solicitar Empréstimo</button>
+                    </div>
+                    <div class="card left" style="margin-bottom:0">
+                        <h3 style="margin-top:0">Gerir dívida</h3>
+                        <input type="number" id="pay-valor" placeholder="Valor para amortizar">
+                        <button onclick="app.payDebtFromForm()">Amortizar Dívida</button>
+                        <button onclick="app.payAllDebt()" class="btn-sec">Quitar Tudo</button>
+                        <div class="hr"></div>
+                        <input type="number" id="neg-extra" placeholder="Parcelas extras para alongar pagamento" min="1">
+                        <button onclick="app.negotiateDebtFromForm()" class="btn-sec">Negociar / Parcelar</button>
+                        <div id="fin-feedback" class="inline-feedback hidden"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-transf" class="tab-content hidden">
+            <div class="card left">
+                <h2 class="tab-title">Transferência de Sovereigns</h2>
+                <select id="tr-dest"></select>
+                <input type="number" id="tr-val" placeholder="Valor">
+                <textarea id="tr-msg" placeholder="Descrição da transferência"></textarea>
+                <button onclick="app.transferirDinheiro()" class="btn-gold">Confirmar Envio</button>
+                <div class="hr"></div>
+                <h3 class="tab-title">Enviar item do inventário</h3>
+                <select id="tr-item"></select>
+                <textarea id="tr-item-msg" placeholder="Recado junto com o item"></textarea>
+                <button onclick="app.transferirItem()" class="btn-sec">Enviar Item</button>
+                <div id="transfer-feedback" class="inline-feedback hidden"></div>
+            </div>
+        </div>
+
+        <div id="tab-mercado" class="tab-content hidden">
+            <div class="card left">
+                <h2 class="tab-title">Mercado de Itens</h2>
+                <div class="subtle">Itens da ERA e revendas de alunos aparecem juntos, com vendedor, condição e validade restante.</div>
+                <div class="market-toolbar">
+                    <select id="sell-item"></select>
+                    <input type="number" id="sell-price" placeholder="Valor de venda">
+                    <select id="sell-condition">
+                        <option value="usado">Usado</option>
+                        <option value="recauchutado">Recauchutado</option>
+                        <option value="seminovo">Seminovo</option>
+                    </select>
+                    <button class="btn-sec" onclick="app.listInventoryItemForSale()">Anunciar Item</button>
+                </div>
+                <div id="market-sell-feedback" class="inline-feedback hidden"></div>
+                <div id="market-list" class="grid"></div>
+            </div>
+        </div>
+
+        <div id="tab-mercado-ilegal" class="tab-content hidden">
+            <div class="card left illegal-page">
+                <h2 class="tab-title illegal-title">Mercado Ilegal</h2>
+                <div class="subtle" style="color:rgba(255,230,230,0.8)">Acesso seletivo, negociações discretas e itens que não circulam no mercado comum.</div>
+                <div id="illegal-list" class="grid"></div>
+            </div>
+        </div>
+
+        <div id="tab-frat" class="tab-content hidden">
+            <div class="card left frat-overview">
+                <h2 class="tab-title">Fraternidades</h2>
+                <div class="subtle">Todas as fichas são públicas. A movimentação bancária pertence ao presidente nomeado pela reitoria.</div>
+                <div id="frat-list" class="grid frat-grid"></div>
+            </div>
+
+            <div class="grid-2 frat-workspace">
+                <div class="card left">
+                    <h3 class="tab-title">Ficha Financeira</h3>
+                    <div id="frat-detail" class="mini">Selecione uma fraternidade para abrir a ficha.</div>
+                </div>
+
+                <div class="card left">
+                    <h3 class="tab-title">Loja das Fraternidades</h3>
+                    <div id="frat-store" class="mini">Selecione uma fraternidade para ver a loja.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-rank" class="tab-content hidden">
+            <div class="card left">
+                <h2 class="tab-title">Sociedade de Elite</h2>
+                <div id="rank-list"></div>
+            </div>
+        </div>
+
+        <div id="tab-vagas" class="tab-content hidden">
+            <div class="card left">
+                <h2 class="tab-title">Vagas de Emprego</h2>
+                <div id="jobs-list"></div>
+            </div>
+        </div>
+
+        <div id="tab-adm" class="tab-content hidden">
+            <div class="card" style="border-color:var(--gold)">
+                <h2 style="color:var(--gold); font-family:'Cinzel'">Controle da Reitoria</h2>
+                <button onclick="app.girarCiclo()">Girar Ciclo</button>
+                <p class="sticky-note">Aplica fixos, mensalidades de fraternidade, percentuais mensais, juros, validade de itens e auditoria.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card left">
+                    <h3>Gestão do Aluno</h3>
+                    <select id="adm-p-sel" onchange="app.loadAdmPlayerData()"></select>
+                    <div id="adm-p-panel" class="hidden">
+                        <div class="hr"></div>
+                        <strong>Conta</strong>
+                        <div id="adm-account-state" class="inline-feedback">Conta ativa.</div>
+                        <div class="row-actions">
+                            <button class="btn-sec small-btn" onclick="app.admToggleLock(false)">Destrancar Conta</button>
+                            <button class="btn-red small-btn" onclick="app.admToggleLock(true)">Trancar Conta</button>
+                            <button class="btn-red small-btn" onclick="app.admDeleteUser()">Excluir Conta</button>
+                        </div>
+
+                        <div class="hr"></div>
+                        <strong>Fraternidade</strong>
+                        <select id="adm-player-frat"></select>
+                        <button class="btn-sec" onclick="app.admChangePlayerFraternity()">Alterar Fraternidade do Aluno</button>
+
+                        <div class="hr"></div>
+                        <strong>Tags</strong>
+                        <div id="adm-p-tags"></div>
+                        <input type="text" id="adm-tag-n" placeholder="Nome da Tag">
+                        <input type="color" id="adm-tag-c" value="#C0C0C0">
+                        <div class="row-actions">
+                            <button onclick="app.admAddTag()">Adicionar Tag</button>
+                            <button class="btn-sec" onclick="app.admEditTag()">Editar Tag</button>
+                            <button class="btn-red" onclick="app.admRemoveTag()">Excluir Tag</button>
+                        </div>
+
+                        <div class="hr"></div>
+                        <strong>Inventário</strong>
+                        <div id="adm-p-inv"></div>
+                        <input type="text" id="adm-inv-n" placeholder="Nome do item">
+                        <input type="text" id="adm-inv-d" placeholder="Descrição do item">
+                        <input type="number" id="adm-inv-v" placeholder="Validade em semanas">
+                        <input type="text" id="adm-inv-img" placeholder="Link da imagem">
+                        <div class="row-actions">
+                            <button onclick="app.admAddInventory()">Adicionar Item</button>
+                            <button class="btn-red" onclick="app.admRemoveInventory()">Excluir Item</button>
+                        </div>
+
+                        <div class="hr"></div>
+                        <strong>Fixos</strong>
+                        <div id="adm-p-fixos"></div>
+                        <input type="text" id="adm-f-n" placeholder="Nome do fixo">
+                        <input type="text" id="adm-f-d" placeholder="Descrição">
+                        <input type="number" id="adm-f-v" placeholder="Valor positivo ou negativo">
+                        <input type="text" id="adm-f-tag" placeholder="Tag opcional">
+                        <input type="color" id="adm-f-cor" value="#C0C0C0">
+                        <div class="row-actions">
+                            <button onclick="app.admAddFixo()">Adicionar Fixo</button>
+                            <button class="btn-sec" onclick="app.admEditFixo()">Editar Fixo</button>
+                            <button class="btn-red" onclick="app.admRemoveFixo()">Excluir Fixo</button>
+                        </div>
+
+                        <div class="hr"></div>
+                        <strong>Variáveis</strong>
+                        <div id="adm-p-vars"></div>
+                        <input type="text" id="adm-var-n" placeholder="Nome da variável">
+                        <input type="text" id="adm-var-d" placeholder="Descrição">
+                        <input type="number" id="adm-var-v" placeholder="Valor">
+                        <input type="text" id="adm-var-tag" placeholder="Tag">
+                        <input type="color" id="adm-var-cor" value="#C0C0C0">
+                        <div class="row-actions">
+                            <button onclick="app.admAddVariavel()">Adicionar Variável</button>
+                            <button class="btn-red" onclick="app.admRemoveVariavel()">Excluir Variável</button>
+                        </div>
+
+                        <div class="hr"></div>
+                        <strong>Percentuais Mensais</strong>
+                        <div class="subtle">No giro de ciclo, cada percentual incide sobre o total positivo recebido por fixos.</div>
+                        <div id="adm-p-percentuais"></div>
+                        <input type="text" id="adm-perc-n" placeholder="Nome do percentual">
+                        <input type="number" id="adm-perc-v" placeholder="Percentual, ex: 10 ou -15">
+                        <textarea id="adm-perc-d" placeholder="Descrição"></textarea>
+                        <div class="row-actions">
+                            <button onclick="app.admAddPercentual()">Adicionar Percentual</button>
+                            <button class="btn-red" onclick="app.admRemovePercentual()">Excluir Percentual</button>
+                        </div>
+
+                        <div class="hr"></div>
+                        <strong>Bônus e Ônus Acadêmicos</strong>
+                        <div id="adm-p-academicos"></div>
+                        <select id="adm-acad-tipo">
+                            <option value="bonus">Bônus acadêmico</option>
+                            <option value="onus">Ônus acadêmico</option>
+                        </select>
+                        <input type="text" id="adm-acad-n" placeholder="Título">
+                        <input type="number" id="adm-acad-v" placeholder="Valor em Sovereigns">
+                        <textarea id="adm-acad-d" placeholder="Motivo ou descrição"></textarea>
+                        <button onclick="app.admAddAcademicModifier()">Aplicar Bônus/Ônus</button>
+
+                        <div class="hr"></div>
+                        <strong>Punições</strong>
+                        <div id="adm-p-punicoes"></div>
+                        <input type="text" id="adm-pun-n" placeholder="Título da punição">
+                        <input type="number" id="adm-pun-v" placeholder="Multa em Sovereigns">
+                        <textarea id="adm-pun-d" placeholder="Descrição da punição"></textarea>
+                        <label class="subtle" style="display:flex; align-items:center; gap:8px; margin:8px 0">
+                            <input type="checkbox" id="adm-pun-lock" style="width:auto; margin:0">
+                            Trancar conta junto com a punição
+                        </label>
+                        <button class="btn-red" onclick="app.admApplyPunishment()">Aplicar Punição</button>
+                    </div>
+                </div>
+
+                <div class="card left">
+                    <h3>Gestão do Mercado</h3>
+                    <input type="text" id="adm-m-n" placeholder="Nome">
+                    <input type="number" id="adm-m-p" placeholder="Valor">
+                    <textarea id="adm-m-i" placeholder="Links das imagens, um por linha"></textarea>
+                    <textarea id="adm-m-d" placeholder="Descrição"></textarea>
+                    <input type="number" id="adm-m-q" placeholder="Quantidade disponível">
+                    <input type="number" id="adm-m-lim" placeholder="Limite por aluno">
+                    <input type="number" id="adm-m-desc" placeholder="Desconto em %, opcional">
+                    <input type="number" id="adm-m-v" placeholder="Validade em semanas">
+                    <input type="text" id="adm-m-t" placeholder="Tag">
+                    <input type="color" id="adm-m-c" value="#C0C0C0">
+                    <button onclick="app.admAddMarket()">Adicionar Item</button>
+                    <div id="adm-market-list"></div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card left">
+                    <h3>Gerenciamento Editorial</h3>
+                    <input type="text" id="adm-n-t" placeholder="Título">
+                    <input type="text" id="adm-n-i" placeholder="Link da imagem">
+                    <textarea id="adm-n-x" placeholder="Texto da notícia"></textarea>
+                    <div class="hr"></div>
+                    <strong>Tags da notícia</strong>
+                    <input type="text" id="adm-n-tag1" placeholder="Tag 1">
+                    <input type="color" id="adm-n-cor1" value="#C0C0C0">
+                    <input type="text" id="adm-n-tag2" placeholder="Tag 2">
+                    <input type="color" id="adm-n-cor2" value="#D4AF37">
+                    <input type="text" id="adm-n-tag3" placeholder="Tag 3">
+                    <input type="color" id="adm-n-cor3" value="#8B0000">
+                    <button onclick="app.admPostNews()">Publicar Notícia</button>
+                    <div id="adm-news-list"></div>
+                </div>
+
+                <div class="card left">
+                    <h3>Gestão de Empregos</h3>
+                    <input type="text" id="adm-j-t" placeholder="Título da vaga">
+                    <input type="text" id="adm-j-i" placeholder="Link da imagem">
+                    <textarea id="adm-j-d" placeholder="Descrição"></textarea>
+                    <input type="number" id="adm-j-s" placeholder="Salário">
+                    <button onclick="app.admAddJob()">Adicionar Vaga</button>
+                    <div id="adm-jobs-list"></div>
+                    <div class="hr"></div>
+                    <strong>Candidaturas</strong>
+                    <div id="adm-applications"></div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card left">
+                    <h3>Mercado Ilegal</h3>
+                    <input type="text" id="adm-c-n" placeholder="Nome do item ilegal">
+                    <input type="number" id="adm-c-p" placeholder="Valor">
+                    <textarea id="adm-c-i" placeholder="Links das imagens, um por linha"></textarea>
+                    <textarea id="adm-c-d" placeholder="Descrição"></textarea>
+                    <input type="number" id="adm-c-q" placeholder="Quantidade disponível">
+                    <input type="number" id="adm-c-v" placeholder="Validade em semanas">
+                    <input type="text" id="adm-c-t" placeholder="Tag visual do item">
+                    <input type="color" id="adm-c-cor" value="#8B0000">
+                    <div class="subtle">Selecione exatamente quais jogadores podem ver e comprar esse item.</div>
+                    <div class="row-actions" style="justify-content:flex-start; margin:8px 0 4px">
+                        <button class="btn-sec small-btn" onclick="app.markIllegalAccess(true)">Selecionar todos</button>
+                        <button class="btn-sec small-btn" onclick="app.markIllegalAccess(false)">Limpar seleção</button>
+                    </div>
+                    <div id="adm-illegal-user-list"></div>
+                    <button onclick="app.admAddIllegal()" class="btn-red">Adicionar Item Ilegal</button>
+                    <div id="adm-illegal-list"></div>
+                </div>
+
+                <div class="card left">
+                    <h3>Gestão das Fraternidades</h3>
+                    <select id="adm-frat-sel"></select>
+                    <select id="adm-frat-president"></select>
+                    <button class="btn-gold" onclick="app.admAppointFratPresident()">Nomear Presidente</button>
+                    <div class="hr"></div>
+                    <strong>Loja das Fraternidades</strong>
+                    <input type="text" id="adm-fstore-n" placeholder="Nome do item/evento">
+                    <input type="number" id="adm-fstore-p" placeholder="Valor em Sovereigns">
+                    <textarea id="adm-fstore-d" placeholder="Descrição"></textarea>
+                    <input type="number" id="adm-fstore-q" placeholder="Quantidade disponível">
+                    <button onclick="app.admAddFratStoreItem()">Adicionar à Loja</button>
+                    <div id="adm-frat-store-list"></div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card left">
+                    <div class="row-actions" style="justify-content:space-between; align-items:center">
+                        <h3 style="margin:0">Auditoria Fiscal</h3>
+                        <button id="audit-toggle-btn" class="btn-sec small-btn" onclick="app.toggleAudit()">Minimizar</button>
+                    </div>
+                    <div id="audit-wrap" style="margin-top:12px; max-height:320px; overflow-y:auto; padding-right:6px">
+                        <div id="audit-feed"></div>
+                    </div>
+                </div>
+
+                <div class="card left">
+                    <h3>Financiamentos Pendentes</h3>
+                    <div id="adm-loans"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="profile-modal" class="modal">
+        <div class="card left">
+            <div class="row-actions" style="justify-content:flex-end">
+                <button class="btn-sec small-btn" onclick="app.closeModal('profile-modal')">Fechar</button>
+            </div>
+            <img id="pub-foto" class="profile-photo" src="">
+            <h2 id="pub-nome" style="font-family:'Cinzel'; margin:5px 0"></h2>
+            <div id="pub-tags"></div>
+            <div class="title-badge" id="pub-title"></div>
+            <p id="pub-bio" class="subtle"></p>
+            <div class="hr"></div>
+            <strong>Comentários do perfil</strong>
+            <div class="profile-mural">
+                <textarea id="pub-msg" placeholder="Escreva um comentário..."></textarea>
+                <button onclick="app.postMural()">Enviar comentário</button>
+                <div id="pub-mural"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="image-modal" class="modal" onclick="app.handleImageModalBackdrop(event)">
+        <div class="card left image-modal-card">
+            <div class="row-actions" style="justify-content:flex-end">
+                <button class="btn-sec small-btn" onclick="app.closeModal('image-modal')">Fechar</button>
+            </div>
+            <img id="image-modal-img" class="image-modal-img" src="" alt="Imagem ampliada">
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import {
+            getAuth,
+            onAuthStateChanged,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            signOut,
+            deleteUser
+        } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+        import {
+            getDatabase,
+            ref,
+            set,
+            get,
+            update,
+            onValue,
+            push,
+            remove
+        } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBt7zjlI1P8lN4JxnxTe_erzNbfu1AHdfE",
+            authDomain: "universityerarpg-6a29d.firebaseapp.com",
+            databaseURL: "https://universityerarpg-6a29d-default-rtdb.firebaseio.com",
+            projectId: "universityerarpg-6a29d",
+            storageBucket: "universityerarpg-6a29d.firebasestorage.app",
+            messagingSenderId: "912095174573",
+            appId: "1:912095174573:web:e4591c65eeb9259ba9cb24"
+        };
+
+        const fbApp = initializeApp(firebaseConfig);
+        const auth = getAuth(fbApp);
+        const db = getDatabase(fbApp);
+
+        const CURRENCY_LABEL = "Sovereigns";
+        const CURRENCY_SYMBOL = "SVR";
+
+        const SOCIAL_CLASSES = {
+            herdeiro: {
+                label: "Herdeiro",
+                saldo: 3000,
+                tagColor: "#D4AF37",
+                tagText: "#111"
+            },
+            bolsista: {
+                label: "Bolsista",
+                saldo: 1500,
+                tagColor: "#C0C0C0",
+                tagText: "#111"
+            }
+        };
+
+        const FRATERNITIES = {
+            montriel: {
+                nome: "Montriel",
+                primary: "#050505",
+                secondary: "#D4AF37",
+                text: "#FFFFFF"
+            },
+            veridian: {
+                nome: "Veridian",
+                primary: "#F5A3C7",
+                secondary: "#FFFFFF",
+                text: "#111111"
+            },
+            novaire: {
+                nome: "Novaire",
+                primary: "#2A9D55",
+                secondary: "#050505",
+                text: "#FFFFFF"
+            },
+            echelon: {
+                nome: "Echelon",
+                primary: "#1D4ED8",
+                secondary: "#C0C0C0",
+                text: "#FFFFFF"
+            },
+            velmora: {
+                nome: "Velmora",
+                primary: "#6B3F2A",
+                secondary: "#C46A2B",
+                text: "#FFFFFF"
+            },
+            aurelis: {
+                nome: "Aurelis",
+                primary: "#FFFFFF",
+                secondary: "#8B0000",
+                text: "#111111"
+            }
+        };
+
+        const subs = [];
+        let clockTimer = null;
+        let uLog = null;
+        let currentProfileId = null;
+        let sessionBootstrapped = false;
+        let playerStreamsBound = false;
+        let profileMuralUnsub = null;
+        let admSelectedPlayerId = "";
+        let selectedFratId = "";
+        let latestPlayersCache = {};
+        let latestMarketStore = {};
+        let latestPlayerMarketStore = {};
+        let latestIllegalStore = {};
+        let latestFratsCache = {};
+        let latestFratStoreCache = {};
+
+        const esc = (s = "") => String(s)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+
+        const money = (n = 0) => `${CURRENCY_SYMBOL} ${Number(n || 0).toLocaleString("pt-BR")}`;
+        const nowClock = () => new Date().toLocaleTimeString("pt-BR");
+        const parseLines = (txt = "") => txt.split(/\n+/).map(x => x.trim()).filter(Boolean);
+
+        const daysLeft = (expiresAt) => {
+            if (!expiresAt) return "sem validade";
+            const diff = Math.ceil((expiresAt - Date.now()) / (1000 * 60 * 60 * 24));
+            return diff > 0 ? `${diff} dia(s)` : "expirado";
+        };
+
+        const getItemImages = (item = {}) => {
+            if (Array.isArray(item.imgs) && item.imgs.length) return item.imgs.filter(Boolean);
+            return item.img ? [item.img] : [];
+        };
+
+        const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+
+        function effectivePrice(item = {}) {
+            const base = Number(item.preco || 0);
+            const discount = clamp(Number(item.desconto || 0), 0, 95);
+            return Math.max(0, Math.round(base * (1 - discount / 100)));
+        }
+
+        function marketValidityText(item = {}) {
+            if (item.expiresAt) return `Validade restante: ${daysLeft(item.expiresAt)}`;
+            return `Validade após compra: ${Number(item.duracao || 0)} semana(s)`;
+        }
+
+        function getFinanceProfile(d = {}) {
+            const saldo = Number(d.saldo || 0);
+            const divida = Number(d.divida || 0);
+            const income = Object.values(d.fixos || {}).reduce((sum, f) => sum + Math.max(0, Number(f.valor || 0)), 0);
+            const debtRatio = income > 0 ? divida / income : divida > 0 ? 2 : 0;
+            const score = clamp(Math.round(100 - debtRatio * 22 + Math.min(saldo, 10000) / 250), 5, 100);
+            const suggestedLimit = Math.max(500, Math.round((income || 1000) * (score / 100) * 3));
+            const risk = score >= 75 ? "baixo" : score >= 45 ? "moderado" : "alto";
+            return { saldo, divida, income, debtRatio, score, suggestedLimit, risk };
+        }
+
+        function makeId() {
+            return `${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+        }
+
+        function clearSubs() {
+            while (subs.length) {
+                const u = subs.pop();
+                if (typeof u === "function") u();
+            }
+        }
+
+        function listen(r, cb) {
+            const unsub = onValue(r, cb);
+            subs.push(unsub);
+            return unsub;
+        }
+
+        function isAdmin(user = uLog) {
+            return !!user && (user.role === "reitora" || user.isAdmin);
+        }
+
+        function ensureAccountOpen() {
+            if (uLog?.trancada && !isAdmin()) {
+                alert("Sua conta está trancada pela reitoria.");
+                return false;
+            }
+            return true;
+        }
+
+        function getFraternity(id, fromDb = latestFratsCache) {
+            if (!id || !FRATERNITIES[id]) return null;
+            return {
+                id,
+                ...FRATERNITIES[id],
+                ...(fromDb?.[id] || {})
+            };
+        }
+
+        function getAllFraternities(fromDb = latestFratsCache) {
+            return Object.fromEntries(
+                Object.keys(FRATERNITIES).map(id => [id, getFraternity(id, fromDb)])
+            );
+        }
+
+        function getFraternityName(id) {
+            return getFraternity(id)?.nome || "Sem fraternidade";
+        }
+
+        function isFratPresident(fraternityId, user = uLog) {
+            if (!user || !fraternityId) return false;
+            const f = getFraternity(fraternityId);
+            return isAdmin(user) || f?.presidenteId === user.id;
+        }
+
+        function classTag(profile) {
+            const data = SOCIAL_CLASSES[profile] || SOCIAL_CLASSES.bolsista;
+            return {
+                texto: data.label,
+                cor: data.tagColor,
+                textoCor: data.tagText,
+                origem: "classe-social"
+            };
+        }
+
+        function fraternityTag(fraternityId) {
+            const f = getFraternity(fraternityId) || FRATERNITIES[fraternityId];
+            return {
+                texto: f?.nome || "Sem fraternidade",
+                cor: f?.primary || "#C0C0C0",
+                textoCor: f?.text || "#000",
+                origem: "fraternidade",
+                fraternidade: fraternityId
+            };
+        }
+
+        function tagMapWithIdentity(profile, fraternityId, existing = {}) {
+            const kept = Object.fromEntries(
+                Object.entries(existing || {}).filter(([, t]) => t.origem !== "classe-social" && t.origem !== "fraternidade")
+            );
+            kept[`classe_${profile || "bolsista"}`] = classTag(profile || "bolsista");
+            if (fraternityId) kept[`fraternidade_${fraternityId}`] = fraternityTag(fraternityId);
+            return kept;
+        }
+
+        function renderFraternityOptions(selected = "", includeBlank = false) {
+            const blank = includeBlank ? `<option value="">Sem fraternidade</option>` : `<option value="">Selecione a fraternidade</option>`;
+            return blank + Object.entries(FRATERNITIES).map(([id, f]) => (
+                `<option value="${id}" ${selected === id ? "selected" : ""}>${esc(f.nome)}</option>`
+            )).join("");
+        }
+
+        function fillStaticFraternitySelects() {
+            const reg = document.getElementById("reg-frat");
+            if (reg) reg.innerHTML = renderFraternityOptions("", false);
+            const admPlayerFrat = document.getElementById("adm-player-frat");
+            if (admPlayerFrat) admPlayerFrat.innerHTML = renderFraternityOptions("", true);
+            const admFrat = document.getElementById("adm-frat-sel");
+            if (admFrat) admFrat.innerHTML = renderFraternityOptions("", false);
+        }
+
+        function autoTitle(u) {
+            if (!u) return "---";
+            const saldo = Number(u.saldo || 0);
+            const divida = Number(u.divida || 0);
+            if (u.trancada) return "Conta Trancada";
+            if (saldo >= 25000) return "Magnata de Laboratório";
+            if (saldo >= 15000) return "Rei do Campus";
+            if (saldo >= 8000) return "Elite de Prata";
+            if (saldo >= 3000) return "Viciado em Sovereigns";
+            if (saldo >= 1000) return "Acadêmico de Bolso Cheio";
+            if (saldo >= 0) return "Sobrevivente da Cantina";
+            if (divida > 0 && saldo < 0) return "Bolsista do Caos";
+            return "Pobretão da ERA";
+        }
+
+        function financialMood(u) {
+            if (!u) return "Status indisponível";
+            const saldo = Number(u.saldo || 0);
+            const divida = Number(u.divida || 0);
+            if (u.trancada) return "conta trancada";
+            if (saldo >= 10000) return "Magnata Acadêmico";
+            if (saldo >= 5000) return "Nobre da Cátedra";
+            if (saldo >= 2000) return "Promessa do Campus";
+            if (saldo >= 500) return "Café, saldo e esperança";
+            if (saldo >= 0) return "Sobrevivente da Cantina";
+            if (divida > 0) return "Pobretão da ERA";
+            return "Caso de Estudo";
+        }
+
+        function narrateNotification(msg = "") {
+            const m = String(msg).toLowerCase();
+            if (m.includes("recebeu")) return `Um depósito foi registrado. ${msg}`;
+            if (m.includes("transferiu")) return `Transferência registrada. ${msg}`;
+            if (m.includes("comentou")) return `Comentário registrado. ${msg}`;
+            if (m.includes("empréstimo")) return `Movimento financeiro registrado. ${msg}`;
+            if (m.includes("fraternidade")) return `Movimento de fraternidade registrado. ${msg}`;
+            if (m.includes("punição")) return `Ocorrência disciplinar registrada. ${msg}`;
+            if (m.includes("ciclo")) return `O ciclo acadêmico girou. ${msg}`;
+            return msg;
+        }
+
+        function parseNewsTags() {
+            const tags = {};
+            const pairs = [
+                ["adm-n-tag1", "adm-n-cor1"],
+                ["adm-n-tag2", "adm-n-cor2"],
+                ["adm-n-tag3", "adm-n-cor3"]
+            ];
+            for (const [tId, cId] of pairs) {
+                const texto = document.getElementById(tId).value.trim();
+                const cor = document.getElementById(cId).value;
+                if (texto) tags[makeId()] = { texto, cor };
+            }
+            return tags;
+        }
+
+        function renderTags(tagsObj) {
+            if (!tagsObj) return "";
+            return Object.values(tagsObj)
+                .map(t => `<span class="tag" style="background:${esc(t.cor || "#C0C0C0")}; color:${esc(t.textoCor || "#000")}">${esc(t.texto || t.nome || "")}</span>`)
+                .join("");
+        }
+
+        function renderNewsTags(tagsObj) {
+            if (!tagsObj || !Object.keys(tagsObj).length) return "";
+            return Object.values(tagsObj)
+                .map(t => `<span class="tag" style="background:${esc(t.cor || "#C0C0C0")}">${esc(t.texto || "")}</span>`)
+                .join("");
+        }
+
+        function renderInventory(invObj) {
+            if (!invObj || !Object.keys(invObj).length) return `<div class="subtle">Nenhum item.</div>`;
+            return Object.entries(invObj).map(([id, item]) => {
+                const images = getItemImages(item);
+                return `
+                    <div class="list-item">
+                        ${images[0] ? `<img src="${esc(images[0])}" alt="" class="market-main-image" style="height:120px" onclick="app.openImageModal('${esc(images[0])}')">` : ""}
+                        <strong>${esc(item.nome || "Item")}</strong><br>
+                        <span class="subtle">${esc(item.descricao || "")}</span><br>
+                        <span class="pill" style="background: rgba(192,192,192,0.18)">${esc(item.tag || "Inventário")}</span>
+                        <div class="subtle">Validade: ${daysLeft(item.expiresAt)}</div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function renderHistory(histObj) {
+            if (!histObj || !Object.keys(histObj).length) return "Nenhuma ação registrada.";
+            return Object.values(histObj).reverse().map(h => `
+                <div class="list-item mini">
+                    <strong>${esc(h.tipo || "movimento")}</strong> · ${money(h.valor || 0)}<br>
+                    ${esc(h.desc || "")}<br>
+                    <span class="subtle">${new Date(h.ts || Date.now()).toLocaleString("pt-BR")}</span>
+                </div>
+            `).join("");
+        }
+
+        function renderLoans(loansObj) {
+            if (!loansObj || !Object.keys(loansObj).length) return "Nenhum empréstimo ativo.";
+            return Object.entries(loansObj).map(([, l]) => `
+                <div class="list-item mini">
+                    <strong>${esc(l.titulo || "Empréstimo")}</strong><br>
+                    Valor inicial: ${money(l.valor || 0)}<br>
+                    Restante: ${money(l.restante || 0)}<br>
+                    Parcelas: ${l.parcelas || 1} de aproximadamente ${money(Math.ceil(Number(l.restante || 0) / Math.max(1, Number(l.parcelas || 1))))}<br>
+                    Finalidade: ${esc(l.finalidade || "não informada")}<br>
+                    Status: ${esc(l.status || "ativo")}<br>
+                    <span class="subtle">${new Date(l.ts || Date.now()).toLocaleString("pt-BR")}</span>
+                </div>
+            `).join("");
+        }
+
+        function renderFixeds(fixosObj) {
+            if (!fixosObj || !Object.keys(fixosObj).length) return `<div class="subtle">Sem fixos cadastrados.</div>`;
+            return Object.entries(fixosObj).map(([id, f]) => `
+                <div class="list-item mini">
+                    <strong>${esc(f.nome || "Fixo")}</strong> · ${money(f.valor || 0)}<br>
+                    ${esc(f.descricao || "")}<br>
+                    <span class="pill" style="background:${esc(f.cor || "#C0C0C0")}">${esc(f.tag || "Fixo")}</span>
+                    <div class="row-actions" style="margin-top:8px">
+                        <button class="btn-sec small-btn" onclick="app.selectAdmRecord('fixo','${id}')">Selecionar</button>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function renderVariables(varsObj) {
+            if (!varsObj || !Object.keys(varsObj).length) return `<div class="subtle">Sem variáveis cadastradas.</div>`;
+            return Object.entries(varsObj).map(([id, v]) => `
+                <div class="list-item mini">
+                    <strong>${esc(v.nome || "Variável")}</strong> · ${money(v.valor || 0)}<br>
+                    ${esc(v.descricao || "")}<br>
+                    <span class="pill" style="background:${esc(v.cor || "#C0C0C0")}">${esc(v.tag || "Variável")}</span>
+                    <div class="row-actions" style="margin-top:8px">
+                        <button class="btn-sec small-btn" onclick="app.selectAdmRecord('variavel','${id}')">Selecionar</button>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function renderPercentuais(obj) {
+            if (!obj || !Object.keys(obj).length) return `<div class="subtle">Sem percentuais mensais.</div>`;
+            return Object.entries(obj).map(([id, p]) => `
+                <div class="list-item mini">
+                    <strong>${esc(p.nome || "Percentual")}</strong> · ${Number(p.percentual || 0)}%<br>
+                    ${esc(p.descricao || "")}
+                    <div class="row-actions" style="margin-top:8px">
+                        <button class="btn-red small-btn" onclick="app.admRemovePercentual('${id}')">Excluir</button>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function renderSimpleAuditList(obj, emptyText) {
+            if (!obj || !Object.keys(obj).length) return `<div class="subtle">${emptyText}</div>`;
+            return Object.values(obj).reverse().map(p => `
+                <div class="list-item mini">
+                    <strong>${esc(p.nome || p.titulo || p.tipo || "Registro")}</strong> · ${p.valor !== undefined ? money(p.valor) : ""}<br>
+                    ${esc(p.descricao || p.msg || "")}<br>
+                    <span class="subtle">${new Date(p.ts || Date.now()).toLocaleString("pt-BR")}</span>
+                </div>
+            `).join("");
+        }
+
+        function renderMural(muralObj) {
+            if (!muralObj || !Object.keys(muralObj).length) return `<div class="subtle">Sem comentários por enquanto.</div>`;
+            return Object.entries(muralObj).reverse().map(([id, c]) => {
+                const canDelete = uLog && (uLog.id === currentProfileId || isAdmin());
+                return `
+                    <div class="comment-box">
+                        <div class="comment-meta">${esc(c.de || "Anônimo")} · ${new Date(c.ts || Date.now()).toLocaleString("pt-BR")}</div>
+                        <div>${esc(c.msg || "")}</div>
+                        ${canDelete ? `<div class="row-actions" style="justify-content:flex-end; margin-top:8px"><button class="btn-red small-btn" onclick="app.deleteMuralComment('${id}')">Excluir</button></div>` : ""}
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function renderNews(postsObj) {
+            if (!postsObj || !Object.keys(postsObj).length) return `<div class="subtle">Nada novo por aqui.</div>`;
+            return Object.entries(postsObj).reverse().map(([id, n]) => {
+                const comments = n.comentarios || {};
+                const commentHtml = Object.entries(comments).reverse().map(([cid, c]) => {
+                    const canDelete = uLog && (uLog.id === c.uid || isAdmin());
+                    const likes = c.likes ? Object.keys(c.likes).length : 0;
+                    return `
+                        <div class="comment-box">
+                            <div class="comment-meta">${esc(c.user || "Anônimo")} · ${new Date(c.ts || Date.now()).toLocaleString("pt-BR")}</div>
+                            <div>${esc(c.texto || "")}</div>
+                            <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                                <button class="btn-sec small-btn" onclick="app.likeComment('${id}','${cid}')">Curtir (${likes})</button>
+                                ${canDelete ? `<button class="btn-red small-btn" onclick="app.deleteComment('${id}','${cid}')">Excluir</button>` : ""}
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+                const adminBtns = isAdmin()
+                    ? `<div class="row-actions" style="margin-top:10px">
+                            <button class="btn-sec small-btn" onclick="app.editNews('${id}')">Editar</button>
+                            <button class="btn-red small-btn" onclick="app.deleteNews('${id}')">Excluir</button>
+                       </div>`
+                    : "";
+                return `
+                    <div class="card left">
+                        ${n.img ? `<img src="${esc(n.img)}" alt="" style="width:100%; border-radius:10px; margin-bottom:12px">` : ""}
+                        <div class="tab-title">${esc(n.titulo || "")}</div>
+                        <div>${renderNewsTags(n.tags)}</div>
+                        <p class="mini">${esc(n.texto || "")}</p>
+                        <div class="row-actions" style="justify-content:flex-start">
+                            <button class="btn-sec small-btn" onclick="app.addNewsComment('${id}')">Comentar</button>
+                        </div>
+                        ${adminBtns}
+                        <div class="hr"></div>
+                        <div>${commentHtml || "<div class='subtle'>Sem comentários.</div>"}</div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function renderItemCard(item, id, buyFnName, source = "era") {
+            const images = getItemImages(item);
+            const mainImage = images[0] || "";
+            const seller = item.sellerName || (source === "player" ? "Aluno" : source === "illegal" ? "Rede restrita" : "ERA Academy");
+            const condition = item.condicao || item.condition || (source === "player" ? "usado" : source === "illegal" ? "proibido" : "novo institucional");
+            const originLabel = source === "player" ? "revenda de aluno" : source === "illegal" ? "estoque restrito" : "estoque ERA";
+            const basePrice = Number(item.preco || 0);
+            const finalPrice = effectivePrice(item);
+            const hasDiscount = finalPrice < basePrice;
+            const boughtByMe = Number(item.comprasPorAluno?.[uLog?.id] || 0);
+            const maxPerStudent = Number(item.maxPorAluno || 0);
+            return `
+                <div class="card left market-card ${source === "illegal" ? "illegal-card" : ""}" style="margin-bottom:0">
+                    ${mainImage ? `<img src="${esc(mainImage)}" alt="" class="market-main-image" onclick="app.openImageModal('${esc(mainImage)}')">` : ""}
+                    ${images.length > 1 ? `<div class="thumb-row">${images.map((src, idx) => `<img src="${esc(src)}" class="${idx === 0 ? "active" : ""}" onclick="app.swapCardImage(this, '${esc(src)}')">`).join("")}</div>` : ""}
+                    <h3 style="margin-bottom:5px">${esc(item.nome || "")}</h3>
+                    <div class="market-labels">
+                        <span class="condition-tag seller-tag">Vendedor: ${esc(seller)}</span>
+                        <span class="condition-tag">${esc(condition)}</span>
+                        <span class="condition-tag">${originLabel}</span>
+                    </div>
+                    <div class="subtle">${esc(item.descricao || "")}</div>
+                    <div class="hr"></div>
+                    <div>
+                        ${hasDiscount ? `<span class="price-old">${money(basePrice)}</span>` : ""}
+                        <span class="price-new">${money(finalPrice)}</span>
+                        ${hasDiscount ? `<span class="condition-tag">${Number(item.desconto || 0)}% off</span>` : ""}
+                    </div>
+                    <div class="subtle">Estoque: ${item.estoque ?? 0}</div>
+                    <div class="subtle">${marketValidityText(item)}</div>
+                    ${maxPerStudent ? `<div class="subtle">Limite por aluno: ${boughtByMe}/${maxPerStudent}</div>` : ""}
+                    ${item.tag ? `<span class="tag" style="background:${esc(item.cor || "#C0C0C0")}">${esc(item.tag)}</span>` : ""}
+                    <button class="btn-gold" onclick="app.${buyFnName}('${id}')">Comprar</button>
+                    ${source === "player" && item.sellerId === uLog?.id ? `<button class="btn-sec" onclick="app.cancelPlayerMarketListing('${id}')">Cancelar anúncio</button>` : ""}
+                </div>
+            `;
+        }
+
+        function renderMarket(itemsObj) {
+            const eraItems = Object.entries(latestMarketStore || {}).map(([id, item]) => ({ id, item, source: "era", buy: "buyItem" }));
+            const playerItems = Object.entries(latestPlayerMarketStore || {}).map(([id, item]) => ({ id, item, source: "player", buy: "buyPlayerMarketItem" }));
+            const all = [...eraItems, ...playerItems].sort((a, b) => Number(b.item.ts || 0) - Number(a.item.ts || 0));
+            if (!all.length) return `<div class="subtle">Nenhum item no mercado.</div>`;
+            return all.map(({ id, item, source, buy }) => renderItemCard(item, id, buy, source)).join("");
+        }
+
+        function userCanSeeRestrictedItem(item, user) {
+            if (!user) return false;
+            if (isAdmin(user)) return true;
+            const allowedUsers = item.allowedUsers || {};
+            if (allowedUsers[user.id]) return true;
+            const accessTags = item.accessTags || {};
+            const userTags = user.tags || {};
+            const userTagNames = Object.values(userTags).map(t => (t.texto || t.nome || "").trim().toLowerCase());
+            return Object.values(accessTags).some(t => userTagNames.includes(String(t).trim().toLowerCase()));
+        }
+
+        function renderClandestine(itemsObj) {
+            if (!itemsObj || !Object.keys(itemsObj).length) {
+                return `
+                    <div class="illegal-lock-screen">
+                        <img src="lock.png" alt="">
+                        <h3 class="illegal-title">Rede sem mercadoria ativa</h3>
+                        <div class="subtle">Nenhum item proibido foi publicado pela reitoria.</div>
+                    </div>
+                `;
+            }
+            const filtered = Object.entries(itemsObj).filter(([, item]) => userCanSeeRestrictedItem(item, uLog));
+            if (!filtered.length) {
+                return `
+                    <div class="illegal-lock-screen">
+                        <img src="lock.png" alt="">
+                        <h3 class="illegal-title">Acesso bloqueado</h3>
+                        <div class="subtle">Seu perfil não possui credencial para visualizar estes itens proibidos.</div>
+                        <div class="condition-tag" style="margin-top:12px; border-color:rgba(255,80,80,.45); color:#FFCDD2">credencial ausente</div>
+                    </div>
+                `;
+            }
+            return filtered.map(([id, i]) => renderItemCard(i, id, "buyRestrictedItem", "illegal")).join("");
+        }
+
+        function renderPlayerAccessSelector(playersObj, selectedUsers = {}) {
+            if (!playersObj || !Object.keys(playersObj).length) return `<div class="subtle">Sem jogadores cadastrados.</div>`;
+            return Object.entries(playersObj).map(([uid, p]) => `
+                <label class="list-item" style="display:flex; align-items:center; gap:10px">
+                    <input type="checkbox" name="illegal-allowed-user" value="${uid}" ${selectedUsers[uid] ? "checked" : ""} style="width:auto; margin:0">
+                    <span>${esc(p.nome || "Sem nome")}</span>
+                </label>
+            `).join("");
+        }
+
+        function renderRanking(playersObj) {
+            if (!playersObj) return `<div class="subtle">Sem jogadores.</div>`;
+            const arr = Object.entries(playersObj).map(([id, p]) => ({ id, ...p })).sort((a, b) => (b.saldo || 0) - (a.saldo || 0));
+            if (!arr.length) return `<div class="subtle">Sem jogadores.</div>`;
+            return arr.map((p, idx) => {
+                const top = idx < 3;
+                const bottom = idx >= arr.length - 3;
+                const title = autoTitle(p);
+                return `
+                    <div class="card clickable ${top ? "ranking-top" : ""} ${bottom ? "ranking-bottom" : ""}" onclick="app.openProfile('${p.id}')">
+                        <div style="display:flex; align-items:center; gap:10px; text-align:left">
+                            <div style="width:42px; font-family:'Cinzel'; color:${top ? "var(--prata)" : bottom ? "var(--red)" : "#fff"}; font-size:1rem">#${idx + 1}</div>
+                            <img src="${esc(p.foto || "https://placehold.co/60/0A192F/C0C0C0?text=ERA")}" style="width:42px; height:42px; border-radius:50%; object-fit:cover; border:1px solid rgba(255,255,255,0.18)">
+                            <div style="flex:1">
+                                <strong>${esc(p.nome || "Sem nome")}</strong><br>
+                                <span class="subtle">${money(p.saldo || 0)}</span><br>
+                                <span class="title-badge">${esc(title)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function renderJobs(jobsObj) {
+            if (!jobsObj || !Object.keys(jobsObj).length) return `<div class="subtle">Nenhuma vaga publicada.</div>`;
+            return Object.entries(jobsObj).map(([id, j]) => `
+                <div class="card left">
+                    ${j.img ? `<img src="${esc(j.img)}" alt="" style="width:100%; border-radius:10px; margin-bottom:10px">` : ""}
+                    <h3 style="margin-bottom:6px">${esc(j.titulo || "")}</h3>
+                    <div class="subtle">${esc(j.descricao || "")}</div>
+                    <div class="hr"></div>
+                    <strong>${money(j.salario || 0)}</strong> / ciclo
+                    <button class="btn-gold" onclick="app.applyJob('${id}')">Candidatar-se</button>
+                </div>
+            `).join("");
+        }
+
+        function renderFratList(fratsObj) {
+            const frats = getAllFraternities(fratsObj);
+            return Object.entries(frats).map(([id, f]) => {
+                const president = latestPlayersCache[f.presidenteId]?.nome || "Presidência aberta";
+                const members = Object.values(latestPlayersCache || {}).filter(p => p.fraternidade === id).length;
+                const initials = (f.nome || id).slice(0, 2).toUpperCase();
+                return `
+                    <div class="card left frat-card clickable" style="--frat-a:${esc(f.primary)}; --frat-b:${esc(f.secondary)}; --frat-text:${esc(f.text || "#fff")}" onclick="app.selectFraternity('${id}')">
+                        <div class="frat-card-head">
+                            <div class="frat-monogram">${esc(initials)}</div>
+                            <div>
+                                <h3 class="frat-name">${esc(f.nome)}</h3>
+                                <div class="frat-sub">registro financeiro da casa</div>
+                            </div>
+                        </div>
+                        <div class="frat-ledger-grid">
+                            <div class="frat-metric">
+                                <span>Banco</span>
+                                <strong>${money(f.saldo || 0)}</strong>
+                            </div>
+                            <div class="frat-metric">
+                                <span>Mensalidade</span>
+                                <strong>${money(f.mensalidade || 0)}</strong>
+                            </div>
+                            <div class="frat-metric">
+                                <span>Membros</span>
+                                <strong>${members}</strong>
+                            </div>
+                        </div>
+                        <div class="frat-president-line">
+                            Presidência: <strong>${esc(president)}</strong>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function renderFratStore(selectedId = selectedFratId) {
+            const box = document.getElementById("frat-store");
+            if (!box) return;
+            if (!selectedId) {
+                box.innerHTML = "Selecione uma fraternidade para ver a loja.";
+                return;
+            }
+            const canBuy = isFratPresident(selectedId);
+            const items = latestFratStoreCache || {};
+            if (!Object.keys(items).length) {
+                box.innerHTML = `<div class="subtle">A loja das fraternidades ainda não possui itens.</div>`;
+                return;
+            }
+            box.innerHTML = Object.entries(items).map(([id, item]) => `
+                <div class="ledger-entry">
+                    <strong>${esc(item.nome || "Item")}</strong>
+                    <span class="amount">${money(item.preco || 0)}</span><br>
+                    <span class="subtle">${esc(item.descricao || "")}</span><br>
+                    <span class="condition-tag" style="margin-top:8px">Estoque: ${item.estoque ?? 0}</span>
+                    <button class="btn-gold small-btn" ${canBuy ? "" : "disabled"} onclick="app.buyFraternityStoreItem('${id}', '${selectedId}')">Comprar para ${esc(getFraternityName(selectedId))}</button>
+                    ${canBuy ? "" : `<div class="subtle">Somente a presidência pode comprar pela fraternidade.</div>`}
+                </div>
+            `).join("");
+        }
+
+        function renderFraternityDetail(selectedId = selectedFratId) {
+            const box = document.getElementById("frat-detail");
+            if (!box) return;
+            if (!selectedId) {
+                box.innerHTML = "Selecione uma fraternidade para abrir a ficha.";
+                renderFratStore("");
+                return;
+            }
+            const f = getFraternity(selectedId);
+            if (!f) return;
+            const president = latestPlayersCache[f.presidenteId]?.nome || "Presidência aberta";
+            const members = Object.entries(latestPlayersCache || {}).filter(([, p]) => p.fraternidade === selectedId);
+            const canManage = isFratPresident(selectedId);
+            const purchases = f.compras || {};
+            const moves = f.historico || {};
+            const memberOptions = members.map(([uid, p]) => `<option value="${uid}">${esc(p.nome || "Sem nome")}</option>`).join("");
+            const initials = (f.nome || selectedId).slice(0, 2).toUpperCase();
+            box.innerHTML = `
+                <div class="frat-detail-banner" style="--frat-a:${esc(f.primary)}; --frat-b:${esc(f.secondary)}; --frat-text:${esc(f.text)}">
+                    <div class="frat-banner-main">
+                        <div class="frat-monogram large">${esc(initials)}</div>
+                        <div>
+                            <h3>${esc(f.nome)}</h3>
+                            <div>Ficha institucional e tesouraria ativa</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="frat-profile-grid">
+                    <div class="frat-profile-cell">
+                        <span>Banco</span>
+                        <strong>${money(f.saldo || 0)}</strong>
+                    </div>
+                    <div class="frat-profile-cell">
+                        <span>Mensalidade</span>
+                        <strong>${money(f.mensalidade || 0)}</strong>
+                    </div>
+                    <div class="frat-profile-cell">
+                        <span>Presidência</span>
+                        <strong>${esc(president)}</strong>
+                    </div>
+                </div>
+                <div class="hr"></div>
+                <strong>Membros</strong>
+                <div class="frat-member-roster">${members.map(([, p]) => `<span class="pill">${esc(p.nome || "Sem nome")}</span>`).join("") || `<div class="subtle">Sem membros cadastrados.</div>`}</div>
+                ${uLog?.fraternidade === selectedId ? `
+                    <div class="hr"></div>
+                    <button class="btn-sec" onclick="app.payFraternityFee('${selectedId}')">Pagar Mensalidade Agora</button>
+                ` : ""}
+                <div class="hr"></div>
+                <strong>Histórico bancário</strong>
+                <div>${renderFraternityHistory(moves)}</div>
+                <div class="hr"></div>
+                <strong>Compras da fraternidade</strong>
+                <div>${renderFraternityHistory(purchases)}</div>
+                ${canManage ? `
+                    <div class="frat-president-panel">
+                        <strong>Painel da Presidência</strong>
+                        <input type="number" id="frat-fee-value" placeholder="Nova mensalidade" value="${Number(f.mensalidade || 0)}">
+                        <button class="btn-sec" onclick="app.setFraternityFee('${selectedId}')">Definir Mensalidade</button>
+                        <select id="frat-member-target">${memberOptions || `<option value="">Sem membros</option>`}</select>
+                        <input type="number" id="frat-transfer-value" placeholder="Valor">
+                        <textarea id="frat-transfer-desc" placeholder="Descrição do movimento"></textarea>
+                        <div class="row-actions">
+                            <button class="btn-gold" onclick="app.fraternityCollectFromMember('${selectedId}')">Receber do Membro</button>
+                            <button class="btn-sec" onclick="app.fraternityPayMember('${selectedId}')">Pagar Membro</button>
+                        </div>
+                        <div class="hr"></div>
+                        <input type="number" id="frat-adjust-value" placeholder="Ajuste direto positivo ou negativo">
+                        <textarea id="frat-adjust-desc" placeholder="Motivo do ajuste bancário"></textarea>
+                        <button class="btn-sec" onclick="app.fraternityDirectAdjust('${selectedId}')">Aplicar Ajuste Bancário</button>
+                    </div>
+                ` : ""}
+            `;
+            renderFratStore(selectedId);
+        }
+
+        function renderFraternityHistory(obj) {
+            if (!obj || !Object.keys(obj).length) return `<div class="subtle">Sem registros.</div>`;
+            return `<div class="ledger-list">` + Object.values(obj).reverse().slice(0, 12).map(h => `
+                <div class="ledger-entry">
+                    <strong>${esc(h.tipo || h.nome || "Movimento")}</strong>
+                    ${h.valor !== undefined ? `<span class="amount">${money(h.valor)}</span>` : ""}<br>
+                    ${esc(h.desc || h.descricao || "")}<br>
+                    <span class="subtle">${new Date(h.ts || Date.now()).toLocaleString("pt-BR")}</span>
+                </div>
+            `).join("") + `</div>`;
+        }
+
+        function refreshItemTransferOptions(mochila) {
+            const select = document.getElementById("tr-item");
+            const items = Object.entries(mochila || {});
+            if (select) {
+                select.innerHTML = `<option value="">Selecionar item...</option>` + items.map(([id, item]) => `<option value="${id}">${esc(item.nome || "Item")}</option>`).join("");
+            }
+            const sellSelect = document.getElementById("sell-item");
+            if (sellSelect) {
+                sellSelect.innerHTML = `<option value="">Item do inventário para vender...</option>` + items.map(([id, item]) => `<option value="${id}">${esc(item.nome || "Item")} · ${daysLeft(item.expiresAt)}</option>`).join("");
+            }
+        }
+
+        function updateLoanSimulation() {
+            const valor = Number(document.getElementById("loan-valor")?.value || 0);
+            const parcelas = Math.max(1, Number(document.getElementById("loan-parcelas")?.value || 1));
+            const box = document.getElementById("loan-sim");
+            if (!box) return;
+            if (!valor) {
+                box.innerHTML = "Preencha valor e parcelas para ver a simulação.";
+                return;
+            }
+            const total = Math.round(valor * 1.2);
+            const porParcela = Math.ceil(total / parcelas);
+            const profile = getFinanceProfile(uLog || {});
+            const aboveLimit = valor > profile.suggestedLimit;
+            box.innerHTML = `
+                Solicitado: <strong>${money(valor)}</strong><br>
+                Taxa acadêmica: <strong>20%</strong><br>
+                Total estimado da dívida: <strong>${money(total)}</strong><br>
+                Parcelas: <strong>${parcelas}</strong> de aproximadamente <strong>${money(porParcela)}</strong><br>
+                ${aboveLimit ? `<span style="color:#F7E7A8">Acima do limite sugerido de ${money(profile.suggestedLimit)}. A aprovação fica mais rigorosa.</span>` : `Dentro do limite sugerido de ${money(profile.suggestedLimit)}.`}
+            `;
+        }
+
+        function updateFinanceHealth(d) {
+            const box = document.getElementById("fin-health");
+            if (!box) return;
+            const saldo = Number(d?.saldo || 0);
+            const divida = Number(d?.divida || 0);
+            const profile = getFinanceProfile(d || {});
+            const scoreEl = document.getElementById("fin-score");
+            const limitEl = document.getElementById("fin-limit");
+            const riskEl = document.getElementById("fin-risk");
+            if (scoreEl) scoreEl.innerText = `${profile.score}/100`;
+            if (limitEl) limitEl.innerText = money(profile.suggestedLimit);
+            if (riskEl) riskEl.innerText = profile.risk;
+            box.className = "inline-feedback";
+            if (divida <= 0) {
+                box.classList.add("loan-status-good");
+                box.innerText = `Situação saudável. Score ${profile.score}/100 e risco ${profile.risk}.`;
+            } else if (saldo >= divida / 2) {
+                box.classList.add("loan-status-warning");
+                box.innerText = `Atenção financeira. Dívida ativa, score ${profile.score}/100 e risco ${profile.risk}.`;
+            } else {
+                box.classList.add("loan-status-danger");
+                box.innerText = `Nível crítico. A dívida está pressionando sua vida acadêmica. Score ${profile.score}/100.`;
+            }
+        }
+
+        function showInlineFeedback(id, msg, mode = "good") {
+            const box = document.getElementById(id);
+            if (!box) return;
+            box.classList.remove("hidden", "loan-status-good", "loan-status-warning", "loan-status-danger");
+            if (mode === "good") box.classList.add("loan-status-good");
+            if (mode === "warning") box.classList.add("loan-status-warning");
+            if (mode === "danger") box.classList.add("loan-status-danger");
+            box.innerHTML = msg;
+        }
+
+        function pushAudit(dados) {
+            return push(ref(db, "auditoria"), {
+                ...dados,
+                ts: Date.now()
+            }).catch(err => {
+                console.warn("Auditoria nao registrada:", err);
+                return null;
+            });
+        }
+
+        function pushHistory(uid, tipo, valor, desc) {
+            return push(ref(db, `jogadores/${uid}/historico`), { tipo, valor: Number(valor || 0), desc: desc || "", ts: Date.now() });
+        }
+
+        function pushNotif(uid, msg) {
+            return push(ref(db, `jogadores/${uid}/notificacoes`), { msg, ts: Date.now() });
+        }
+
+        function setStatusBanner(d) {
+            const banner = document.getElementById("u-warning");
+            const saldo = Number(d?.saldo || 0);
+            const divida = Number(d?.divida || 0);
+            if (d?.trancada) {
+                banner.className = "status-banner danger";
+                banner.textContent = "Conta trancada pela reitoria. Ações financeiras bloqueadas.";
+                banner.classList.remove("hidden");
+                return;
+            }
+            if (saldo < 0) {
+                banner.className = "status-banner danger";
+                banner.textContent = "Pobretão da ERA em observação administrativa.";
+                banner.classList.remove("hidden");
+                return;
+            }
+            if (divida > 0) {
+                banner.className = "status-banner warning";
+                banner.textContent = "Há dívida ativa no sistema financeiro.";
+                banner.classList.remove("hidden");
+                return;
+            }
+            banner.className = "status-banner good";
+            banner.textContent = "Conta saudável. O campus respeita sua presença financeira.";
+            banner.classList.remove("hidden");
+        }
+
+        async function ensureFraternitiesSeeded() {
+            try {
+                const snap = await get(ref(db, "fraternidades"));
+                const existing = snap.val() || {};
+                const updates = {};
+                for (const [id, f] of Object.entries(FRATERNITIES)) {
+                    if (!existing[id]) {
+                        updates[`fraternidades/${id}`] = {
+                            nome: f.nome,
+                            primary: f.primary,
+                            secondary: f.secondary,
+                            text: f.text,
+                            saldo: 0,
+                            mensalidade: 0,
+                            presidenteId: "",
+                            historico: {},
+                            compras: {}
+                        };
+                    } else {
+                        if (!existing[id].nome) updates[`fraternidades/${id}/nome`] = f.nome;
+                        if (!existing[id].primary) updates[`fraternidades/${id}/primary`] = f.primary;
+                        if (!existing[id].secondary) updates[`fraternidades/${id}/secondary`] = f.secondary;
+                        if (!existing[id].text) updates[`fraternidades/${id}/text`] = f.text;
+                    }
+                }
+                if (Object.keys(updates).length) await update(ref(db), updates);
+                return true;
+            } catch (err) {
+                console.warn("Seed de fraternidades ignorado:", err);
+                return false;
+            }
+        }
+
+        async function refreshEditorialOnce() {
+            const snap = await get(ref(db, "editorial"));
+            const data = snap.val() || {};
+            const newsEl = document.getElementById("news-list");
+            if (newsEl) newsEl.innerHTML = renderNews(data);
+            const admNewsEl = document.getElementById("adm-news-list");
+            if (admNewsEl) {
+                admNewsEl.innerHTML = Object.entries(data).reverse().map(([id, n]) => `
+                    <div class="list-item">
+                        <strong>${esc(n.titulo || "")}</strong><br>
+                        <div>${renderNewsTags(n.tags)}</div>
+                        <span class="subtle">${esc(n.texto || "").slice(0, 120)}</span>
+                        <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                            <button class="btn-sec small-btn" onclick="app.editNews('${id}')">Editar</button>
+                            <button class="btn-red small-btn" onclick="app.deleteNews('${id}')">Excluir</button>
+                        </div>
+                    </div>
+                `).join("");
+            }
+        }
+
+        function fillAdmPlayers(playersObj) {
+            const selectEl = document.getElementById("adm-p-sel");
+            if (!selectEl) return;
+            const keep = admSelectedPlayerId || selectEl.value || "";
+            let options = "<option value=''>Selecionar Jogador...</option>";
+            Object.entries(playersObj || {}).forEach(([uid, p]) => {
+                options += `<option value="${uid}">${esc(p.nome || "Sem nome")}</option>`;
+            });
+            selectEl.innerHTML = options;
+            if (keep && playersObj && playersObj[keep]) selectEl.value = keep;
+
+            const presidentSel = document.getElementById("adm-frat-president");
+            if (presidentSel) {
+                presidentSel.innerHTML = "<option value=''>Sem presidente</option>" + Object.entries(playersObj || {})
+                    .map(([uid, p]) => `<option value="${uid}">${esc(p.nome || "Sem nome")}</option>`)
+                    .join("");
+            }
+        }
+
+        function syncRestrictedTabVisibility() {
+            const btn = document.getElementById("btn-mercado-ilegal");
+            if (!btn) return;
+            btn.classList.remove("hidden");
+        }
+
+        function renderAdmLists() {
+            const pId = admSelectedPlayerId || document.getElementById("adm-p-sel").value;
+            if (!pId) return;
+            admSelectedPlayerId = pId;
+            const playerRef = ref(db, `jogadores/${pId}`);
+            get(playerRef).then(snap => {
+                const d = snap.val();
+                if (!d) return;
+                document.getElementById("adm-p-panel").classList.remove("hidden");
+                document.getElementById("adm-account-state").innerHTML = d.trancada
+                    ? `<strong>Conta trancada.</strong> Jogador não consegue executar ações financeiras comuns.`
+                    : `<strong>Conta ativa.</strong> Jogador liberado para ações comuns.`;
+                document.getElementById("adm-p-tags").innerHTML = renderTags(d.tags);
+                document.getElementById("adm-p-inv").innerHTML = renderInventory(d.mochila);
+                document.getElementById("adm-p-fixos").innerHTML = renderFixeds(d.fixos);
+                document.getElementById("adm-p-vars").innerHTML = renderVariables(d.variaveis);
+                document.getElementById("adm-p-percentuais").innerHTML = renderPercentuais(d.percentuais);
+                document.getElementById("adm-p-academicos").innerHTML = renderSimpleAuditList(d.academicos, "Sem bônus ou ônus acadêmicos.");
+                document.getElementById("adm-p-punicoes").innerHTML = renderSimpleAuditList(d.punicoes, "Sem punições registradas.");
+                const fratSel = document.getElementById("adm-player-frat");
+                if (fratSel) fratSel.innerHTML = renderFraternityOptions(d.fraternidade || "", true);
+            });
+        }
+
+        function renderGlobalData() {
+            ensureFraternitiesSeeded();
+
+            listen(ref(db, "jogadores"), snap => {
+                const players = snap.val() || {};
+                latestPlayersCache = players;
+                fillAdmPlayers(players);
+                const destSelect = document.getElementById("tr-dest");
+                if (destSelect) {
+                    destSelect.innerHTML = "<option value=''>Selecionar destinatário...</option>" +
+                        Object.entries(players)
+                            .filter(([uid]) => !uLog || uid !== uLog.id)
+                            .map(([uid, p]) => `<option value="${uid}">${esc(p.nome || "Sem nome")}</option>`)
+                            .join("");
+                }
+                const rankEl = document.getElementById("rank-list");
+                if (rankEl) rankEl.innerHTML = renderRanking(players);
+
+                const currentSelected = Object.fromEntries(
+                    Array.from(document.querySelectorAll('#adm-illegal-user-list input[name="illegal-allowed-user"]:checked')).map(el => [el.value, true])
+                );
+                const illegalUserList = document.getElementById("adm-illegal-user-list");
+                if (illegalUserList) illegalUserList.innerHTML = renderPlayerAccessSelector(players, currentSelected);
+
+                const fratList = document.getElementById("frat-list");
+                if (fratList) fratList.innerHTML = renderFratList(latestFratsCache);
+                renderFraternityDetail(selectedFratId);
+            });
+
+            listen(ref(db, "fraternidades"), snap => {
+                latestFratsCache = snap.val() || {};
+                const fratList = document.getElementById("frat-list");
+                if (fratList) fratList.innerHTML = renderFratList(latestFratsCache);
+                renderFraternityDetail(selectedFratId);
+            });
+
+            listen(ref(db, "loja_fraternidades"), snap => {
+                latestFratStoreCache = snap.val() || {};
+                renderFratStore(selectedFratId);
+                const admList = document.getElementById("adm-frat-store-list");
+                if (admList) {
+                    admList.innerHTML = Object.entries(latestFratStoreCache).reverse().map(([id, item]) => `
+                        <div class="list-item">
+                            <strong>${esc(item.nome || "")}</strong> · ${money(item.preco || 0)}<br>
+                            <span class="subtle">${esc(item.descricao || "")}</span>
+                            <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                                <button class="btn-red small-btn" onclick="app.deleteFratStoreItem('${id}')">Excluir</button>
+                            </div>
+                        </div>
+                    `).join("") || `<div class="subtle">Sem itens na loja.</div>`;
+                }
+            });
+
+            listen(ref(db, "editorial"), snap => {
+                const data = snap.val() || {};
+                const newsEl = document.getElementById("news-list");
+                if (newsEl) newsEl.innerHTML = renderNews(data);
+                const admNewsEl = document.getElementById("adm-news-list");
+                if (admNewsEl) {
+                    admNewsEl.innerHTML = Object.entries(data).reverse().map(([id, n]) => `
+                        <div class="list-item">
+                            <strong>${esc(n.titulo || "")}</strong><br>
+                            <div>${renderNewsTags(n.tags)}</div>
+                            <span class="subtle">${esc(n.texto || "").slice(0, 120)}</span>
+                            <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                                <button class="btn-sec small-btn" onclick="app.editNews('${id}')">Editar</button>
+                                <button class="btn-red small-btn" onclick="app.deleteNews('${id}')">Excluir</button>
+                            </div>
+                        </div>
+                    `).join("");
+                }
+            });
+
+            listen(ref(db, "loja"), snap => {
+                latestMarketStore = snap.val() || {};
+                const marketEl = document.getElementById("market-list");
+                if (marketEl) marketEl.innerHTML = renderMarket();
+                const items = latestMarketStore;
+                const admMarket = document.getElementById("adm-market-list");
+                if (admMarket) {
+                    admMarket.innerHTML = Object.entries(items).reverse().map(([id, i]) => `
+                        <div class="list-item">
+                            <strong>${esc(i.nome || "")}</strong> · ${money(effectivePrice(i))}<br>
+                            <span class="subtle">${esc(i.descricao || "")}</span>
+                            <div class="subtle">Estoque: ${i.estoque || 0} | Limite por aluno: ${i.maxPorAluno || "sem limite"} | Desconto: ${i.desconto || 0}%</div>
+                            <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                                <button class="btn-red small-btn" onclick="app.deleteMarketItem('${id}')">Excluir</button>
+                            </div>
+                        </div>
+                    `).join("");
+                }
+            });
+
+            listen(ref(db, "mercado_jogadores"), snap => {
+                latestPlayerMarketStore = snap.val() || {};
+                const marketEl = document.getElementById("market-list");
+                if (marketEl) marketEl.innerHTML = renderMarket();
+            });
+
+            listen(ref(db, "loja_clandestina"), snap => {
+                const items = snap.val() || {};
+                latestIllegalStore = items;
+                const clEl = document.getElementById("illegal-list");
+                if (clEl) clEl.innerHTML = renderClandestine(items);
+                const adm = document.getElementById("adm-illegal-list");
+                if (adm) {
+                    adm.innerHTML = Object.entries(items).reverse().map(([id, i]) => `
+                        <div class="list-item">
+                            <strong>${esc(i.nome || "")}</strong> · ${money(i.preco || 0)}<br>
+                            <span class="subtle">${esc(i.descricao || "")}</span>
+                            <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                                <button class="btn-red small-btn" onclick="app.deleteIllegalItem('${id}')">Excluir</button>
+                            </div>
+                        </div>
+                    `).join("");
+                }
+                syncRestrictedTabVisibility();
+            });
+
+            listen(ref(db, "vagas"), snap => {
+                const jobsEl = document.getElementById("jobs-list");
+                if (jobsEl) jobsEl.innerHTML = renderJobs(snap.val());
+                const jobs = snap.val() || {};
+                const admJobs = document.getElementById("adm-jobs-list");
+                if (admJobs) {
+                    admJobs.innerHTML = Object.entries(jobs).reverse().map(([id, j]) => `
+                        <div class="list-item">
+                            <strong>${esc(j.titulo || "")}</strong> · ${money(j.salario || 0)}<br>
+                            <span class="subtle">${esc(j.descricao || "")}</span>
+                            <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                                <button class="btn-red small-btn" onclick="app.deleteJob('${id}')">Excluir</button>
+                            </div>
+                        </div>
+                    `).join("");
+                }
+            });
+
+            listen(ref(db, "candidaturas"), snap => {
+                const apps = snap.val() || {};
+                const box = document.getElementById("adm-applications");
+                if (!box) return;
+                box.innerHTML = Object.entries(apps).reverse().map(([id, c]) => `
+                    <div class="list-item">
+                        <strong>${esc(c.user || "")}</strong> para ${esc(c.titulo || "")}<br>
+                        <span class="subtle">${esc(c.texto || "")}</span>
+                        <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                            <button class="btn-gold small-btn" onclick="app.approveApplication('${id}')">Aceitar</button>
+                            <button class="btn-red small-btn" onclick="app.denyApplication('${id}')">Negar</button>
+                        </div>
+                    </div>
+                `).join("") || `<div class="subtle">Sem candidaturas.</div>`;
+            });
+
+            listen(ref(db, "emprestimos_pendentes"), snap => {
+                const loans = snap.val() || {};
+                const admLoans = document.getElementById("adm-loans");
+                if (!admLoans) return;
+                admLoans.innerHTML = Object.entries(loans).reverse().map(([id, l]) => `
+                    <div class="list-item">
+                        <strong>${esc(l.nome || "")}</strong> · ${money(l.valor || 0)}<br>
+                        <span class="subtle">Parcelas: ${l.parcelas || 1} de ${money(l.parcelaValor || Math.ceil(Number(l.restante || 0) / Math.max(1, Number(l.parcelas || 1))))} | Total previsto: ${money(l.restante || 0)}</span><br>
+                        <span class="subtle">Finalidade: ${esc(l.finalidade || "não informada")} | Score: ${l.scoreNoPedido || "---"} | Limite sugerido: ${money(l.limiteSugerido || 0)}</span><br>
+                        ${l.motivo ? `<span class="subtle">Justificativa: ${esc(l.motivo)}</span>` : ""}
+                        <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                            <button class="btn-gold small-btn" onclick="app.approveLoan('${id}')">Aprovar</button>
+                            <button class="btn-red small-btn" onclick="app.denyLoan('${id}')">Negar</button>
+                        </div>
+                    </div>
+                `).join("") || `<div class="subtle">Nenhum pedido pendente.</div>`;
+            });
+
+            listen(ref(db, "auditoria"), snap => {
+                const audit = snap.val() || {};
+                const box = document.getElementById("audit-feed");
+                if (!box) return;
+                box.innerHTML = Object.values(audit).reverse().map(a => `
+                    <div class="list-item mini">
+                        <strong>${esc((a.tipo || "registro").toUpperCase())}</strong><br>
+                        ${a.de ? `${esc(a.de)} para ${esc(a.para || a.user || "")}` : esc(a.user || a.msg || "")}<br>
+                        ${a.vaga ? `Vaga: ${esc(a.vaga)}<br>` : ""}
+                        ${a.item ? `Item: ${esc(a.item)}<br>` : ""}
+                        ${a.valor !== undefined ? `Valor: ${money(a.valor)}<br>` : ""}
+                        ${a.msg ? `${esc(a.msg)}<br>` : ""}
+                        <span class="subtle">${new Date(a.ts || Date.now()).toLocaleString("pt-BR")}</span>
+                    </div>
+                `).join("") || `<div class="subtle">Sem eventos na auditoria.</div>`;
+            });
+        }
+
+        function bindPlayerStreams(uid) {
+            listen(ref(db, `jogadores/${uid}/notificacoes`), s => {
+                const notifs = s.val() || {};
+                const box = document.getElementById("notif-list");
+                if (!box) return;
+                box.innerHTML = Object.entries(notifs).reverse().map(([, n]) => `
+                    <div class="comment-box">
+                        <div class="comment-meta">${new Date(n.ts || Date.now()).toLocaleString("pt-BR")}</div>
+                        ${esc(narrateNotification(n.msg || ""))}
+                    </div>
+                `).join("") || `<div class="subtle">Nenhuma notificação.</div>`;
+            });
+
+            listen(ref(db, `jogadores/${uid}/historico`), s => {
+                const box = document.getElementById("u-history");
+                if (box) box.innerHTML = renderHistory(s.val());
+            });
+
+            listen(ref(db, `jogadores/${uid}/mochila`), s => {
+                const mochila = s.val();
+                const box = document.getElementById("u-inv");
+                if (box) box.innerHTML = renderInventory(mochila);
+                refreshItemTransferOptions(mochila);
+            });
+
+            listen(ref(db, `jogadores/${uid}/emprestimos`), s => {
+                const box = document.getElementById("fin-loans");
+                if (box) box.innerHTML = renderLoans(s.val());
+            });
+        }
+
+        function refreshMyProfileUI(d) {
+            document.getElementById("u-nome").innerText = d.nome || "---";
+            document.getElementById("u-saldo").innerText = money(d.saldo || 0);
+            document.getElementById("u-foto").src = d.foto || "https://placehold.co/150/0A192F/C0C0C0?text=ERA";
+            document.getElementById("u-bio").innerText = d.bio || "Membro da Sovereign Society.";
+            document.getElementById("u-title").innerText = autoTitle(d);
+            document.getElementById("u-tags").innerHTML = renderTags(d.tags);
+            document.getElementById("fin-divida").innerText = money(d.divida || 0);
+            document.getElementById("u-status-mini").innerText = financialMood(d);
+            document.getElementById("u-divida-mini").innerText = money(d.divida || 0);
+            document.getElementById("u-frat-mini").innerText = getFraternityName(d.fraternidade);
+            setStatusBanner(d);
+            updateFinanceHealth(d);
+            document.getElementById("btn-adm").style.display = isAdmin({ ...d, id: auth.currentUser?.uid }) ? "inline-block" : "none";
+            syncRestrictedTabVisibility();
+        }
+
+        fillStaticFraternitySelects();
+
+        onAuthStateChanged(auth, user => {
+            clearSubs();
+            sessionBootstrapped = false;
+            playerStreamsBound = false;
+            currentProfileId = null;
+            if (clockTimer) {
+                clearInterval(clockTimer);
+                clockTimer = null;
+            }
+            if (user) {
+                document.getElementById("auth-screen").classList.add("hidden");
+                document.getElementById("app-screen").classList.remove("hidden");
+                document.getElementById("main-nav").style.display = "flex";
+                listen(ref(db, `jogadores/${user.uid}`), async snap => {
+                    const d = snap.val();
+                    if (!d) return;
+                    uLog = { id: user.uid, ...d };
+                    if (d.trancada && !isAdmin(uLog)) {
+                        document.getElementById("app-screen").classList.add("hidden");
+                        document.getElementById("main-nav").style.display = "none";
+                        document.getElementById("auth-screen").classList.remove("hidden");
+                        document.getElementById("login-box").classList.remove("hidden");
+                        document.getElementById("register-box").classList.remove("hidden");
+                        alert("Sua conta está trancada pela reitoria.");
+                        await signOut(auth);
+                        return;
+                    }
+                    refreshMyProfileUI(d);
+                    document.getElementById("set-nome").value = d.nome || "";
+                    document.getElementById("set-foto").value = d.foto || "";
+                    document.getElementById("set-bio").value = d.bio || "";
+                    if (!sessionBootstrapped) {
+                        sessionBootstrapped = true;
+                        renderGlobalData();
+                    }
+                    if (!playerStreamsBound) {
+                        playerStreamsBound = true;
+                        bindPlayerStreams(user.uid);
+                    }
+                });
+                clockTimer = setInterval(() => {
+                    const c = document.getElementById("clock");
+                    if (c) c.innerText = nowClock();
+                }, 1000);
+            } else {
+                uLog = null;
+                document.getElementById("auth-screen").classList.remove("hidden");
+                document.getElementById("login-box").classList.remove("hidden");
+                document.getElementById("register-box").classList.remove("hidden");
+                document.getElementById("app-screen").classList.add("hidden");
+                document.getElementById("main-nav").style.display = "none";
+            }
+        });
+
+        document.getElementById("loan-valor")?.addEventListener("input", updateLoanSimulation);
+        document.getElementById("loan-parcelas")?.addEventListener("input", updateLoanSimulation);
+
+        window.app = {
+            toggleAuth: () => {
+                document.getElementById("register-box").scrollIntoView({ behavior: "smooth", block: "center" });
+                document.getElementById("reg-name").focus();
+            },
+
+            focusLogin: () => {
+                document.getElementById("login-box").scrollIntoView({ behavior: "smooth", block: "center" });
+                document.getElementById("email").focus();
+            },
+
+            showTab: (id, btn) => {
+                document.querySelectorAll(".tab-content").forEach(t => t.classList.add("hidden"));
+                document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+                document.getElementById(id).classList.remove("hidden");
+                if (btn) btn.classList.add("active");
+            },
+
+            toggleSettings: () => document.getElementById("settings-area").classList.toggle("hidden"),
+
+            closeModal: (id) => {
+                document.getElementById(id).style.display = "none";
+                if (id === "profile-modal") {
+                    currentProfileId = null;
+                    if (profileMuralUnsub) {
+                        profileMuralUnsub();
+                        profileMuralUnsub = null;
+                    }
+                }
+            },
+
+            openImageModal: (src) => {
+                document.getElementById("image-modal-img").src = src;
+                document.getElementById("image-modal").style.display = "flex";
+            },
+
+            handleImageModalBackdrop: (event) => {
+                if (event.target.id === "image-modal") app.closeModal("image-modal");
+            },
+
+            swapCardImage: (thumb, src) => {
+                const card = thumb.closest(".card");
+                const main = card?.querySelector(".market-main-image");
+                if (main) {
+                    main.src = src;
+                    main.setAttribute("onclick", `app.openImageModal('${src.replaceAll("'", "\\'")}')`);
+                }
+                thumb.parentElement?.querySelectorAll("img").forEach(i => i.classList.remove("active"));
+                thumb.classList.add("active");
+            },
+
+            handleLogin: async () => {
+                const e = document.getElementById("email").value.trim();
+                const p = document.getElementById("pass").value.trim();
+                if (!e || !p) return alert("Preencha e-mail e senha.");
+                try {
+                    await signInWithEmailAndPassword(auth, e, p);
+                } catch (err) {
+                    alert("Acesso negado: " + err.message);
+                }
+            },
+
+            handleRegister: async () => {
+                const n = document.getElementById("reg-name").value.trim();
+                const e = document.getElementById("reg-email").value.trim();
+                const p = document.getElementById("reg-pass").value.trim();
+                const socialClass = document.getElementById("reg-class").value;
+                const fraternityId = document.getElementById("reg-frat").value;
+                if (!n || !e || !p || !socialClass || !fraternityId) {
+                    return alert("Preencha nome, e-mail, senha, origem financeira e fraternidade.");
+                }
+                try {
+                    const classData = SOCIAL_CLASSES[socialClass] || SOCIAL_CLASSES.bolsista;
+                    const res = await createUserWithEmailAndPassword(auth, e, p);
+                    const uid = res.user.uid;
+                    const playerData = {
+                        nome: n,
+                        saldo: classData.saldo,
+                        divida: 0,
+                        role: "aluno",
+                        foto: "",
+                        bio: "",
+                        origemFinanceira: socialClass,
+                        fraternidade: fraternityId,
+                        trancada: false,
+                        tags: tagMapWithIdentity(socialClass, fraternityId),
+                        mochila: {},
+                        fixos: {},
+                        variaveis: {},
+                        percentuais: {},
+                        academicos: {},
+                        punicoes: {},
+                        historico: {},
+                        notificacoes: {},
+                        emprestimos: {},
+                        title: "Estudante Financeiro",
+                        criadoEm: Date.now()
+                    };
+
+                    await set(ref(db, `jogadores/${uid}`), playerData);
+
+                    ensureFraternitiesSeeded();
+                    update(ref(db, `fraternidades/${fraternityId}/membros`), {
+                        [uid]: true
+                    }).catch(err => {
+                        console.warn("Membro da fraternidade nao registrado:", err);
+                    });
+
+                    await pushAudit({
+                        tipo: "registro",
+                        user: n,
+                        msg: `Novo aluno registrado como ${classData.label} em ${getFraternityName(fraternityId)}`
+                    });
+
+                    alert("Matricula realizada.");
+                } catch (err) {
+                    alert("Erro ao matricular: " + (err?.message || err));
+                }
+            },
+
+            handleLogout: async () => {
+                await signOut(auth);
+                clearSubs();
+                if (clockTimer) clearInterval(clockTimer);
+                location.reload();
+            },
+
+            updateProfile: async () => {
+                if (!auth.currentUser || !ensureAccountOpen()) return;
+                const up = {};
+                const nome = document.getElementById("set-nome").value.trim();
+                const fotoUrl = document.getElementById("set-foto").value.trim();
+                const bio = document.getElementById("set-bio").value.trim();
+                if (nome) up.nome = nome;
+                if (fotoUrl) up.foto = fotoUrl;
+                if (bio) up.bio = bio;
+                await update(ref(db, `jogadores/${auth.currentUser.uid}`), up);
+                await pushAudit({ tipo: "perfil", user: uLog?.nome || auth.currentUser.email, msg: "Perfil atualizado" });
+                alert("Perfil atualizado.");
+            },
+
+            deleteMe: async () => {
+                if (!auth.currentUser) return;
+                if (!confirm("Tem certeza que deseja excluir sua conta?")) return;
+                const uid = auth.currentUser.uid;
+                try {
+                    await remove(ref(db, `jogadores/${uid}`));
+                    if (uLog?.fraternidade) await remove(ref(db, `fraternidades/${uLog.fraternidade}/membros/${uid}`));
+                    await pushAudit({ tipo: "exclusao", user: uLog?.nome || auth.currentUser.email, msg: "Conta excluída pelo próprio usuário" });
+                    await deleteUser(auth.currentUser);
+                    clearSubs();
+                    location.reload();
+                } catch (e) {
+                    alert("Para excluir, talvez seja necessário entrar novamente e tentar de novo.");
+                }
+            },
+
+            transferirDinheiro: async () => {
+                if (!ensureAccountOpen()) return;
+                const dId = document.getElementById("tr-dest").value;
+                const val = parseInt(document.getElementById("tr-val").value);
+                const msg = document.getElementById("tr-msg").value.trim();
+                if (!uLog || !dId || !val || val <= 0) return alert("Preencha destinatário e valor.");
+                if (dId === uLog.id) return alert("Não dá para transferir para si mesmo.");
+                if (val > Number(uLog.saldo || 0)) return alert("Saldo insuficiente.");
+                const dSnap = await get(ref(db, `jogadores/${dId}`));
+                const d = dSnap.val();
+                if (!d) return alert("Jogador inválido.");
+                await update(ref(db, `jogadores/${uLog.id}`), { saldo: Number(uLog.saldo || 0) - val });
+                await update(ref(db, `jogadores/${dId}`), { saldo: Number(d.saldo || 0) + val });
+                await pushHistory(uLog.id, "transferência enviada", -val, `${msg || "Transferência"} para ${d.nome}`);
+                await pushHistory(dId, "transferência recebida", val, `${msg || "Transferência"} de ${uLog.nome}`);
+                await pushNotif(dId, `Você recebeu ${money(val)} de ${uLog.nome}. ${msg ? "Recado: " + msg : ""}`);
+                await pushAudit({ tipo: "transferencia", de: uLog.nome, para: d.nome, valor: val, msg: msg || "Transferência entre jogadores" });
+                document.getElementById("tr-val").value = "";
+                document.getElementById("tr-msg").value = "";
+                showInlineFeedback("transfer-feedback", "Transferência concluída com sucesso.", "good");
+            },
+
+            transferirItem: async () => {
+                if (!uLog || !ensureAccountOpen()) return;
+                const dId = document.getElementById("tr-dest").value;
+                const itemId = document.getElementById("tr-item").value;
+                const msg = document.getElementById("tr-item-msg").value.trim();
+                if (!dId || !itemId) return showInlineFeedback("transfer-feedback", "Escolha destinatário e item.", "warning");
+                const itemSnap = await get(ref(db, `jogadores/${uLog.id}/mochila/${itemId}`));
+                const item = itemSnap.val();
+                if (!item) return showInlineFeedback("transfer-feedback", "Esse item não está mais disponível no seu inventário.", "danger");
+                const dSnap = await get(ref(db, `jogadores/${dId}`));
+                const d = dSnap.val();
+                if (!d) return showInlineFeedback("transfer-feedback", "Destinatário inválido.", "danger");
+                const newItemRef = push(ref(db, `jogadores/${dId}/mochila`));
+                await set(newItemRef, item);
+                await remove(ref(db, `jogadores/${uLog.id}/mochila/${itemId}`));
+                await pushHistory(uLog.id, "item enviado", 0, `${item.nome} enviado para ${d.nome}`);
+                await pushHistory(dId, "item recebido", 0, `${item.nome} recebido de ${uLog.nome}`);
+                await pushNotif(dId, `${uLog.nome} enviou o item ${item.nome}. ${msg ? "Recado: " + msg : ""}`);
+                await pushAudit({ tipo: "transferencia_item", de: uLog.nome, para: d.nome, item: item.nome, msg: msg || "Item transferido entre jogadores" });
+                document.getElementById("tr-item-msg").value = "";
+                document.getElementById("tr-item").value = "";
+                showInlineFeedback("transfer-feedback", "Item enviado com sucesso.", "good");
+            },
+
+            listInventoryItemForSale: async () => {
+                if (!uLog || !ensureAccountOpen()) return;
+                const itemId = document.getElementById("sell-item").value;
+                const price = parseInt(document.getElementById("sell-price").value) || 0;
+                const condition = document.getElementById("sell-condition").value;
+                if (!itemId || price <= 0) return showInlineFeedback("market-sell-feedback", "Escolha um item e defina um valor válido.", "warning");
+                const itemSnap = await get(ref(db, `jogadores/${uLog.id}/mochila/${itemId}`));
+                const item = itemSnap.val();
+                if (!item) return showInlineFeedback("market-sell-feedback", "Esse item não está mais no seu inventário.", "danger");
+                const listingRef = push(ref(db, "mercado_jogadores"));
+                await set(listingRef, {
+                    ...item,
+                    preco: price,
+                    estoque: 1,
+                    sellerId: uLog.id,
+                    sellerName: uLog.nome,
+                    origem: "aluno",
+                    condicao: condition,
+                    tag: item.tag || "Revenda",
+                    cor: item.cor || "#C0C0C0",
+                    listedFromItemId: itemId,
+                    ts: Date.now()
+                });
+                await remove(ref(db, `jogadores/${uLog.id}/mochila/${itemId}`));
+                await pushHistory(uLog.id, "anúncio no mercado", 0, `${item.nome} anunciado por ${money(price)}`);
+                await pushAudit({ tipo: "revenda_item", user: uLog.nome, item: item.nome, valor: price, msg: "Item anunciado por aluno no mercado" });
+                document.getElementById("sell-price").value = "";
+                showInlineFeedback("market-sell-feedback", "Item anunciado no mercado.", "good");
+            },
+
+            buyPlayerMarketItem: async (id) => {
+                if (!uLog || !ensureAccountOpen()) return;
+                const listingSnap = await get(ref(db, `mercado_jogadores/${id}`));
+                const listing = listingSnap.val();
+                if (!listing) return alert("Esse anúncio não está mais disponível.");
+                if (listing.sellerId === uLog.id) return alert("Você não pode comprar seu próprio anúncio.");
+                const price = Number(listing.preco || 0);
+                if (Number(uLog.saldo || 0) < price) return alert("Saldo insuficiente.");
+                const sellerSnap = await get(ref(db, `jogadores/${listing.sellerId}`));
+                const seller = sellerSnap.val();
+                if (!seller) return alert("Vendedor indisponível.");
+                const invId = push(ref(db, `jogadores/${uLog.id}/mochila`)).key;
+                await update(ref(db), {
+                    [`jogadores/${uLog.id}/saldo`]: Number(uLog.saldo || 0) - price,
+                    [`jogadores/${listing.sellerId}/saldo`]: Number(seller.saldo || 0) + price,
+                    [`jogadores/${uLog.id}/mochila/${invId}`]: {
+                        nome: listing.nome,
+                        descricao: listing.descricao || "",
+                        img: listing.img || "",
+                        imgs: listing.imgs || [],
+                        tag: listing.tag || "Revenda",
+                        cor: listing.cor || "#C0C0C0",
+                        condicao: listing.condicao || "usado",
+                        sellerName: listing.sellerName || "Aluno",
+                        expiresAt: listing.expiresAt || null
+                    },
+                    [`mercado_jogadores/${id}`]: null
+                });
+                await pushHistory(uLog.id, "compra de aluno", -price, `Compra de ${listing.nome} de ${listing.sellerName}`);
+                await pushHistory(listing.sellerId, "venda no mercado", price, `${listing.nome} vendido para ${uLog.nome}`);
+                await pushNotif(listing.sellerId, `${uLog.nome} comprou seu item ${listing.nome} por ${money(price)}.`);
+                await pushAudit({ tipo: "compra_revenda", de: uLog.nome, para: listing.sellerName, item: listing.nome, valor: price, msg: "Compra de item anunciado por aluno" });
+                alert("Compra realizada.");
+            },
+
+            cancelPlayerMarketListing: async (id) => {
+                if (!uLog) return;
+                const listingSnap = await get(ref(db, `mercado_jogadores/${id}`));
+                const listing = listingSnap.val();
+                if (!listing) return;
+                if (listing.sellerId !== uLog.id && !isAdmin()) return alert("Somente o vendedor ou a reitoria pode cancelar este anúncio.");
+                const invId = push(ref(db, `jogadores/${listing.sellerId}/mochila`)).key;
+                await update(ref(db), {
+                    [`jogadores/${listing.sellerId}/mochila/${invId}`]: {
+                        nome: listing.nome,
+                        descricao: listing.descricao || "",
+                        img: listing.img || "",
+                        imgs: listing.imgs || [],
+                        tag: listing.tag || "Revenda",
+                        cor: listing.cor || "#C0C0C0",
+                        condicao: listing.condicao || "usado",
+                        expiresAt: listing.expiresAt || null
+                    },
+                    [`mercado_jogadores/${id}`]: null
+                });
+                await pushAudit({ tipo: "revenda_cancelada", user: uLog?.nome || "REITORIA", item: listing.nome, msg: "Anúncio de aluno cancelado" });
+                showInlineFeedback("market-sell-feedback", "Anúncio cancelado e item devolvido ao inventário.", "good");
+            },
+
+            requestLoanFromForm: async () => {
+                if (!uLog || !ensureAccountOpen()) return;
+                const valor = parseInt(document.getElementById("loan-valor").value);
+                const parcelas = parseInt(document.getElementById("loan-parcelas").value) || 1;
+                const finalidade = document.getElementById("loan-purpose").value;
+                const motivo = document.getElementById("loan-motivo").value.trim();
+                if (!valor || valor <= 0) return showInlineFeedback("fin-feedback", "Informe um valor válido para o empréstimo.", "warning");
+                const total = Math.round(valor * 1.2);
+                const parcelaValor = Math.ceil(total / Math.max(1, parcelas));
+                const profile = getFinanceProfile(uLog);
+                const loanId = push(ref(db, `emprestimos_pendentes`)).key;
+                await set(ref(db, `emprestimos_pendentes/${loanId}`), {
+                    uid: uLog.id,
+                    nome: uLog.nome,
+                    valor,
+                    parcelas,
+                    restante: total,
+                    parcelaValor,
+                    juros: 0.2,
+                    finalidade,
+                    motivo,
+                    scoreNoPedido: profile.score,
+                    limiteSugerido: profile.suggestedLimit,
+                    status: "pendente",
+                    ts: Date.now()
+                });
+                await pushNotif(uLog.id, `Seu pedido de empréstimo de ${money(valor)} foi enviado para a reitoria.`);
+                await pushAudit({ tipo: "emprestimo", user: uLog.nome, valor, msg: "Pedido de empréstimo enviado para aprovação" });
+                document.getElementById("loan-valor").value = "";
+                document.getElementById("loan-parcelas").value = 1;
+                document.getElementById("loan-motivo").value = "";
+                updateLoanSimulation();
+                showInlineFeedback("fin-feedback", "Solicitação enviada para a reitoria.", "good");
+            },
+
+            payDebtFromForm: async () => {
+                if (!uLog || !ensureAccountOpen()) return;
+                const pago = parseInt(document.getElementById("pay-valor").value);
+                if (!pago || pago <= 0) return showInlineFeedback("fin-feedback", "Informe um valor válido para amortização.", "warning");
+                const saldo = Number(uLog.saldo || 0);
+                const divida = Number(uLog.divida || 0);
+                const efetivo = Math.min(pago, saldo, divida);
+                if (efetivo <= 0) return showInlineFeedback("fin-feedback", "Nada a amortizar no momento.", "danger");
+                const loansSnap = await get(ref(db, `jogadores/${uLog.id}/emprestimos`));
+                const loans = loansSnap.val() || {};
+                const firstLoanKey = Object.keys(loans)[0];
+                await update(ref(db, `jogadores/${uLog.id}`), { saldo: saldo - efetivo, divida: divida - efetivo });
+                if (firstLoanKey && loans[firstLoanKey]) {
+                    const currentLoan = loans[firstLoanKey];
+                    await update(ref(db, `jogadores/${uLog.id}/emprestimos/${firstLoanKey}`), { restante: Math.max(0, Number(currentLoan.restante || 0) - efetivo) });
+                }
+                await pushHistory(uLog.id, "amortização", -efetivo, "Amortização de dívida");
+                await pushNotif(uLog.id, `Você amortizou ${money(efetivo)} da sua dívida.`);
+                await pushAudit({ tipo: "amortizacao", user: uLog.nome, valor: efetivo, msg: "Amortização realizada" });
+                document.getElementById("pay-valor").value = "";
+                showInlineFeedback("fin-feedback", `Você amortizou ${money(efetivo)} da dívida.`, "good");
+            },
+
+            payAllDebt: async () => {
+                if (!uLog || !ensureAccountOpen()) return;
+                const total = Math.min(Number(uLog.saldo || 0), Number(uLog.divida || 0));
+                if (total <= 0) return showInlineFeedback("fin-feedback", "Nada a quitar agora.", "warning");
+                document.getElementById("pay-valor").value = total;
+                await app.payDebtFromForm();
+            },
+
+            negotiateDebtFromForm: async () => {
+                if (!uLog || !ensureAccountOpen()) return;
+                const extra = parseInt(document.getElementById("neg-extra").value) || 0;
+                if (extra <= 0) return showInlineFeedback("fin-feedback", "Informe quantas parcelas extras deseja adicionar.", "warning");
+                const snap = await get(ref(db, `jogadores/${uLog.id}/emprestimos`));
+                const loans = snap.val() || {};
+                const keys = Object.keys(loans);
+                if (!keys.length) return showInlineFeedback("fin-feedback", "Sem empréstimos ativos para renegociar.", "danger");
+                const firstId = keys[0];
+                const loan = loans[firstId];
+                loan.parcelas = (loan.parcelas || 1) + extra;
+                await update(ref(db, `jogadores/${uLog.id}/emprestimos/${firstId}`), { parcelas: loan.parcelas });
+                await pushHistory(uLog.id, "negociação", 0, `Parcelas ajustadas em +${extra}`);
+                await pushNotif(uLog.id, `Seu parcelamento foi ajustado para ${loan.parcelas} parcelas.`);
+                await pushAudit({ tipo: "negociacao", user: uLog.nome, msg: `Parcelamento ajustado em +${extra} parcelas` });
+                document.getElementById("neg-extra").value = "";
+                showInlineFeedback("fin-feedback", `Parcelamento ajustado para ${loan.parcelas} parcelas.`, "good");
+            },
+
+            buyItem: async (id) => {
+                if (!uLog || !ensureAccountOpen()) return;
+                const s = await get(ref(db, `loja/${id}`));
+                const item = s.val();
+                if (!item) return;
+                const stock = Number(item.estoque || 0);
+                const price = effectivePrice(item);
+                const maxPorAluno = Number(item.maxPorAluno || 0);
+                const boughtByMe = Number(item.comprasPorAluno?.[uLog.id] || 0);
+                if (stock <= 0) return alert("Item esgotado.");
+                if (maxPorAluno && boughtByMe >= maxPorAluno) return alert("Você já atingiu o limite de compra deste item.");
+                if (Number(uLog.saldo || 0) < price) return alert("Saldo insuficiente.");
+                const expiresAt = Date.now() + (Number(item.duracao || 0) * 7 * 24 * 60 * 60 * 1000);
+                const invId = push(ref(db, `jogadores/${uLog.id}/mochila`)).key;
+                await update(ref(db, `jogadores/${uLog.id}`), { saldo: Number(uLog.saldo || 0) - price });
+                await update(ref(db, `loja/${id}`), { estoque: stock - 1, [`comprasPorAluno/${uLog.id}`]: boughtByMe + 1 });
+                await set(ref(db, `jogadores/${uLog.id}/mochila/${invId}`), {
+                    nome: item.nome,
+                    descricao: item.descricao || "",
+                    img: item.img || "",
+                    imgs: item.imgs || [],
+                    tag: item.tag || "Mercado",
+                    cor: item.cor || "#C0C0C0",
+                    condicao: "novo institucional",
+                    sellerName: "ERA Academy",
+                    expiresAt
+                });
+                await pushHistory(uLog.id, "compra", -price, `Compra de ${item.nome}`);
+                await pushNotif(uLog.id, `Você comprou ${item.nome}.`);
+                await pushAudit({ tipo: "compra", user: uLog.nome, item: item.nome, valor: price, msg: "Compra de item no mercado" });
+                alert("Compra realizada.");
+            },
+
+            buyRestrictedItem: async (id) => {
+                if (!uLog || !ensureAccountOpen()) return;
+                const s = await get(ref(db, `loja_clandestina/${id}`));
+                const item = s.val();
+                if (!item || !userCanSeeRestrictedItem(item, uLog)) return alert("Acesso negado.");
+                const stock = Number(item.estoque || 0);
+                const price = effectivePrice(item);
+                if (stock <= 0) return alert("Item esgotado.");
+                if (Number(uLog.saldo || 0) < price) return alert("Saldo insuficiente.");
+                const expiresAt = Date.now() + (Number(item.duracao || 0) * 7 * 24 * 60 * 60 * 1000);
+                const invId = push(ref(db, `jogadores/${uLog.id}/mochila`)).key;
+                await update(ref(db, `jogadores/${uLog.id}`), { saldo: Number(uLog.saldo || 0) - price });
+                await update(ref(db, `loja_clandestina/${id}`), { estoque: stock - 1 });
+                await set(ref(db, `jogadores/${uLog.id}/mochila/${invId}`), {
+                    nome: item.nome,
+                    descricao: item.descricao || "",
+                    img: item.img || "",
+                    imgs: item.imgs || [],
+                    tag: item.tag || "Restrito",
+                    cor: item.cor || "#8B0000",
+                    condicao: item.condicao || "proibido",
+                    sellerName: item.sellerName || "Rede restrita",
+                    expiresAt
+                });
+                await pushHistory(uLog.id, "compra restrita", -price, `Compra de ${item.nome}`);
+                await pushNotif(uLog.id, `Você adquiriu ${item.nome} no mercado restrito.`);
+                await pushAudit({ tipo: "compra_restrita", user: uLog.nome, item: item.nome, valor: price, msg: "Compra de item restrito" });
+                alert("Compra realizada.");
+            },
+
+            selectFraternity: (id) => {
+                selectedFratId = id;
+                renderFraternityDetail(id);
+            },
+
+            payFraternityFee: async (id) => {
+                if (!uLog || !ensureAccountOpen()) return;
+                const f = getFraternity(id);
+                if (!f || uLog.fraternidade !== id) return alert("Você não pertence a esta fraternidade.");
+                const fee = Number(f.mensalidade || 0);
+                if (fee <= 0) return alert("Esta fraternidade não possui mensalidade definida.");
+                if (Number(uLog.saldo || 0) < fee) return alert("Saldo insuficiente para pagar a mensalidade.");
+                await update(ref(db), {
+                    [`jogadores/${uLog.id}/saldo`]: Number(uLog.saldo || 0) - fee,
+                    [`fraternidades/${id}/saldo`]: Number(f.saldo || 0) + fee
+                });
+                await push(ref(db, `fraternidades/${id}/historico`), {
+                    tipo: "mensalidade",
+                    valor: fee,
+                    desc: `${uLog.nome} pagou a mensalidade.`,
+                    ts: Date.now()
+                });
+                await pushHistory(uLog.id, "mensalidade de fraternidade", -fee, `Pagamento para ${f.nome}`);
+                await pushAudit({ tipo: "mensalidade_fraternidade", user: uLog.nome, item: f.nome, valor: fee, msg: "Mensalidade paga manualmente" });
+                alert("Mensalidade paga.");
+            },
+
+            setFraternityFee: async (id) => {
+                if (!isFratPresident(id)) return alert("Somente a presidência pode alterar a mensalidade.");
+                const fee = Math.max(0, parseInt(document.getElementById("frat-fee-value").value) || 0);
+                await update(ref(db, `fraternidades/${id}`), { mensalidade: fee });
+                await push(ref(db, `fraternidades/${id}/historico`), {
+                    tipo: "mensalidade definida",
+                    valor: fee,
+                    desc: `${uLog.nome} definiu a mensalidade.`,
+                    ts: Date.now()
+                });
+                await pushAudit({ tipo: "fraternidade_mensalidade", user: uLog?.nome || "REITORIA", item: getFraternityName(id), valor: fee, msg: "Mensalidade de fraternidade alterada" });
+            },
+
+            fraternityCollectFromMember: async (id) => {
+                if (!isFratPresident(id)) return alert("Somente a presidência pode comandar este movimento.");
+                const uid = document.getElementById("frat-member-target").value;
+                const val = parseInt(document.getElementById("frat-transfer-value").value) || 0;
+                const desc = document.getElementById("frat-transfer-desc").value.trim() || "Financiamento da fraternidade";
+                if (!uid || val <= 0) return alert("Selecione membro e valor.");
+                const member = latestPlayersCache[uid];
+                const f = getFraternity(id);
+                if (!member || Number(member.saldo || 0) < val) return alert("Membro sem saldo suficiente.");
+                await update(ref(db), {
+                    [`jogadores/${uid}/saldo`]: Number(member.saldo || 0) - val,
+                    [`fraternidades/${id}/saldo`]: Number(f.saldo || 0) + val
+                });
+                await push(ref(db, `fraternidades/${id}/historico`), { tipo: "financiamento recebido", valor: val, desc: `${member.nome}: ${desc}`, ts: Date.now() });
+                await pushHistory(uid, "financiamento da fraternidade", -val, desc);
+                await pushNotif(uid, `${f.nome} recebeu ${money(val)} por comando da presidência.`);
+                await pushAudit({ tipo: "fraternidade_financiamento", de: member.nome, para: f.nome, valor: val, msg: desc });
+            },
+
+            fraternityPayMember: async (id) => {
+                if (!isFratPresident(id)) return alert("Somente a presidência pode comandar este movimento.");
+                const uid = document.getElementById("frat-member-target").value;
+                const val = parseInt(document.getElementById("frat-transfer-value").value) || 0;
+                const desc = document.getElementById("frat-transfer-desc").value.trim() || "Repasse da fraternidade";
+                if (!uid || val <= 0) return alert("Selecione membro e valor.");
+                const member = latestPlayersCache[uid];
+                const f = getFraternity(id);
+                if (!member || Number(f.saldo || 0) < val) return alert("Banco da fraternidade sem saldo suficiente.");
+                await update(ref(db), {
+                    [`jogadores/${uid}/saldo`]: Number(member.saldo || 0) + val,
+                    [`fraternidades/${id}/saldo`]: Number(f.saldo || 0) - val
+                });
+                await push(ref(db, `fraternidades/${id}/historico`), { tipo: "repasse ao membro", valor: -val, desc: `${member.nome}: ${desc}`, ts: Date.now() });
+                await pushHistory(uid, "repasse da fraternidade", val, desc);
+                await pushNotif(uid, `${f.nome} transferiu ${money(val)} para você por comando da presidência.`);
+                await pushAudit({ tipo: "fraternidade_repasse", de: f.nome, para: member.nome, valor: val, msg: desc });
+            },
+
+            fraternityDirectAdjust: async (id) => {
+                if (!isFratPresident(id)) return alert("Somente a presidência pode comandar este movimento.");
+                const val = parseInt(document.getElementById("frat-adjust-value").value) || 0;
+                const desc = document.getElementById("frat-adjust-desc").value.trim() || "Ajuste bancário";
+                const f = getFraternity(id);
+                if (!val) return alert("Informe um valor positivo ou negativo.");
+                await update(ref(db, `fraternidades/${id}`), { saldo: Number(f.saldo || 0) + val });
+                await push(ref(db, `fraternidades/${id}/historico`), { tipo: "ajuste bancário", valor: val, desc, ts: Date.now() });
+                await pushAudit({ tipo: "fraternidade_ajuste", user: uLog?.nome || "REITORIA", item: f.nome, valor: val, msg: desc });
+            },
+
+            buyFraternityStoreItem: async (itemId, fratId) => {
+                if (!isFratPresident(fratId)) return alert("Somente a presidência pode comprar pela fraternidade.");
+                const item = latestFratStoreCache[itemId];
+                const f = getFraternity(fratId);
+                if (!item || !f) return;
+                const stock = Number(item.estoque || 0);
+                const price = Number(item.preco || 0);
+                if (stock <= 0) return alert("Item esgotado.");
+                if (Number(f.saldo || 0) < price) return alert("Banco da fraternidade sem saldo suficiente.");
+                const purchaseRef = push(ref(db, `fraternidades/${fratId}/compras`));
+                await update(ref(db), {
+                    [`fraternidades/${fratId}/saldo`]: Number(f.saldo || 0) - price,
+                    [`loja_fraternidades/${itemId}/estoque`]: stock - 1,
+                    [`fraternidades/${fratId}/compras/${purchaseRef.key}`]: {
+                        tipo: "compra",
+                        nome: item.nome,
+                        valor: -price,
+                        descricao: item.descricao || "",
+                        ts: Date.now()
+                    }
+                });
+                await push(ref(db, `fraternidades/${fratId}/historico`), {
+                    tipo: "compra da loja",
+                    valor: -price,
+                    desc: item.nome,
+                    ts: Date.now()
+                });
+                await pushAudit({ tipo: "loja_fraternidade", user: uLog?.nome || "REITORIA", item: `${f.nome}: ${item.nome}`, valor: price, msg: "Compra na loja das fraternidades" });
+                alert("Compra registrada para a fraternidade.");
+            },
+
+            openProfile: async (id) => {
+                currentProfileId = id;
+                const s = await get(ref(db, `jogadores/${id}`));
+                const p = s.val();
+                if (!p) return;
+                document.getElementById("pub-foto").src = p.foto || "https://placehold.co/150/0A192F/C0C0C0?text=ERA";
+                document.getElementById("pub-nome").innerText = p.nome || "Sem nome";
+                document.getElementById("pub-tags").innerHTML = renderTags(p.tags);
+                document.getElementById("pub-title").innerText = autoTitle(p);
+                document.getElementById("pub-bio").innerText = p.bio || "Sem descrição.";
+                document.getElementById("pub-msg").value = "";
+                document.getElementById("pub-mural").innerHTML = "Carregando...";
+                document.getElementById("profile-modal").style.display = "flex";
+                if (profileMuralUnsub) profileMuralUnsub();
+                profileMuralUnsub = onValue(ref(db, `jogadores/${id}/mural`), snap => {
+                    document.getElementById("pub-mural").innerHTML = renderMural(snap.val());
+                });
+            },
+
+            postMural: async () => {
+                if (!uLog || !currentProfileId || !ensureAccountOpen()) return;
+                const msg = document.getElementById("pub-msg").value.trim();
+                if (!msg) return;
+                await push(ref(db, `jogadores/${currentProfileId}/mural`), { uid: uLog.id, de: uLog.nome, msg, ts: Date.now() });
+                await pushNotif(currentProfileId, `${uLog.nome} comentou no seu perfil.`);
+                await pushAudit({ tipo: "comentario_perfil", user: uLog.nome, alvo: currentProfileId, msg: "Comentário publicado em perfil" });
+                document.getElementById("pub-msg").value = "";
+            },
+
+            deleteMuralComment: async (cid) => {
+                if (!currentProfileId) return;
+                await remove(ref(db, `jogadores/${currentProfileId}/mural/${cid}`));
+                await pushAudit({ tipo: "exclusao_comentario_perfil", user: uLog?.nome || "", alvo: currentProfileId, msg: "Comentário do perfil removido" });
+            },
+
+            addNewsComment: async (postId) => {
+                if (!ensureAccountOpen()) return;
+                const txt = prompt("Escreva seu comentário:");
+                if (!txt || !uLog) return;
+                await push(ref(db, `editorial/${postId}/comentarios`), { uid: uLog.id, user: uLog.nome, texto: txt, ts: Date.now(), likes: {} });
+                await pushNotif(uLog.id, "Seu comentário foi publicado no Editorial.");
+                await pushAudit({ tipo: "comentario_noticia", user: uLog.nome, noticia: postId, msg: "Comentário adicionado em notícia" });
+            },
+
+            likeComment: async (postId, commentId) => {
+                if (!uLog || !ensureAccountOpen()) return;
+                await set(ref(db, `editorial/${postId}/comentarios/${commentId}/likes/${uLog.id}`), true);
+            },
+
+            deleteComment: async (postId, commentId) => {
+                await remove(ref(db, `editorial/${postId}/comentarios/${commentId}`));
+                await pushAudit({ tipo: "exclusao_comentario_noticia", user: uLog?.nome || "", noticia: postId, msg: "Comentário removido da notícia" });
+            },
+
+            editNews: async (postId) => {
+                const snap = await get(ref(db, `editorial/${postId}`));
+                const n = snap.val();
+                if (!n) return;
+                const titulo = prompt("Novo título:", n.titulo || "");
+                const img = prompt("Nova imagem / URL:", n.img || "");
+                const texto = prompt("Novo texto:", n.texto || "");
+                const currentTags = Object.values(n.tags || {}).map(t => `${t.texto || ""}|${t.cor || "#C0C0C0"}`).join("; ");
+                const tagTxt = prompt("Tags da notícia no formato: tag|cor; tag|cor; tag|cor", currentTags);
+                if (titulo === null || img === null || texto === null || tagTxt === null) return;
+                const tags = {};
+                tagTxt.split(";").map(s => s.trim()).filter(Boolean).forEach(pair => {
+                    const [textoTag, corTag] = pair.split("|").map(x => x.trim());
+                    if (textoTag) tags[makeId()] = { texto: textoTag, cor: corTag || "#C0C0C0" };
+                });
+                await update(ref(db, `editorial/${postId}`), { titulo: titulo ?? n.titulo, img: img ?? n.img, texto: texto ?? n.texto, tags: Object.keys(tags).length ? tags : (n.tags || {}) });
+                await pushAudit({ tipo: "edicao_noticia", user: uLog?.nome || "", noticia: postId, msg: "Notícia editada" });
+                await refreshEditorialOnce();
+            },
+
+            deleteNews: async (postId) => {
+                if (confirm("Excluir notícia?")) {
+                    await remove(ref(db, `editorial/${postId}`));
+                    await pushAudit({ tipo: "exclusao_noticia", user: uLog?.nome || "", noticia: postId, msg: "Notícia excluída" });
+                    await refreshEditorialOnce();
+                }
+            },
+
+            applyJob: async (jobId) => {
+                if (!ensureAccountOpen()) return;
+                const txt = prompt("Escreva sua candidatura:");
+                if (!txt || !uLog) return;
+                const s = await get(ref(db, `vagas/${jobId}`));
+                const job = s.val();
+                if (!job) return;
+                await push(ref(db, `candidaturas`), { uid: uLog.id, user: uLog.nome, jobId, titulo: job.titulo, salario: Number(job.salario || 0), texto: txt, status: "pendente", ts: Date.now() });
+                await pushNotif(uLog.id, `Candidatura enviada para "${job.titulo}".`);
+                await pushAudit({ tipo: "candidatura", user: uLog.nome, vaga: job.titulo, msg: "Candidatura enviada" });
+                alert("Candidatura enviada.");
+            },
+
+            girarCiclo: async () => {
+                if (!isAdmin()) return alert("Apenas a reitoria pode girar o ciclo.");
+                if (!confirm("Isso aplicará fixos, mensalidades de fraternidade, percentuais, salários e juros. Confirmar?")) return;
+                await ensureFraternitiesSeeded();
+                const playersSnap = await get(ref(db, "jogadores"));
+                const fratsSnap = await get(ref(db, "fraternidades"));
+                const players = playersSnap.val() || {};
+                const frats = fratsSnap.val() || {};
+                const batch = {};
+
+                for (const [uid, p] of Object.entries(players)) {
+                    let saldo = Number(p.saldo || 0);
+                    let divida = Number(p.divida || 0);
+                    let recebidoPositivo = 0;
+
+                    if (p.fixos) {
+                        for (const f of Object.values(p.fixos)) {
+                            const val = Number(f.valor || 0);
+                            saldo += val;
+                            if (val > 0) recebidoPositivo += val;
+                        }
+                    }
+
+                    if (p.percentuais && recebidoPositivo > 0) {
+                        for (const perc of Object.values(p.percentuais)) {
+                            const pct = Number(perc.percentual || 0);
+                            const ajuste = Math.round(recebidoPositivo * (pct / 100));
+                            saldo += ajuste;
+                            if (ajuste) await pushHistory(uid, "percentual mensal", ajuste, `${perc.nome || "Percentual"} sobre ${money(recebidoPositivo)}`);
+                        }
+                    }
+
+                    if (p.fraternidade && frats[p.fraternidade]) {
+                        const fee = Number(frats[p.fraternidade].mensalidade || 0);
+                        if (fee > 0) {
+                            saldo -= fee;
+                            const currentFratSaldo = Number(batch[`fraternidades/${p.fraternidade}/saldo`] ?? frats[p.fraternidade].saldo ?? 0);
+                            batch[`fraternidades/${p.fraternidade}/saldo`] = currentFratSaldo + fee;
+                            const movRef = push(ref(db, `fraternidades/${p.fraternidade}/historico`));
+                            batch[`fraternidades/${p.fraternidade}/historico/${movRef.key}`] = {
+                                tipo: "mensalidade de ciclo",
+                                valor: fee,
+                                desc: `${p.nome || "Aluno"} pagou mensalidade automática.`,
+                                ts: Date.now()
+                            };
+                            await pushHistory(uid, "mensalidade de fraternidade", -fee, `Mensalidade de ${frats[p.fraternidade].nome || getFraternityName(p.fraternidade)}`);
+                        }
+                    }
+
+                    if (divida > 0) divida = Math.round(divida * 1.05);
+
+                    if (p.mochila) {
+                        for (const [itemId, item] of Object.entries(p.mochila)) {
+                            if (item.expiresAt && item.expiresAt <= Date.now()) batch[`jogadores/${uid}/mochila/${itemId}`] = null;
+                        }
+                    }
+
+                    batch[`jogadores/${uid}/saldo`] = saldo;
+                    batch[`jogadores/${uid}/divida`] = divida;
+                    await pushHistory(uid, "ciclo", recebidoPositivo, "Giro de ciclo aplicado");
+                    await pushNotif(uid, `O ciclo acadêmico foi processado. Moeda em uso: ${CURRENCY_LABEL}.`);
+                }
+
+                await update(ref(db), batch);
+                await pushAudit({ tipo: "ciclo", user: "REITORIA", msg: "Ciclo acadêmico executado" });
+                alert("Ciclo girado.");
+            },
+
+            loadAdmPlayerData: () => {
+                admSelectedPlayerId = document.getElementById("adm-p-sel").value;
+                if (!admSelectedPlayerId) {
+                    document.getElementById("adm-p-panel").classList.add("hidden");
+                    return;
+                }
+                renderAdmLists();
+            },
+
+            selectAdmRecord: (type, id) => {
+                admSelectedPlayerId = document.getElementById("adm-p-sel").value;
+                document.getElementById("adm-p-sel").dataset.selectedType = type;
+                document.getElementById("adm-p-sel").dataset.selectedId = id;
+                alert(`Selecionado: ${type} / ${id}`);
+            },
+
+            admToggleLock: async (locked) => {
+                const id = document.getElementById("adm-p-sel").value;
+                if (!id) return;
+                await update(ref(db, `jogadores/${id}`), { trancada: !!locked });
+                await pushNotif(id, locked ? "Sua conta foi trancada pela reitoria." : "Sua conta foi destrancada pela reitoria.");
+                await pushAudit({ tipo: locked ? "conta_trancada" : "conta_destrancada", user: uLog?.nome || "REITORIA", alvo: id, msg: locked ? "Conta trancada" : "Conta destrancada" });
+                renderAdmLists();
+            },
+
+            admDeleteUser: async () => {
+                const id = document.getElementById("adm-p-sel").value;
+                if (!id) return;
+                if (!confirm("Excluir esta conta?")) return;
+                const p = latestPlayersCache[id];
+                await remove(ref(db, `jogadores/${id}`));
+                if (p?.fraternidade) await remove(ref(db, `fraternidades/${p.fraternidade}/membros/${id}`));
+                await pushAudit({ tipo: "exclusao_conta", user: uLog?.nome || "REITORIA", alvo: id, msg: `Conta excluída pela reitoria. UID: ${id}` });
+                alert("Conta excluída.");
+            },
+
+            admChangePlayerFraternity: async () => {
+                const id = document.getElementById("adm-p-sel").value;
+                const newFrat = document.getElementById("adm-player-frat").value;
+                if (!id) return;
+                const snap = await get(ref(db, `jogadores/${id}`));
+                const player = snap.val();
+                if (!player) return;
+                const updates = {
+                    [`jogadores/${id}/fraternidade`]: newFrat || "",
+                    [`jogadores/${id}/tags`]: tagMapWithIdentity(player.origemFinanceira || "bolsista", newFrat, player.tags || {})
+                };
+                if (player.fraternidade) updates[`fraternidades/${player.fraternidade}/membros/${id}`] = null;
+                if (newFrat) updates[`fraternidades/${newFrat}/membros/${id}`] = true;
+                await update(ref(db), updates);
+                await pushNotif(id, newFrat ? `Sua fraternidade foi alterada para ${getFraternityName(newFrat)}.` : "Sua fraternidade foi removida.");
+                await pushAudit({ tipo: "fraternidade_aluno", user: uLog?.nome || "REITORIA", alvo: id, msg: `Fraternidade alterada para ${getFraternityName(newFrat)}` });
+                renderAdmLists();
+            },
+
+            admAddTag: async () => {
+                const id = document.getElementById("adm-p-sel").value;
+                const texto = document.getElementById("adm-tag-n").value.trim();
+                const cor = document.getElementById("adm-tag-c").value;
+                if (!id || !texto) return;
+                await push(ref(db, `jogadores/${id}/tags`), { texto, cor });
+                await pushNotif(id, `Você recebeu uma nova tag: ${texto}`);
+                await pushAudit({ tipo: "tag", user: uLog?.nome || "REITORIA", alvo: id, msg: `Tag adicionada: ${texto}` });
+                renderAdmLists();
+            },
+
+            admEditTag: async () => {
+                const id = document.getElementById("adm-p-sel").value;
+                if (!id) return;
+                const snap = await get(ref(db, `jogadores/${id}/tags`));
+                const tags = snap.val() || {};
+                const keys = Object.keys(tags);
+                if (!keys.length) return alert("Sem tags.");
+                const selected = prompt(`Digite a chave da tag para editar:\n${keys.join(", ")}`);
+                if (!selected || !tags[selected]) return;
+                const novoTexto = prompt("Novo texto da tag:", tags[selected].texto || "");
+                const novaCor = prompt("Nova cor da tag (hex):", tags[selected].cor || "#C0C0C0");
+                await update(ref(db, `jogadores/${id}/tags/${selected}`), { texto: novoTexto || tags[selected].texto, cor: novaCor || tags[selected].cor });
+                await pushAudit({ tipo: "tag", user: uLog?.nome || "REITORIA", alvo: id, msg: "Tag editada" });
+                renderAdmLists();
+            },
+
+            admRemoveTag: async () => {
+                const id = document.getElementById("adm-p-sel").value;
+                if (!id) return;
+                const snap = await get(ref(db, `jogadores/${id}/tags`));
+                const tags = snap.val() || {};
+                const keys = Object.keys(tags);
+                if (!keys.length) return alert("Sem tags.");
+                const selected = prompt(`Chave da tag para excluir:\n${keys.join(", ")}`);
+                if (!selected || !tags[selected]) return;
+                await remove(ref(db, `jogadores/${id}/tags/${selected}`));
+                await pushAudit({ tipo: "tag", user: uLog?.nome || "REITORIA", alvo: id, msg: "Tag excluída" });
+                renderAdmLists();
+            },
+
+            admAddInventory: async () => {
+                const id = document.getElementById("adm-p-sel").value;
+                const nome = document.getElementById("adm-inv-n").value.trim();
+                const descricao = document.getElementById("adm-inv-d").value.trim();
+                const valid = parseInt(document.getElementById("adm-inv-v").value) || 0;
+                const img = document.getElementById("adm-inv-img").value.trim();
+                if (!id || !nome) return;
+                await push(ref(db, `jogadores/${id}/mochila`), { nome, descricao, img, expiresAt: Date.now() + valid * 7 * 24 * 60 * 60 * 1000 });
+                await pushAudit({ tipo: "inventario", user: uLog?.nome || "REITORIA", alvo: id, item: nome, msg: "Item adicionado ao inventário" });
+                renderAdmLists();
+            },
+
+            admRemoveInventory: async () => {
+                const id = document.getElementById("adm-p-sel").value;
+                if (!id) return;
+                const snap = await get(ref(db, `jogadores/${id}/mochila`));
+                const inv = snap.val() || {};
+                const keys = Object.keys(inv);
+                if (!keys.length) return alert("Sem itens.");
+                const selected = prompt(`Chave do item para excluir:\n${keys.join(", ")}`);
+                if (!selected || !inv[selected]) return;
+                await remove(ref(db, `jogadores/${id}/mochila/${selected}`));
+                await pushAudit({ tipo: "inventario", user: uLog?.nome || "REITORIA", alvo: id, msg: "Item removido do inventário" });
+                renderAdmLists();
+            },
+
+            admAddFixo: async () => {
+                const id = document.getElementById("adm-p-sel").value;
+                const nome = document.getElementById("adm-f-n").value.trim();
+                const descricao = document.getElementById("adm-f-d").value.trim();
+                const valor = parseInt(document.getElementById("adm-f-v").value) || 0;
+                const tag = document.getElementById("adm-f-tag").value.trim();
+                const cor = document.getElementById("adm-f-cor").value;
+                if (!id || !nome) return;
+                await push(ref(db, `jogadores/${id}/fixos`), { nome, descricao, valor, tag, cor });
+                await pushNotif(id, `Novo fixo aplicado: ${nome}`);
+                await pushAudit({ tipo: "fixo", user: uLog?.nome || "REITORIA", alvo: id, valor, msg: `Fixo adicionado: ${nome}` });
+                renderAdmLists();
+            },
+
+            admEditFixo: async () => {
+                const id = document.getElementById("adm-p-sel").value;
+                if (!id) return;
+                const snap = await get(ref(db, `jogadores/${id}/fixos`));
+                const fx = snap.val() || {};
+                const keys = Object.keys(fx);
+                if (!keys.length) return alert("Sem fixos.");
+                const selected = prompt(`Chave do fixo para editar:\n${keys.join(", ")}`);
+                if (!selected || !fx[selected]) return;
+                const nome = prompt("Nome:", fx[selected].nome || "");
+                const descricao = prompt("Descrição:", fx[selected].descricao || "");
+                const valor = parseInt(prompt("Valor:", fx[selected].valor || 0));
+                const tag = prompt("Tag:", fx[selected].tag || "");
+                const cor = prompt("Cor:", fx[selected].cor || "#C0C0C0");
+                await update(ref(db, `jogadores/${id}/fixos/${selected}`), { nome: nome ?? fx[selected].nome, descricao: descricao ?? fx[selected].descricao, valor: Number.isFinite(valor) ? valor : fx[selected].valor, tag: tag ?? fx[selected].tag, cor: cor ?? fx[selected].cor });
+                await pushAudit({ tipo: "fixo", user: uLog?.nome || "REITORIA", alvo: id, msg: "Fixo editado" });
+                renderAdmLists();
+            },
+
+            admRemoveFixo: async () => {
+                const id = document.getElementById("adm-p-sel").value;
+                if (!id) return;
+                const snap = await get(ref(db, `jogadores/${id}/fixos`));
+                const fx = snap.val() || {};
+                const keys = Object.keys(fx);
+                if (!keys.length) return alert("Sem fixos.");
+                const selected = prompt(`Chave do fixo para excluir:\n${keys.join(", ")}`);
+                if (!selected || !fx[selected]) return;
+                await remove(ref(db, `jogadores/${id}/fixos/${selected}`));
+                await pushAudit({ tipo: "fixo", user: uLog?.nome || "REITORIA", alvo: id, msg: "Fixo excluído" });
+                renderAdmLists();
+            },
+
+            admAddVariavel: async () => {
+                const id = document.getElementById("adm-p-sel").value;
+                const nome = document.getElementById("adm-var-n").value.trim();
+                const descricao = document.getElementById("adm-var-d").value.trim();
+                const valor = parseInt(document.getElementById("adm-var-v").value) || 0;
+                const tag = document.getElementById("adm-var-tag").value.trim();
+                const cor = document.getElementById("adm-var-cor").value;
+                if (!id || !nome) return;
+                const snap = await get(ref(db, `jogadores/${id}`));
+                const d = snap.val() || {};
+                await push(ref(db, `jogadores/${id}/variaveis`), { nome, descricao, valor, tag, cor });
+                await update(ref(db, `jogadores/${id}`), { saldo: Number(d.saldo || 0) + valor });
+                await pushHistory(id, "variável", valor, descricao || nome);
+                await pushNotif(id, `Movimento variável aplicado: ${nome}`);
+                await pushAudit({ tipo: "variavel", user: uLog?.nome || "REITORIA", alvo: id, valor, msg: `Variável aplicada: ${nome}` });
+                renderAdmLists();
+            },
+
+            admRemoveVariavel: async () => {
+                const id = document.getElementById("adm-p-sel").value;
+                if (!id) return;
+                const snap = await get(ref(db, `jogadores/${id}/variaveis`));
+                const vars = snap.val() || {};
+                const keys = Object.keys(vars);
+                if (!keys.length) return alert("Sem variáveis.");
+                const selected = prompt(`Chave da variável para excluir:\n${keys.join(", ")}`);
+                if (!selected || !vars[selected]) return;
+                await remove(ref(db, `jogadores/${id}/variaveis/${selected}`));
+                await pushAudit({ tipo: "variavel", user: uLog?.nome || "REITORIA", alvo: id, msg: "Variável removida" });
+                renderAdmLists();
+            },
+
+            admAddPercentual: async () => {
+                const id = document.getElementById("adm-p-sel").value;
+                const nome = document.getElementById("adm-perc-n").value.trim();
+                const percentual = parseFloat(document.getElementById("adm-perc-v").value);
+                const descricao = document.getElementById("adm-perc-d").value.trim();
+                if (!id || !nome || !Number.isFinite(percentual)) return alert("Preencha nome e percentual.");
+                await push(ref(db, `jogadores/${id}/percentuais`), { nome, percentual, descricao, ts: Date.now() });
+                await pushNotif(id, `Percentual mensal aplicado: ${nome} (${percentual}%).`);
+                await pushAudit({ tipo: "percentual_mensal", user: uLog?.nome || "REITORIA", alvo: id, valor: percentual, msg: nome });
+                renderAdmLists();
+            },
+
+            admRemovePercentual: async (forcedId = "") => {
+                const id = document.getElementById("adm-p-sel").value;
+                if (!id) return;
+                const snap = await get(ref(db, `jogadores/${id}/percentuais`));
+                const obj = snap.val() || {};
+                const keys = Object.keys(obj);
+                if (!keys.length) return alert("Sem percentuais.");
+                const selected = forcedId || prompt(`Chave do percentual para excluir:\n${keys.join(", ")}`);
+                if (!selected || !obj[selected]) return;
+                await remove(ref(db, `jogadores/${id}/percentuais/${selected}`));
+                await pushAudit({ tipo: "percentual_removido", user: uLog?.nome || "REITORIA", alvo: id, msg: "Percentual mensal removido" });
+                renderAdmLists();
+            },
+
+            admAddAcademicModifier: async () => {
+                const id = document.getElementById("adm-p-sel").value;
+                const tipo = document.getElementById("adm-acad-tipo").value;
+                const nome = document.getElementById("adm-acad-n").value.trim();
+                const rawValor = Math.abs(parseInt(document.getElementById("adm-acad-v").value) || 0);
+                const descricao = document.getElementById("adm-acad-d").value.trim();
+                if (!id || !nome) return;
+                const snap = await get(ref(db, `jogadores/${id}`));
+                const p = snap.val();
+                if (!p) return;
+                const valor = tipo === "onus" ? -rawValor : rawValor;
+                await push(ref(db, `jogadores/${id}/academicos`), { tipo, nome, valor, descricao, ts: Date.now() });
+                await update(ref(db, `jogadores/${id}`), { saldo: Number(p.saldo || 0) + valor });
+                await pushHistory(id, tipo === "onus" ? "ônus acadêmico" : "bônus acadêmico", valor, descricao || nome);
+                await pushNotif(id, `${tipo === "onus" ? "Ônus" : "Bônus"} acadêmico aplicado: ${nome}.`);
+                await pushAudit({ tipo: "academico", user: uLog?.nome || "REITORIA", alvo: id, valor, msg: nome });
+                renderAdmLists();
+            },
+
+            admApplyPunishment: async () => {
+                const id = document.getElementById("adm-p-sel").value;
+                const nome = document.getElementById("adm-pun-n").value.trim();
+                const multa = Math.abs(parseInt(document.getElementById("adm-pun-v").value) || 0);
+                const descricao = document.getElementById("adm-pun-d").value.trim();
+                const lock = document.getElementById("adm-pun-lock").checked;
+                if (!id || !nome) return;
+                const snap = await get(ref(db, `jogadores/${id}`));
+                const p = snap.val();
+                if (!p) return;
+                const valor = -multa;
+                await push(ref(db, `jogadores/${id}/punicoes`), { nome, valor, descricao, trancouConta: lock, ts: Date.now() });
+                await update(ref(db, `jogadores/${id}`), { saldo: Number(p.saldo || 0) + valor, trancada: lock ? true : !!p.trancada });
+                await pushHistory(id, "punição", valor, descricao || nome);
+                await pushNotif(id, `Punição aplicada: ${nome}.`);
+                await pushAudit({ tipo: "punicao", user: uLog?.nome || "REITORIA", alvo: id, valor, msg: nome });
+                renderAdmLists();
+            },
+
+            admAddMarket: async () => {
+                const nome = document.getElementById("adm-m-n").value.trim();
+                const preco = parseInt(document.getElementById("adm-m-p").value) || 0;
+                const imgsList = parseLines(document.getElementById("adm-m-i").value);
+                const descricao = document.getElementById("adm-m-d").value.trim();
+                const estoque = parseInt(document.getElementById("adm-m-q").value) || 0;
+                const maxPorAluno = parseInt(document.getElementById("adm-m-lim").value) || 0;
+                const desconto = clamp(parseInt(document.getElementById("adm-m-desc").value) || 0, 0, 95);
+                const duracao = parseInt(document.getElementById("adm-m-v").value) || 0;
+                const tag = document.getElementById("adm-m-t").value.trim();
+                const cor = document.getElementById("adm-m-c").value;
+                if (!nome) return;
+                await push(ref(db, "loja"), {
+                    nome,
+                    preco,
+                    desconto,
+                    maxPorAluno,
+                    img: imgsList[0] || "",
+                    imgs: imgsList,
+                    descricao,
+                    estoque,
+                    duracao,
+                    tag,
+                    cor,
+                    sellerName: "ERA Academy",
+                    origem: "era",
+                    condicao: "novo institucional",
+                    comprasPorAluno: {},
+                    ts: Date.now()
+                });
+                const playersSnap = await get(ref(db, "jogadores"));
+                const players = playersSnap.val() || {};
+                for (const [uid] of Object.entries(players)) {
+                    await push(ref(db, `jogadores/${uid}/notificacoes`), { msg: "Novo item disponível no mercado da ERA.", ts: Date.now() });
+                }
+                await pushAudit({ tipo: "mercado", user: uLog?.nome || "REITORIA", item: nome, valor: preco, msg: "Item criado no mercado" });
+                alert("Item criado e notificações enviadas.");
+            },
+
+            admAddIllegal: async () => {
+                const nome = document.getElementById("adm-c-n").value.trim();
+                const preco = parseInt(document.getElementById("adm-c-p").value) || 0;
+                const imgsList = parseLines(document.getElementById("adm-c-i").value);
+                const descricao = document.getElementById("adm-c-d").value.trim();
+                const estoque = parseInt(document.getElementById("adm-c-q").value) || 0;
+                const duracao = parseInt(document.getElementById("adm-c-v").value) || 0;
+                const tag = document.getElementById("adm-c-t").value.trim();
+                const cor = document.getElementById("adm-c-cor").value;
+                const checkedUsers = Array.from(document.querySelectorAll('#adm-illegal-user-list input[name="illegal-allowed-user"]:checked')).map(el => el.value);
+                if (!nome) return;
+                const allowedUsers = {};
+                checkedUsers.forEach(uid => allowedUsers[uid] = true);
+                await push(ref(db, "loja_clandestina"), {
+                    nome,
+                    preco,
+                    img: imgsList[0] || "",
+                    imgs: imgsList,
+                    descricao,
+                    estoque,
+                    duracao,
+                    tag,
+                    cor,
+                    sellerName: "Rede restrita",
+                    condicao: "proibido",
+                    accessTags: {},
+                    allowedUsers,
+                    ts: Date.now()
+                });
+                await pushAudit({ tipo: "mercado_ilegal", user: uLog?.nome || "REITORIA", item: nome, valor: preco, msg: "Item criado no mercado ilegal" });
+                alert("Item ilegal criado.");
+            },
+
+            markIllegalAccess: (selectAll) => {
+                document.querySelectorAll('#adm-illegal-user-list input[name="illegal-allowed-user"]').forEach(el => {
+                    el.checked = !!selectAll;
+                });
+            },
+
+            admAppointFratPresident: async () => {
+                const fratId = document.getElementById("adm-frat-sel").value;
+                const presidentId = document.getElementById("adm-frat-president").value;
+                if (!fratId) return alert("Selecione a fraternidade.");
+                await update(ref(db, `fraternidades/${fratId}`), { presidenteId: presidentId || "" });
+                if (presidentId) await pushNotif(presidentId, `Você foi nomeado presidente de ${getFraternityName(fratId)}.`);
+                await push(ref(db, `fraternidades/${fratId}/historico`), {
+                    tipo: "presidência",
+                    valor: 0,
+                    desc: presidentId ? `${latestPlayersCache[presidentId]?.nome || "Jogador"} foi nomeado presidente.` : "Presidência removida.",
+                    ts: Date.now()
+                });
+                await pushAudit({ tipo: "presidencia_fraternidade", user: uLog?.nome || "REITORIA", item: getFraternityName(fratId), msg: presidentId ? `Presidente nomeado: ${latestPlayersCache[presidentId]?.nome || presidentId}` : "Presidência removida" });
+                alert("Presidência atualizada.");
+            },
+
+            admAddFratStoreItem: async () => {
+                const nome = document.getElementById("adm-fstore-n").value.trim();
+                const preco = parseInt(document.getElementById("adm-fstore-p").value) || 0;
+                const descricao = document.getElementById("adm-fstore-d").value.trim();
+                const estoque = parseInt(document.getElementById("adm-fstore-q").value) || 0;
+                if (!nome) return alert("Informe o nome do item/evento.");
+                await push(ref(db, "loja_fraternidades"), { nome, preco, descricao, estoque, ts: Date.now() });
+                await pushAudit({ tipo: "loja_fraternidades", user: uLog?.nome || "REITORIA", item: nome, valor: preco, msg: "Item criado na loja das fraternidades" });
+                alert("Item criado na loja das fraternidades.");
+            },
+
+            deleteFratStoreItem: async (id) => {
+                if (confirm("Excluir item da loja das fraternidades?")) {
+                    await remove(ref(db, `loja_fraternidades/${id}`));
+                    await pushAudit({ tipo: "loja_fraternidades", user: uLog?.nome || "REITORIA", msg: "Item excluído da loja das fraternidades" });
+                }
+            },
+
+            toggleAudit: () => {
+                const wrap = document.getElementById("audit-wrap");
+                const btn = document.getElementById("audit-toggle-btn");
+                if (!wrap || !btn) return;
+                wrap.classList.toggle("hidden");
+                btn.textContent = wrap.classList.contains("hidden") ? "Expandir" : "Minimizar";
+            },
+
+            admPostNews: async () => {
+                const titulo = document.getElementById("adm-n-t").value.trim();
+                const img = document.getElementById("adm-n-i").value.trim();
+                const texto = document.getElementById("adm-n-x").value.trim();
+                const tags = parseNewsTags();
+                if (!titulo) return;
+                await push(ref(db, "editorial"), { titulo, img, texto, tags, comentarios: {} });
+                await pushAudit({ tipo: "noticia", user: uLog?.nome || "REITORIA", msg: `Notícia publicada: ${titulo}` });
+                await refreshEditorialOnce();
+                alert("Notícia publicada.");
+            },
+
+            admAddJob: async () => {
+                const titulo = document.getElementById("adm-j-t").value.trim();
+                const img = document.getElementById("adm-j-i").value.trim();
+                const descricao = document.getElementById("adm-j-d").value.trim();
+                const salario = parseInt(document.getElementById("adm-j-s").value) || 0;
+                if (!titulo) return;
+                await push(ref(db, "vagas"), { titulo, img, descricao, salario, candidaturas: {} });
+                await pushAudit({ tipo: "vaga", user: uLog?.nome || "REITORIA", vaga: titulo, msg: "Vaga criada" });
+                alert("Vaga criada.");
+            },
+
+            approveLoan: async (loanId) => {
+                const snap = await get(ref(db, `emprestimos_pendentes/${loanId}`));
+                const loan = snap.val();
+                if (!loan) return;
+                const uid = loan.uid;
+                const userSnap = await get(ref(db, `jogadores/${uid}`));
+                const u = userSnap.val();
+                if (!u) return;
+                const total = Math.round(Number(loan.valor || 0) * 1.2);
+                const parcelaValor = Math.ceil(total / Math.max(1, Number(loan.parcelas || 1)));
+                const loanKey = push(ref(db, `jogadores/${uid}/emprestimos`)).key;
+                await update(ref(db, `jogadores/${uid}`), { saldo: Number(u.saldo || 0) + Number(loan.valor || 0), divida: Number(u.divida || 0) + total });
+                await set(ref(db, `jogadores/${uid}/emprestimos/${loanKey}`), {
+                    titulo: "Empréstimo aprovado",
+                    valor: Number(loan.valor || 0),
+                    restante: total,
+                    parcelas: Number(loan.parcelas || 1),
+                    parcelaValor,
+                    finalidade: loan.finalidade || "não informada",
+                    motivo: loan.motivo || "",
+                    scoreNoPedido: loan.scoreNoPedido || 0,
+                    limiteSugerido: loan.limiteSugerido || 0,
+                    status: "ativo",
+                    juros: 0.2,
+                    ts: Date.now()
+                });
+                await pushNotif(uid, `Seu empréstimo de ${money(loan.valor)} foi aprovado pela reitoria.`);
+                await pushAudit({ tipo: "emprestimo_aprovado", user: u.nome, valor: loan.valor, msg: "Empréstimo aprovado pela reitoria" });
+                await remove(ref(db, `emprestimos_pendentes/${loanId}`));
+            },
+
+            denyLoan: async (loanId) => {
+                const snap = await get(ref(db, `emprestimos_pendentes/${loanId}`));
+                const loan = snap.val();
+                if (!loan) return;
+                await pushNotif(loan.uid, "Seu empréstimo foi negado pela reitoria.");
+                await pushAudit({ tipo: "emprestimo_negado", user: loan.nome, valor: loan.valor, msg: "Empréstimo negado pela reitoria" });
+                await remove(ref(db, `emprestimos_pendentes/${loanId}`));
+            },
+
+            approveApplication: async (appId) => {
+                const snap = await get(ref(db, `candidaturas/${appId}`));
+                const appData = snap.val();
+                if (!appData) return;
+                const uid = appData.uid;
+                const salary = Number(appData.salario || 0);
+                const userSnap = await get(ref(db, `jogadores/${uid}`));
+                const u = userSnap.val();
+                if (!u) return;
+                await push(ref(db, `jogadores/${uid}/fixos`), { nome: `Salário - ${appData.titulo}`, descricao: `Salário aprovado para a vaga ${appData.titulo}`, valor: salary, tag: "Emprego", cor: "#C0C0C0" });
+                await pushNotif(uid, `Você foi aceito na vaga "${appData.titulo}". Vá à reitoria para iniciar as atividades.`);
+                await pushAudit({ tipo: "vaga_aprovada", user: u.nome, vaga: appData.titulo, msg: "Candidatura aprovada pela reitoria" });
+                await remove(ref(db, `candidaturas/${appId}`));
+            },
+
+            denyApplication: async (appId) => {
+                const snap = await get(ref(db, `candidaturas/${appId}`));
+                const appData = snap.val();
+                if (!appData) return;
+                await pushNotif(appData.uid, `Sua candidatura para "${appData.titulo}" não foi aprovada.`);
+                await pushAudit({ tipo: "vaga_negada", user: appData.user, vaga: appData.titulo, msg: "Candidatura negada pela reitoria" });
+                await remove(ref(db, `candidaturas/${appId}`));
+            }
+        };
+
+        window.app.deleteMarketItem = async (id) => {
+            if (confirm("Excluir item do mercado?")) {
+                await remove(ref(db, `loja/${id}`));
+                await pushAudit({ tipo: "mercado", user: uLog?.nome || "REITORIA", msg: "Item excluído do mercado" });
+            }
+        };
+
+        window.app.deleteIllegalItem = async (id) => {
+            if (confirm("Excluir item ilegal?")) {
+                await remove(ref(db, `loja_clandestina/${id}`));
+                await pushAudit({ tipo: "mercado_ilegal", user: uLog?.nome || "REITORIA", msg: "Item excluído do mercado ilegal" });
+            }
+        };
+
+        window.app.deleteJob = async (id) => {
+            if (confirm("Excluir vaga?")) {
+                await remove(ref(db, `vagas/${id}`));
+                await pushAudit({ tipo: "vaga", user: uLog?.nome || "REITORIA", msg: "Vaga excluída" });
+            }
+        };
+
+        window.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                document.getElementById("profile-modal").style.display = "none";
+                document.getElementById("image-modal").style.display = "none";
+                currentProfileId = null;
+                if (profileMuralUnsub) {
+                    profileMuralUnsub();
+                    profileMuralUnsub = null;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
