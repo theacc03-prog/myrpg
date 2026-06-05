@@ -116,6 +116,48 @@
             background: linear-gradient(180deg, #13294E 0%, #0A192F 100%);
         }
 
+        .profile-shell,
+        .public-profile-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-shell > *:not(.profile-cover),
+        .public-profile-card > *:not(.public-profile-cover) {
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-cover {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .public-profile-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 145px;
+            background-size: cover;
+            background-position: center;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .public-profile-card {
+            padding-top: 18px;
+        }
+
+        .public-profile-card .profile-photo {
+            margin-top: 48px;
+        }
+
         .balance {
             font-family: 'Cinzel', serif;
             font-size: 2.5rem;
@@ -287,6 +329,93 @@
         }
 
         .list-item strong { color: var(--prata); }
+
+        .adm-card-head {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .adm-card-head h2,
+        .adm-card-head h3 {
+            flex: 1;
+            margin: 0;
+        }
+
+        .adm-move-actions {
+            flex-wrap: nowrap;
+            gap: 6px;
+            justify-content: flex-end;
+        }
+
+        .expandable-text {
+            white-space: pre-wrap;
+        }
+
+        .text-link-btn {
+            width: auto;
+            padding: 0;
+            margin: 0 0 0 6px;
+            background: none;
+            border: none;
+            color: var(--prata);
+            text-transform: none;
+            letter-spacing: 0;
+            font-size: 11px;
+            text-decoration: underline;
+        }
+
+        #tab-adm {
+            gap: 12px;
+        }
+
+        #tab-adm:not(.hidden) {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #tab-adm > .grid-2 {
+            display: contents;
+        }
+
+        #tab-adm > .card,
+        #tab-adm > .grid-2 > .card {
+            margin-bottom: 0;
+        }
+
+        .adm-card-move {
+            padding: 8px 9px;
+            min-width: 34px;
+        }
+
+        .adm-card-drag {
+            cursor: grab;
+            user-select: none;
+        }
+
+        .adm-card-drag:active {
+            cursor: grabbing;
+        }
+
+        #tab-adm .card.is-dragging {
+            opacity: 0.55;
+        }
+
+        #tab-adm .card.adm-drag-over {
+            border-color: rgba(212,175,55,0.75);
+            box-shadow: 0 0 0 1px rgba(212,175,55,0.3);
+        }
+
+        .collapsed-text-body.hidden {
+            display: none !important;
+        }
+
+        .collapsed-text-body {
+            white-space: pre-wrap;
+            margin-top: 8px;
+        }
 
         .comment-box {
             text-align: left;
@@ -477,14 +606,15 @@
 
         .market-toolbar {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr auto;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 8px;
             align-items: end;
             margin-top: 14px;
         }
 
         .market-toolbar button {
-            width: auto;
+            width: 100%;
+            min-height: 44px;
             white-space: nowrap;
         }
 
@@ -980,7 +1110,8 @@
 
     <div id="app-screen" class="container hidden">
         <div id="tab-dash" class="tab-content">
-            <div class="card soft">
+            <div id="profile-card" class="card soft profile-shell">
+                <div id="u-capa" class="profile-cover"></div>
                 <div style="text-align:right">
                     <button class="btn-sec small-btn" onclick="app.toggleSettings()">Settings</button>
                 </div>
@@ -994,7 +1125,7 @@
                 <div class="title-badge" id="u-title">---</div>
 
                 <div class="balance" id="u-saldo">SVR 0</div>
-                <p id="u-bio" style="font-size:12px; opacity:0.85"></p>
+                <p id="u-bio" class="expandable-text" style="font-size:12px; opacity:0.85"></p>
                 <div id="u-warning" class="status-banner hidden"></div>
 
                 <div class="hero-meta">
@@ -1013,8 +1144,13 @@
                 </div>
 
                 <div id="settings-area" class="hidden" style="margin-top:15px; border-top:1px solid rgba(255,255,255,0.1); padding-top:15px">
+                    <label class="form-label" for="set-nome">Nome</label>
                     <input type="text" id="set-nome" placeholder="Novo nome">
+                    <label class="form-label" for="set-foto">Foto de perfil</label>
                     <input type="text" id="set-foto" placeholder="Link direto da foto">
+                    <label class="form-label" for="set-capa">Capa do perfil</label>
+                    <input type="text" id="set-capa" placeholder="Link direto da capa">
+                    <label class="form-label" for="set-bio">Descrição do perfil</label>
                     <textarea id="set-bio" placeholder="Bio do Personagem"></textarea>
                     <button onclick="app.updateProfile()">Salvar Perfil</button>
                     <button class="btn-sec" onclick="app.handleLogout()">Sair</button>
@@ -1026,11 +1162,19 @@
                 <div class="card left">
                     <h3 class="tab-title">Meu Inventário</h3>
                     <div id="u-inv" class="grid"></div>
+                    <div class="hr"></div>
+                    <strong>Histórico de Itens</strong>
+                    <div id="u-item-history"></div>
                 </div>
 
                 <div class="card left">
                     <h3 class="tab-title">Histórico de Ações</h3>
                     <div id="u-history" class="mini">Nenhuma ação registrada.</div>
+                </div>
+
+                <div class="card left">
+                    <h3 class="tab-title">Comentários do Perfil</h3>
+                    <div id="u-profile-comments"></div>
                 </div>
             </div>
         </div>
@@ -1197,6 +1341,7 @@
             <div class="grid-2">
                 <div class="card left">
                     <h3>Gestão do Aluno</h3>
+                    <label class="form-label" for="adm-p-sel">Nome</label>
                     <select id="adm-p-sel" onchange="app.loadAdmPlayerData()"></select>
                     <div id="adm-p-panel" class="hidden">
                         <div class="hr"></div>
@@ -1210,13 +1355,16 @@
 
                         <div class="hr"></div>
                         <strong>Fraternidade</strong>
+                        <label class="form-label" for="adm-player-frat">Fraternidade do aluno</label>
                         <select id="adm-player-frat"></select>
                         <button class="btn-sec" onclick="app.admChangePlayerFraternity()">Alterar Fraternidade do Aluno</button>
 
                         <div class="hr"></div>
                         <strong>Tags</strong>
                         <div id="adm-p-tags"></div>
+                        <label class="form-label" for="adm-tag-n">Nome</label>
                         <input type="text" id="adm-tag-n" placeholder="Nome da Tag">
+                        <label class="form-label" for="adm-tag-c">Cor</label>
                         <input type="color" id="adm-tag-c" value="#C0C0C0">
                         <div class="row-actions">
                             <button onclick="app.admAddTag()">Adicionar Tag</button>
@@ -1227,22 +1375,34 @@
                         <div class="hr"></div>
                         <strong>Inventário</strong>
                         <div id="adm-p-inv"></div>
+                        <label class="form-label" for="adm-inv-n">Nome</label>
                         <input type="text" id="adm-inv-n" placeholder="Nome do item">
+                        <label class="form-label" for="adm-inv-d">Descrição</label>
                         <input type="text" id="adm-inv-d" placeholder="Descrição do item">
+                        <label class="form-label" for="adm-inv-v">Validade</label>
                         <input type="number" id="adm-inv-v" placeholder="Validade em semanas">
+                        <label class="form-label" for="adm-inv-img">Imagem</label>
                         <input type="text" id="adm-inv-img" placeholder="Link da imagem">
+                        <label class="form-label" for="adm-inv-usos">Quantidade de usos</label>
+                        <input type="number" id="adm-inv-usos" placeholder="Usos disponíveis, opcional">
                         <div class="row-actions">
                             <button onclick="app.admAddInventory()">Adicionar Item</button>
+                            <button class="btn-sec" onclick="app.admEditInventory()">Editar Item</button>
                             <button class="btn-red" onclick="app.admRemoveInventory()">Excluir Item</button>
                         </div>
 
                         <div class="hr"></div>
                         <strong>Fixos</strong>
                         <div id="adm-p-fixos"></div>
+                        <label class="form-label" for="adm-f-n">Nome</label>
                         <input type="text" id="adm-f-n" placeholder="Nome do fixo">
+                        <label class="form-label" for="adm-f-d">Descrição</label>
                         <input type="text" id="adm-f-d" placeholder="Descrição">
+                        <label class="form-label" for="adm-f-v">Valor</label>
                         <input type="number" id="adm-f-v" placeholder="Valor positivo ou negativo">
+                        <label class="form-label" for="adm-f-tag">Tag</label>
                         <input type="text" id="adm-f-tag" placeholder="Tag opcional">
+                        <label class="form-label" for="adm-f-cor">Cor</label>
                         <input type="color" id="adm-f-cor" value="#C0C0C0">
                         <div class="row-actions">
                             <button onclick="app.admAddFixo()">Adicionar Fixo</button>
@@ -1253,10 +1413,15 @@
                         <div class="hr"></div>
                         <strong>Variáveis</strong>
                         <div id="adm-p-vars"></div>
+                        <label class="form-label" for="adm-var-n">Nome</label>
                         <input type="text" id="adm-var-n" placeholder="Nome da variável">
+                        <label class="form-label" for="adm-var-d">Descrição</label>
                         <input type="text" id="adm-var-d" placeholder="Descrição">
+                        <label class="form-label" for="adm-var-v">Valor</label>
                         <input type="number" id="adm-var-v" placeholder="Valor">
+                        <label class="form-label" for="adm-var-tag">Tag</label>
                         <input type="text" id="adm-var-tag" placeholder="Tag">
+                        <label class="form-label" for="adm-var-cor">Cor</label>
                         <input type="color" id="adm-var-cor" value="#C0C0C0">
                         <div class="row-actions">
                             <button onclick="app.admAddVariavel()">Adicionar Variável</button>
@@ -1267,8 +1432,11 @@
                         <strong>Percentuais Mensais</strong>
                         <div class="subtle">No giro de ciclo, cada percentual incide sobre o total positivo recebido por fixos.</div>
                         <div id="adm-p-percentuais"></div>
+                        <label class="form-label" for="adm-perc-n">Nome</label>
                         <input type="text" id="adm-perc-n" placeholder="Nome do percentual">
+                        <label class="form-label" for="adm-perc-v">Percentual</label>
                         <input type="number" id="adm-perc-v" placeholder="Percentual, ex: 10 ou -15">
+                        <label class="form-label" for="adm-perc-d">Descrição</label>
                         <textarea id="adm-perc-d" placeholder="Descrição"></textarea>
                         <div class="row-actions">
                             <button onclick="app.admAddPercentual()">Adicionar Percentual</button>
@@ -1278,20 +1446,27 @@
                         <div class="hr"></div>
                         <strong>Bônus e Ônus Acadêmicos</strong>
                         <div id="adm-p-academicos"></div>
+                        <label class="form-label" for="adm-acad-tipo">Tipo</label>
                         <select id="adm-acad-tipo">
                             <option value="bonus">Bônus acadêmico</option>
                             <option value="onus">Ônus acadêmico</option>
                         </select>
+                        <label class="form-label" for="adm-acad-n">Nome</label>
                         <input type="text" id="adm-acad-n" placeholder="Título">
+                        <label class="form-label" for="adm-acad-v">Valor</label>
                         <input type="number" id="adm-acad-v" placeholder="Valor em Sovereigns">
+                        <label class="form-label" for="adm-acad-d">Descrição</label>
                         <textarea id="adm-acad-d" placeholder="Motivo ou descrição"></textarea>
                         <button onclick="app.admAddAcademicModifier()">Aplicar Bônus/Ônus</button>
 
                         <div class="hr"></div>
                         <strong>Punições</strong>
                         <div id="adm-p-punicoes"></div>
+                        <label class="form-label" for="adm-pun-n">Nome</label>
                         <input type="text" id="adm-pun-n" placeholder="Título da punição">
+                        <label class="form-label" for="adm-pun-v">Valor</label>
                         <input type="number" id="adm-pun-v" placeholder="Multa em Sovereigns">
+                        <label class="form-label" for="adm-pun-d">Descrição</label>
                         <textarea id="adm-pun-d" placeholder="Descrição da punição"></textarea>
                         <label class="subtle" style="display:flex; align-items:center; gap:8px; margin:8px 0">
                             <input type="checkbox" id="adm-pun-lock" style="width:auto; margin:0">
@@ -1302,35 +1477,70 @@
                 </div>
 
                 <div class="card left">
-                    <h3>Gestão do Mercado</h3>
-                    <input type="text" id="adm-m-n" placeholder="Nome">
-                    <input type="number" id="adm-m-p" placeholder="Valor">
-                    <textarea id="adm-m-i" placeholder="Links das imagens, um por linha"></textarea>
-                    <textarea id="adm-m-d" placeholder="Descrição"></textarea>
-                    <input type="number" id="adm-m-q" placeholder="Quantidade disponível">
-                    <input type="number" id="adm-m-lim" placeholder="Limite por aluno">
-                    <input type="number" id="adm-m-desc" placeholder="Desconto em %, opcional">
-                    <input type="number" id="adm-m-v" placeholder="Validade em semanas">
-                    <input type="text" id="adm-m-t" placeholder="Tag">
-                    <input type="color" id="adm-m-c" value="#C0C0C0">
-                    <button onclick="app.admAddMarket()">Adicionar Item</button>
-                    <div id="adm-market-list"></div>
+                    <div class="row-actions" style="justify-content:space-between; align-items:center">
+                        <h3 style="margin:0">Gestão do Mercado</h3>
+                        <button id="market-toggle-btn" class="btn-sec small-btn" onclick="app.toggleMarketAdmin()">Minimizar</button>
+                    </div>
+                    <div id="adm-market-wrap" style="margin-top:12px">
+                        <label class="form-label" for="adm-m-n">Nome</label>
+                        <input type="text" id="adm-m-n" placeholder="Nome">
+                        <label class="form-label" for="adm-m-p">Valor</label>
+                        <input type="number" id="adm-m-p" placeholder="Valor">
+                        <label class="form-label" for="adm-m-i">Imagens</label>
+                        <textarea id="adm-m-i" placeholder="Links das imagens, um por linha"></textarea>
+                        <label class="form-label" for="adm-m-d">Descrição</label>
+                        <textarea id="adm-m-d" placeholder="Descrição"></textarea>
+                        <label class="form-label" for="adm-m-q">Quantidade</label>
+                        <input type="number" id="adm-m-q" placeholder="Quantidade disponível">
+                        <label class="form-label" for="adm-m-lim">Limite por aluno</label>
+                        <input type="number" id="adm-m-lim" placeholder="Limite por aluno">
+                        <label class="form-label" for="adm-m-desc">Desconto</label>
+                        <input type="number" id="adm-m-desc" placeholder="Desconto em %, opcional">
+                        <label class="form-label" for="adm-m-v">Validade</label>
+                        <input type="number" id="adm-m-v" placeholder="Validade em semanas">
+                        <label class="form-label" for="adm-m-usos">Quantidade de usos</label>
+                        <input type="number" id="adm-m-usos" placeholder="Usos por compra">
+                        <label class="form-label" for="adm-m-t">Tag</label>
+                        <input type="text" id="adm-m-t" placeholder="Tag">
+                        <label class="form-label" for="adm-m-c">Cor</label>
+                        <input type="color" id="adm-m-c" value="#C0C0C0">
+                        <button onclick="app.admAddMarket()">Adicionar Item</button>
+                        <div id="adm-market-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card left">
+                    <h3>Gestão de Inventário</h3>
+                    <label class="form-label" for="adm-inventory-player">Nome</label>
+                    <select id="adm-inventory-player" onchange="app.renderAdmInventoryManagement()"></select>
+                    <div id="adm-inventory-summary" class="mini">Selecione um personagem para ver usos e itens sem uso restante.</div>
                 </div>
             </div>
 
             <div class="grid-2">
                 <div class="card left">
                     <h3>Gerenciamento Editorial</h3>
+                    <label class="form-label" for="adm-n-t">Nome</label>
                     <input type="text" id="adm-n-t" placeholder="Título">
+                    <label class="form-label" for="adm-n-i">Imagem</label>
                     <input type="text" id="adm-n-i" placeholder="Link da imagem">
+                    <label class="form-label" for="adm-n-x">Descrição</label>
                     <textarea id="adm-n-x" placeholder="Texto da notícia"></textarea>
                     <div class="hr"></div>
                     <strong>Tags da notícia</strong>
+                    <label class="form-label" for="adm-n-tag1">Nome</label>
                     <input type="text" id="adm-n-tag1" placeholder="Tag 1">
+                    <label class="form-label" for="adm-n-cor1">Cor</label>
                     <input type="color" id="adm-n-cor1" value="#C0C0C0">
+                    <label class="form-label" for="adm-n-tag2">Nome</label>
                     <input type="text" id="adm-n-tag2" placeholder="Tag 2">
+                    <label class="form-label" for="adm-n-cor2">Cor</label>
                     <input type="color" id="adm-n-cor2" value="#D4AF37">
+                    <label class="form-label" for="adm-n-tag3">Nome</label>
                     <input type="text" id="adm-n-tag3" placeholder="Tag 3">
+                    <label class="form-label" for="adm-n-cor3">Cor</label>
                     <input type="color" id="adm-n-cor3" value="#8B0000">
                     <button onclick="app.admPostNews()">Publicar Notícia</button>
                     <div id="adm-news-list"></div>
@@ -1338,28 +1548,45 @@
 
                 <div class="card left">
                     <h3>Gestão de Empregos</h3>
+                    <label class="form-label" for="adm-j-t">Nome</label>
                     <input type="text" id="adm-j-t" placeholder="Título da vaga">
+                    <label class="form-label" for="adm-j-i">Imagem</label>
                     <input type="text" id="adm-j-i" placeholder="Link da imagem">
+                    <label class="form-label" for="adm-j-d">Descrição</label>
                     <textarea id="adm-j-d" placeholder="Descrição"></textarea>
+                    <label class="form-label" for="adm-j-s">Valor</label>
                     <input type="number" id="adm-j-s" placeholder="Salário">
                     <button onclick="app.admAddJob()">Adicionar Vaga</button>
                     <div id="adm-jobs-list"></div>
                     <div class="hr"></div>
                     <strong>Candidaturas</strong>
                     <div id="adm-applications"></div>
+                    <div class="hr"></div>
+                    <strong>Uso de Itens</strong>
+                    <div id="adm-item-uses"></div>
                 </div>
             </div>
 
             <div class="grid-2">
                 <div class="card left">
                     <h3>Mercado Ilegal</h3>
+                    <label class="form-label" for="adm-c-n">Nome</label>
                     <input type="text" id="adm-c-n" placeholder="Nome do item ilegal">
+                    <label class="form-label" for="adm-c-p">Valor</label>
                     <input type="number" id="adm-c-p" placeholder="Valor">
+                    <label class="form-label" for="adm-c-i">Imagens</label>
                     <textarea id="adm-c-i" placeholder="Links das imagens, um por linha"></textarea>
+                    <label class="form-label" for="adm-c-d">Descrição</label>
                     <textarea id="adm-c-d" placeholder="Descrição"></textarea>
+                    <label class="form-label" for="adm-c-q">Quantidade</label>
                     <input type="number" id="adm-c-q" placeholder="Quantidade disponível">
+                    <label class="form-label" for="adm-c-v">Validade</label>
                     <input type="number" id="adm-c-v" placeholder="Validade em semanas">
+                    <label class="form-label" for="adm-c-usos">Quantidade de usos</label>
+                    <input type="number" id="adm-c-usos" placeholder="Usos por compra">
+                    <label class="form-label" for="adm-c-t">Tag</label>
                     <input type="text" id="adm-c-t" placeholder="Tag visual do item">
+                    <label class="form-label" for="adm-c-cor">Cor</label>
                     <input type="color" id="adm-c-cor" value="#8B0000">
                     <div class="subtle">Selecione exatamente quais jogadores podem ver e comprar esse item.</div>
                     <div class="row-actions" style="justify-content:flex-start; margin:8px 0 4px">
@@ -1373,14 +1600,20 @@
 
                 <div class="card left">
                     <h3>Gestão das Fraternidades</h3>
+                    <label class="form-label" for="adm-frat-sel">Fraternidade</label>
                     <select id="adm-frat-sel"></select>
+                    <label class="form-label" for="adm-frat-president">Nome</label>
                     <select id="adm-frat-president"></select>
                     <button class="btn-gold" onclick="app.admAppointFratPresident()">Nomear Presidente</button>
                     <div class="hr"></div>
                     <strong>Loja das Fraternidades</strong>
+                    <label class="form-label" for="adm-fstore-n">Nome</label>
                     <input type="text" id="adm-fstore-n" placeholder="Nome do item/evento">
+                    <label class="form-label" for="adm-fstore-p">Valor</label>
                     <input type="number" id="adm-fstore-p" placeholder="Valor em Sovereigns">
+                    <label class="form-label" for="adm-fstore-d">Descrição</label>
                     <textarea id="adm-fstore-d" placeholder="Descrição"></textarea>
+                    <label class="form-label" for="adm-fstore-q">Quantidade</label>
                     <input type="number" id="adm-fstore-q" placeholder="Quantidade disponível">
                     <button onclick="app.admAddFratStoreItem()">Adicionar à Loja</button>
                     <div id="adm-frat-store-list"></div>
@@ -1407,7 +1640,8 @@
     </div>
 
     <div id="profile-modal" class="modal">
-        <div class="card left">
+        <div class="card left public-profile-card">
+            <div id="pub-capa" class="public-profile-cover"></div>
             <div class="row-actions" style="justify-content:flex-end">
                 <button class="btn-sec small-btn" onclick="app.closeModal('profile-modal')">Fechar</button>
             </div>
@@ -1415,7 +1649,7 @@
             <h2 id="pub-nome" style="font-family:'Cinzel'; margin:5px 0"></h2>
             <div id="pub-tags"></div>
             <div class="title-badge" id="pub-title"></div>
-            <p id="pub-bio" class="subtle"></p>
+            <p id="pub-bio" class="subtle expandable-text"></p>
             <div class="hr"></div>
             <strong>Comentários do perfil</strong>
             <div class="profile-mural">
@@ -1432,6 +1666,66 @@
                 <button class="btn-sec small-btn" onclick="app.closeModal('image-modal')">Fechar</button>
             </div>
             <img id="image-modal-img" class="image-modal-img" src="" alt="Imagem ampliada">
+        </div>
+    </div>
+
+    <div id="job-application-modal" class="modal" onclick="app.handleJobApplicationBackdrop(event)">
+        <div class="card left">
+            <div class="row-actions" style="justify-content:flex-end">
+                <button class="btn-sec small-btn" onclick="app.closeModal('job-application-modal')">Fechar</button>
+            </div>
+            <h3 class="tab-title">Candidatura</h3>
+            <div id="job-app-title" class="subtle"></div>
+            <input type="hidden" id="job-app-id">
+            <input type="text" id="job-app-name" placeholder="Nome">
+            <textarea id="job-app-attrs" placeholder="Atributos"></textarea>
+            <input type="text" id="job-app-course" placeholder="Curso">
+            <input type="text" id="job-app-frat" placeholder="Fraternidade">
+            <textarea id="job-app-exp" placeholder="Experiências"></textarea>
+            <div id="job-app-feedback" class="inline-feedback hidden"></div>
+            <button class="btn-gold" onclick="app.submitJobApplication()">Enviar Candidatura</button>
+        </div>
+    </div>
+
+    <div id="edit-entity-modal" class="modal" onclick="app.handleEditEntityBackdrop(event)">
+        <div class="card left">
+            <div class="row-actions" style="justify-content:flex-end">
+                <button class="btn-sec small-btn" onclick="app.closeModal('edit-entity-modal')">Fechar</button>
+            </div>
+            <h3 class="tab-title" id="edit-entity-title">Editar</h3>
+            <div id="edit-entity-current" class="subtle"></div>
+            <input type="hidden" id="edit-entity-kind">
+            <input type="hidden" id="edit-entity-id">
+            <label class="form-label" for="edit-entity-name">Nome</label>
+            <input type="text" id="edit-entity-name" placeholder="Nome ou título">
+            <label class="form-label" for="edit-entity-images">Imagens</label>
+            <textarea id="edit-entity-images" placeholder="Links das imagens, um por linha"></textarea>
+            <label class="form-label" for="edit-entity-desc">Descrição</label>
+            <textarea id="edit-entity-desc" placeholder="Descrição com parágrafos"></textarea>
+            <div id="edit-item-fields">
+                <label class="form-label" for="edit-entity-price">Valor</label>
+                <input type="number" id="edit-entity-price" placeholder="Valor">
+                <label class="form-label" for="edit-entity-stock">Quantidade</label>
+                <input type="number" id="edit-entity-stock" placeholder="Quantidade disponível">
+                <label class="form-label" for="edit-entity-limit">Limite por aluno</label>
+                <input type="number" id="edit-entity-limit" placeholder="Limite por aluno">
+                <label class="form-label" for="edit-entity-discount">Desconto</label>
+                <input type="number" id="edit-entity-discount" placeholder="Desconto em %, opcional">
+                <label class="form-label" for="edit-entity-duration">Validade</label>
+                <input type="number" id="edit-entity-duration" placeholder="Validade em semanas">
+                <label class="form-label" for="edit-entity-uses">Quantidade de usos</label>
+                <input type="number" id="edit-entity-uses" placeholder="Usos por compra">
+                <label class="form-label" for="edit-entity-tag">Tag</label>
+                <input type="text" id="edit-entity-tag" placeholder="Tag">
+                <label class="form-label" for="edit-entity-color">Cor</label>
+                <input type="color" id="edit-entity-color" value="#C0C0C0">
+            </div>
+            <div id="edit-job-fields">
+                <label class="form-label" for="edit-entity-salary">Valor</label>
+                <input type="number" id="edit-entity-salary" placeholder="Salário">
+            </div>
+            <div id="edit-entity-feedback" class="inline-feedback hidden"></div>
+            <button class="btn-gold" onclick="app.saveEditEntity()">Salvar Alterações</button>
         </div>
     </div>
 
@@ -1542,6 +1836,10 @@
         let latestIllegalStore = {};
         let latestFratsCache = {};
         let latestFratStoreCache = {};
+        let latestItemUsesCache = {};
+        let latestJobsCache = {};
+        let latestApplicationsCache = {};
+        let draggedAdmKey = "";
 
         const esc = (s = "") => String(s)
             .replaceAll("&", "&amp;")
@@ -1553,6 +1851,19 @@
         const money = (n = 0) => `${CURRENCY_SYMBOL} ${Number(n || 0).toLocaleString("pt-BR")}`;
         const nowClock = () => new Date().toLocaleTimeString("pt-BR");
         const parseLines = (txt = "") => txt.split(/\n+/).map(x => x.trim()).filter(Boolean);
+        const safeDomId = (...parts) => parts.join("-").replace(/[^a-zA-Z0-9_-]/g, "_");
+        const formatText = (txt = "") => esc(txt || "").replace(/\r?\n/g, "<br>");
+        const setCoverImage = (id, url = "") => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (url) {
+                el.style.backgroundImage = `url("${String(url).replaceAll('"', "%22")}")`;
+                el.classList.remove("hidden");
+            } else {
+                el.style.backgroundImage = "";
+                el.classList.add("hidden");
+            }
+        };
 
         const daysLeft = (expiresAt) => {
             if (!expiresAt) return "sem validade";
@@ -1576,6 +1887,132 @@
         function marketValidityText(item = {}) {
             if (item.expiresAt) return `Validade restante: ${daysLeft(item.expiresAt)}`;
             return `Validade após compra: ${Number(item.duracao || 0)} semana(s)`;
+        }
+
+        function itemUsesLeft(item = {}) {
+            const uses = Number(item.usosRestantes ?? item.usosPorCompra ?? 0);
+            return Math.max(0, uses);
+        }
+
+        function itemHasTrackedUses(item = {}) {
+            return Number(item.usosTotais || item.usosPorCompra || item.usosRestantes || 0) > 0;
+        }
+
+        function itemIsDepleted(item = {}) {
+            return itemHasTrackedUses(item) && itemUsesLeft(item) <= 0;
+        }
+
+        function renderExpandableText(id, text = "", limit = 160) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const full = String(text || "Sem descrição.");
+            el.dataset.fullText = full;
+            el.dataset.limit = String(limit);
+            el.dataset.expanded = "false";
+            if (full.length <= limit) {
+                el.textContent = full;
+                return;
+            }
+            el.innerHTML = `${esc(full.slice(0, limit))}... <button class="text-link-btn" onclick="app.toggleTextBlock('${id}')">Expandir</button>`;
+        }
+
+        function renderCollapsedTextBlock(id, text = "", buttonLabel = "Ver mais") {
+            const full = String(text || "").trim();
+            if (!full) return `<div class="subtle">Sem descrição.</div>`;
+            return `
+                <button class="btn-sec small-btn" onclick="app.toggleCollapsedText('${id}', this, '${esc(buttonLabel)}')">${esc(buttonLabel)}</button>
+                <div id="${id}" class="subtle collapsed-text-body hidden">${formatText(full)}</div>
+            `;
+        }
+
+        function itemBoughtText(item = {}) {
+            const ts = item.compradoEm || item.createdAt || item.ts || item.ultimoUsoEm || null;
+            return ts ? new Date(ts).toLocaleString("pt-BR") : "sem registro";
+        }
+
+        function renderItemHistory(invObj) {
+            const depleted = Object.fromEntries(
+                Object.entries(invObj || {}).filter(([, item]) => itemIsDepleted(item))
+            );
+            return renderInventory(depleted, {
+                emptyText: "Nenhum item sem usos no histórico.",
+                history: true
+            });
+        }
+
+        function renderInventoryManagementView(uid) {
+            const box = document.getElementById("adm-inventory-summary");
+            if (!box) return;
+            if (!uid) {
+                box.innerHTML = "Selecione um personagem para ver usos e itens sem uso restante.";
+                return;
+            }
+            const player = latestPlayersCache[uid];
+            if (!player) {
+                box.innerHTML = `<div class="subtle">Personagem não encontrado.</div>`;
+                return;
+            }
+            const uses = Object.values(latestItemUsesCache || {}).filter(use => use.uid === uid);
+            const grouped = {};
+            uses.forEach(use => {
+                const key = use.itemId || use.itemNome || makeId();
+                if (!grouped[key]) {
+                    grouped[key] = {
+                        itemNome: use.itemNome || "Item",
+                        quantidade: 0,
+                        count: 0,
+                        lastTs: 0,
+                        usosRestantes: 0
+                    };
+                }
+                grouped[key].quantidade += Number(use.quantidade || 0);
+                grouped[key].count += 1;
+                const useTs = Number(use.ts || 0);
+                if (useTs >= grouped[key].lastTs) {
+                    grouped[key].lastTs = useTs;
+                    grouped[key].usosRestantes = Number(use.usosRestantes || 0);
+                }
+            });
+            const depleted = Object.entries(player.mochila || {}).filter(([, item]) => itemIsDepleted(item));
+            const available = Object.entries(player.mochila || {}).filter(([, item]) => itemHasTrackedUses(item) && itemUsesLeft(item) > 0);
+            const availableHtml = available.map(([id, item]) => `
+                <div class="list-item mini">
+                    <strong>${esc(item.nome || "Item")}</strong><br>
+                    Comprou: ${itemBoughtText(item)}<br>
+                    Restante no último uso: ${itemUsesLeft(item)}
+                    ${item.ultimoUsoEm ? `<br><span class="subtle">Último uso: ${new Date(item.ultimoUsoEm).toLocaleString("pt-BR")}</span>` : ""}
+                    <br><span class="subtle">Chave: ${esc(id)}</span>
+                </div>
+            `).join("") || `<div class="subtle">Nenhum item disponível com usos restantes.</div>`;
+            const usesHtml = Object.values(grouped).sort((a, b) => b.lastTs - a.lastTs).map(use => `
+                <div class="list-item mini">
+                    <strong>${esc(use.itemNome)}</strong><br>
+                    Usos registrados: ${use.count} | Quantidade total usada: ${use.quantidade}<br>
+                    Restante no último uso: ${use.usosRestantes}<br>
+                    <span class="subtle">${use.lastTs ? new Date(use.lastTs).toLocaleString("pt-BR") : "Sem data"}</span>
+                </div>
+            `).join("") || `<div class="subtle">Nenhum uso registrado para este personagem.</div>`;
+            const depletedHtml = depleted.map(([id, item]) => `
+                <div class="list-item mini">
+                    <strong>${esc(item.nome || "Item")}</strong><br>
+                    Comprou: ${itemBoughtText(item)}<br>
+                    Restante no último uso: 0<br>
+                    <span class="subtle">Chave: ${esc(id)}</span>
+                    ${item.ultimoUsoEm ? `<br><span class="subtle">Último uso: ${new Date(item.ultimoUsoEm).toLocaleString("pt-BR")}</span>` : ""}
+                </div>
+            `).join("") || `<div class="subtle">Nenhum item com 0 uso.</div>`;
+            box.innerHTML = `
+                <div class="inline-feedback">Personagem: <strong>${esc(player.nome || "Sem nome")}</strong> · Itens sem uso restante: <strong>${depleted.length}</strong></div>
+                <div class="hr"></div>
+                <strong>Itens disponíveis</strong>
+                ${availableHtml}
+                <div class="hr"></div>
+                <strong>Itens sem uso</strong>
+                ${depletedHtml}
+                <div class="hr"></div>
+                <strong>Histórico de uso</strong>
+                ${usesHtml}
+            `;
         }
 
         function getFinanceProfile(d = {}) {
@@ -1759,17 +2196,51 @@
                 .join("");
         }
 
-        function renderInventory(invObj) {
-            if (!invObj || !Object.keys(invObj).length) return `<div class="subtle">Nenhum item.</div>`;
-            return Object.entries(invObj).map(([id, item]) => {
+        function renderInventory(invObj, options = {}) {
+            const filtered = Object.fromEntries(
+                Object.entries(invObj || {}).filter(([, item]) => {
+                    if (options.onlyDepleted || options.history) return itemIsDepleted(item);
+                    if (options.hideDepleted) return !itemIsDepleted(item);
+                    return true;
+                })
+            );
+            if (!Object.keys(filtered).length) return `<div class="subtle">${esc(options.emptyText || "Nenhum item.")}</div>`;
+            const ownerId = options.ownerId || uLog?.id || "";
+            const canUse = !!options.canUse;
+            const admin = !!options.admin;
+            return Object.entries(filtered).map(([id, item]) => {
+                const domId = safeDomId("inv", ownerId || "owner", id);
                 const images = getItemImages(item);
+                const usesLeft = itemUsesLeft(item);
+                const usesTotal = Math.max(usesLeft, Number(item.usosTotais || item.usosPorCompra || usesLeft || 0));
+                const useControls = canUse && usesLeft > 0 && !options.history ? `
+                    <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                        <button class="btn-gold small-btn" onclick="app.toggleUseControls('${domId}', this)">Usar</button>
+                    </div>
+                    <div id="use-controls-${domId}" class="hidden" style="margin-top:8px">
+                        <input id="item-use-${domId}" type="number" min="1" max="${usesLeft}" value="1" placeholder="Informar quantidade">
+                        <button class="btn-gold small-btn" onclick="app.useInventoryItem('${ownerId}','${id}','${domId}')">Confirmar uso</button>
+                    </div>
+                ` : "";
+                const adminControls = admin ? `
+                    <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                        <button class="btn-sec small-btn" onclick="app.selectAdmRecord('inventario','${id}')">Selecionar</button>
+                        <button class="btn-sec small-btn" onclick="app.admEditInventory('${id}')">Editar</button>
+                        <button class="btn-red small-btn" onclick="app.admRemoveInventory('${id}')">Excluir</button>
+                    </div>
+                ` : "";
                 return `
                     <div class="list-item">
                         ${images[0] ? `<img src="${esc(images[0])}" alt="" class="market-main-image" style="height:120px" onclick="app.openImageModal('${esc(images[0])}')">` : ""}
                         <strong>${esc(item.nome || "Item")}</strong><br>
-                        <span class="subtle">${esc(item.descricao || "")}</span><br>
+                        ${renderCollapsedTextBlock(`desc-${domId}`, item.descricao || "", "Ver descrição")}
                         <span class="pill" style="background: rgba(192,192,192,0.18)">${esc(item.tag || "Inventário")}</span>
+                        <div class="subtle">Comprou: ${itemBoughtText(item)}</div>
                         <div class="subtle">Validade: ${daysLeft(item.expiresAt)}</div>
+                        ${usesTotal ? `<div class="subtle">Usos restantes: ${usesLeft}/${usesTotal}</div>` : ""}
+                        ${item.ultimoUsoEm ? `<div class="subtle">Último uso: ${new Date(item.ultimoUsoEm).toLocaleString("pt-BR")}</div>` : ""}
+                        ${useControls}
+                        ${adminControls}
                     </div>
                 `;
             }).join("");
@@ -1853,24 +2324,56 @@
             `).join("");
         }
 
-        function renderMural(muralObj) {
+        function renderMural(muralObj, profileId = currentProfileId) {
             if (!muralObj || !Object.keys(muralObj).length) return `<div class="subtle">Sem comentários por enquanto.</div>`;
             return Object.entries(muralObj).reverse().map(([id, c]) => {
-                const canDelete = uLog && (uLog.id === currentProfileId || isAdmin());
+                const canDelete = uLog && (uLog.id === profileId || isAdmin());
                 return `
                     <div class="comment-box">
                         <div class="comment-meta">${esc(c.de || "Anônimo")} · ${new Date(c.ts || Date.now()).toLocaleString("pt-BR")}</div>
                         <div>${esc(c.msg || "")}</div>
-                        ${canDelete ? `<div class="row-actions" style="justify-content:flex-end; margin-top:8px"><button class="btn-red small-btn" onclick="app.deleteMuralComment('${id}')">Excluir</button></div>` : ""}
+                        ${canDelete ? `<div class="row-actions" style="justify-content:flex-end; margin-top:8px"><button class="btn-red small-btn" onclick="app.deleteMuralComment('${profileId}','${id}')">Excluir</button></div>` : ""}
                     </div>
                 `;
             }).join("");
+        }
+
+        function renderNotificationItem(n = {}) {
+            return `
+                <div class="comment-box">
+                    <div class="comment-meta">${new Date(n.ts || Date.now()).toLocaleString("pt-BR")}</div>
+                    ${esc(narrateNotification(n.msg || ""))}
+                </div>
+            `;
+        }
+
+        function renderNotifications(notifsObj) {
+            const entries = Object.entries(notifsObj || {})
+                .map(([id, n]) => ({ id, ...n, ts: Number(n.ts || 0) }))
+                .sort((a, b) => b.ts - a.ts);
+            if (!entries.length) return `<div class="subtle">Nenhuma notificação.</div>`;
+            const oldLimit = Date.now() - (5 * 24 * 60 * 60 * 1000);
+            const recent = entries.filter(n => (n.ts || Date.now()) >= oldLimit);
+            const old = entries.filter(n => (n.ts || Date.now()) < oldLimit);
+            const oldId = "notif-old-list";
+            const recentHtml = recent.map(renderNotificationItem).join("") || `<div class="subtle">Sem notificações recentes.</div>`;
+            const oldHtml = old.length ? `
+                <div class="hr"></div>
+                <div class="row-actions" style="justify-content:flex-start">
+                    <strong>Notificações antigas (${old.length})</strong>
+                    <button class="btn-sec small-btn" onclick="app.toggleCollapsedText('${oldId}', this, 'Ver tudo')">Ver tudo</button>
+                </div>
+                <div id="${oldId}" class="hidden">${old.map(renderNotificationItem).join("")}</div>
+            ` : "";
+            return `${recentHtml}${oldHtml}`;
         }
 
         function renderNews(postsObj) {
             if (!postsObj || !Object.keys(postsObj).length) return `<div class="subtle">Nada novo por aqui.</div>`;
             return Object.entries(postsObj).reverse().map(([id, n]) => {
                 const comments = n.comentarios || {};
+                const commentCount = Object.keys(comments).length;
+                const commentsDomId = safeDomId("news-comments", id);
                 const commentHtml = Object.entries(comments).reverse().map(([cid, c]) => {
                     const canDelete = uLog && (uLog.id === c.uid || isAdmin());
                     const likes = c.likes ? Object.keys(c.likes).length : 0;
@@ -1896,13 +2399,17 @@
                         ${n.img ? `<img src="${esc(n.img)}" alt="" style="width:100%; border-radius:10px; margin-bottom:12px">` : ""}
                         <div class="tab-title">${esc(n.titulo || "")}</div>
                         <div>${renderNewsTags(n.tags)}</div>
-                        <p class="mini">${esc(n.texto || "")}</p>
+                        <p class="mini collapsed-text-body">${formatText(n.texto || "")}</p>
                         <div class="row-actions" style="justify-content:flex-start">
                             <button class="btn-sec small-btn" onclick="app.addNewsComment('${id}')">Comentar</button>
                         </div>
                         ${adminBtns}
                         <div class="hr"></div>
-                        <div>${commentHtml || "<div class='subtle'>Sem comentários.</div>"}</div>
+                        <div class="row-actions" style="justify-content:flex-start">
+                            <strong>Comentários (${commentCount})</strong>
+                            <button class="btn-sec small-btn" onclick="app.toggleCollapsedText('${commentsDomId}', this, 'Ver todos')">Ver todos</button>
+                        </div>
+                        <div id="${commentsDomId}" class="hidden">${commentHtml || "<div class='subtle'>Sem comentários.</div>"}</div>
                     </div>
                 `;
             }).join("");
@@ -1919,6 +2426,7 @@
             const hasDiscount = finalPrice < basePrice;
             const boughtByMe = Number(item.comprasPorAluno?.[uLog?.id] || 0);
             const maxPerStudent = Number(item.maxPorAluno || 0);
+            const descId = safeDomId("market-desc", source, id);
             return `
                 <div class="card left market-card ${source === "illegal" ? "illegal-card" : ""}" style="margin-bottom:0">
                     ${mainImage ? `<img src="${esc(mainImage)}" alt="" class="market-main-image" onclick="app.openImageModal('${esc(mainImage)}')">` : ""}
@@ -1929,7 +2437,7 @@
                         <span class="condition-tag">${esc(condition)}</span>
                         <span class="condition-tag">${originLabel}</span>
                     </div>
-                    <div class="subtle">${esc(item.descricao || "")}</div>
+                    ${renderCollapsedTextBlock(descId, item.descricao || "", "Entender item")}
                     <div class="hr"></div>
                     <div>
                         ${hasDiscount ? `<span class="price-old">${money(basePrice)}</span>` : ""}
@@ -2025,16 +2533,21 @@
 
         function renderJobs(jobsObj) {
             if (!jobsObj || !Object.keys(jobsObj).length) return `<div class="subtle">Nenhuma vaga publicada.</div>`;
-            return Object.entries(jobsObj).map(([id, j]) => `
-                <div class="card left">
-                    ${j.img ? `<img src="${esc(j.img)}" alt="" style="width:100%; border-radius:10px; margin-bottom:10px">` : ""}
-                    <h3 style="margin-bottom:6px">${esc(j.titulo || "")}</h3>
-                    <div class="subtle">${esc(j.descricao || "")}</div>
-                    <div class="hr"></div>
-                    <strong>${money(j.salario || 0)}</strong> / ciclo
-                    <button class="btn-gold" onclick="app.applyJob('${id}')">Candidatar-se</button>
-                </div>
-            `).join("");
+            return Object.entries(jobsObj).map(([id, j]) => {
+                const alreadyApplied = !!uLog && Object.values(latestApplicationsCache || {}).some(app => app.uid === uLog.id && app.jobId === id);
+                return `
+                    <div class="card left">
+                        ${j.img ? `<img src="${esc(j.img)}" alt="" style="width:100%; border-radius:10px; margin-bottom:10px">` : ""}
+                        <h3 style="margin-bottom:6px">${esc(j.titulo || "")}</h3>
+                        ${renderCollapsedTextBlock(safeDomId("job-desc", id), j.descricao || "", "Ver mais")}
+                        <div class="hr"></div>
+                        <strong>${money(j.salario || 0)}</strong> / ciclo
+                        ${alreadyApplied
+                            ? `<button class="btn-sec" disabled>Já se candidatou</button>`
+                            : `<button class="btn-gold" onclick="app.applyJob('${id}')">Candidatar-se</button>`}
+                    </div>
+                `;
+            }).join("");
         }
 
         function renderFratList(fratsObj) {
@@ -2148,8 +2661,11 @@
                     <button class="btn-sec" onclick="app.payFraternityFee('${selectedId}')">Pagar Mensalidade Agora</button>
                 ` : ""}
                 <div class="hr"></div>
-                <strong>Histórico bancário</strong>
-                <div>${renderFraternityHistory(moves)}</div>
+                <div class="row-actions" style="justify-content:space-between; align-items:center">
+                    <strong>Histórico bancário</strong>
+                    <button class="btn-sec small-btn" onclick="app.toggleCollapsedText('frat-history-${selectedId}', this, 'Ver histórico')">Ver histórico</button>
+                </div>
+                <div id="frat-history-${selectedId}" class="hidden">${renderFraternityHistory(moves)}</div>
                 <div class="hr"></div>
                 <strong>Compras da fraternidade</strong>
                 <div>${renderFraternityHistory(purchases)}</div>
@@ -2189,7 +2705,7 @@
 
         function refreshItemTransferOptions(mochila) {
             const select = document.getElementById("tr-item");
-            const items = Object.entries(mochila || {});
+            const items = Object.entries(mochila || {}).filter(([, item]) => !itemIsDepleted(item));
             if (select) {
                 select.innerHTML = `<option value="">Selecionar item...</option>` + items.map(([id, item]) => `<option value="${id}">${esc(item.nome || "Item")}</option>`).join("");
             }
@@ -2372,12 +2888,210 @@
                     .map(([uid, p]) => `<option value="${uid}">${esc(p.nome || "Sem nome")}</option>`)
                     .join("");
             }
+
+            const invSel = document.getElementById("adm-inventory-player");
+            if (invSel) {
+                const selected = invSel.value || "";
+                invSel.innerHTML = "<option value=''>Selecionar personagem...</option>" + Object.entries(playersObj || {})
+                    .map(([uid, p]) => `<option value="${uid}">${esc(p.nome || "Sem nome")}</option>`)
+                    .join("");
+                if (selected && playersObj?.[selected]) invSel.value = selected;
+            }
         }
 
         function syncRestrictedTabVisibility() {
             const btn = document.getElementById("btn-mercado-ilegal");
             if (!btn) return;
             btn.classList.remove("hidden");
+        }
+
+        function getAdmCards() {
+            return Array.from(document.querySelectorAll("#tab-adm > .card, #tab-adm > .grid-2 > .card"));
+        }
+
+        function admOrderStorageKey() {
+            return `reitoria-blocos-${uLog?.id || "anon"}`;
+        }
+
+        function admCardKey(card, idx = 0) {
+            if (card.dataset.admKey) return card.dataset.admKey;
+            const title = card.querySelector("h2, h3")?.textContent || `bloco-${idx}`;
+            const key = title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || `bloco-${idx}`;
+            card.dataset.admKey = key;
+            return key;
+        }
+
+        function admSavedOrder() {
+            try {
+                return JSON.parse(localStorage.getItem(admOrderStorageKey()) || "[]");
+            } catch {
+                return [];
+            }
+        }
+
+        function saveAdmOrder(keys) {
+            localStorage.setItem(admOrderStorageKey(), JSON.stringify(keys));
+        }
+
+        function applyAdmBlockOrder() {
+            const cards = getAdmCards();
+            const saved = admSavedOrder();
+            cards.forEach((card, idx) => {
+                const key = admCardKey(card, idx);
+                const pos = saved.indexOf(key);
+                card.style.order = String(pos >= 0 ? pos : saved.length + idx);
+            });
+        }
+
+        function reorderAdmBlock(dragKey, targetKey) {
+            if (!dragKey || !targetKey || dragKey === targetKey) return;
+            const cards = getAdmCards()
+                .map((card, idx) => ({ card, key: admCardKey(card, idx), order: Number(card.style.order || idx) }))
+                .sort((a, b) => a.order - b.order);
+            const keys = cards.map(item => item.key);
+            const from = keys.indexOf(dragKey);
+            const to = keys.indexOf(targetKey);
+            if (from < 0 || to < 0) return;
+            const [moved] = keys.splice(from, 1);
+            keys.splice(to, 0, moved);
+            saveAdmOrder(keys);
+            applyAdmBlockOrder();
+        }
+
+        function attachAdmDropTarget(card) {
+            if (!card || card.dataset.dragTargetReady) return;
+            card.addEventListener("dragover", (event) => {
+                if (!draggedAdmKey || draggedAdmKey === card.dataset.admKey) return;
+                event.preventDefault();
+                card.classList.add("adm-drag-over");
+            });
+            card.addEventListener("dragleave", () => card.classList.remove("adm-drag-over"));
+            card.addEventListener("drop", (event) => {
+                event.preventDefault();
+                card.classList.remove("adm-drag-over");
+                const dragKey = event.dataTransfer?.getData("text/plain") || draggedAdmKey;
+                reorderAdmBlock(dragKey, card.dataset.admKey);
+            });
+            card.dataset.dragTargetReady = "true";
+        }
+
+        function addAdmMoveControls(head, card, toggleBtn = null) {
+            if (!head || !card) return;
+            head.style.justifyContent = "flex-start";
+            const heading = head.querySelector("h2, h3");
+            if (heading) heading.style.flex = "1";
+
+            let actions = head.querySelector(".adm-move-actions");
+            if (!actions) {
+                actions = document.createElement("div");
+                actions.className = "row-actions adm-move-actions";
+                head.appendChild(actions);
+            }
+
+            if (toggleBtn && toggleBtn.parentElement !== actions) {
+                actions.insertBefore(toggleBtn, actions.firstChild);
+            }
+
+            if (!actions.querySelector(".adm-card-drag")) {
+                const drag = document.createElement("button");
+                drag.type = "button";
+                drag.className = "btn-sec small-btn adm-card-move adm-card-drag";
+                drag.textContent = "↕";
+                drag.title = "Arraste para reorganizar";
+                drag.setAttribute("aria-label", "Arraste para reorganizar");
+                drag.draggable = true;
+                drag.addEventListener("dragstart", (event) => {
+                    draggedAdmKey = card.dataset.admKey;
+                    card.classList.add("is-dragging");
+                    event.dataTransfer.effectAllowed = "move";
+                    event.dataTransfer.setData("text/plain", draggedAdmKey);
+                });
+                drag.addEventListener("dragend", () => {
+                    draggedAdmKey = "";
+                    getAdmCards().forEach(c => c.classList.remove("is-dragging", "adm-drag-over"));
+                });
+                actions.appendChild(drag);
+            }
+
+            attachAdmDropTarget(card);
+        }
+
+        function setupAdmCollapsibles() {
+            const cards = getAdmCards();
+            cards.forEach((card, idx) => {
+                admCardKey(card, idx);
+                if (card.querySelector("#market-toggle-btn, #audit-toggle-btn")) {
+                    const firstSetup = !card.dataset.collapsibleReady;
+                    const head = card.querySelector(":scope > .row-actions");
+                    const body = card.querySelector("#adm-market-wrap, #audit-wrap");
+                    const btn = card.querySelector("#market-toggle-btn, #audit-toggle-btn");
+                    head?.classList.add("adm-card-head");
+                    if (firstSetup && body) body.classList.add("hidden");
+                    if (firstSetup && btn) btn.textContent = "Expandir";
+                    addAdmMoveControls(head, card, btn);
+                    card.dataset.collapsibleReady = "true";
+                    return;
+                }
+                if (card.dataset.collapsibleReady) {
+                    const head = card.querySelector(":scope > .adm-card-head");
+                    const btn = head?.querySelector(".adm-card-toggle, #market-toggle-btn, #audit-toggle-btn");
+                    addAdmMoveControls(head, card, btn);
+                    return;
+                }
+                const heading = Array.from(card.children).find(el => ["H2", "H3"].includes(el.tagName));
+                if (!heading) return;
+                const head = document.createElement("div");
+                head.className = "adm-card-head";
+                const body = document.createElement("div");
+                body.id = `adm-card-body-${idx}`;
+                body.className = "adm-card-body";
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "btn-sec small-btn adm-card-toggle";
+                btn.textContent = "Expandir";
+                btn.setAttribute("onclick", `app.toggleAdmBlock('${body.id}', this)`);
+                card.insertBefore(head, heading);
+                head.appendChild(heading);
+                head.appendChild(btn);
+                addAdmMoveControls(head, card, btn);
+                while (head.nextSibling) body.appendChild(head.nextSibling);
+                body.classList.add("hidden");
+                card.appendChild(body);
+                card.dataset.collapsibleReady = "true";
+            });
+            applyAdmBlockOrder();
+        }
+
+        function openEditEntityModal(kind, id, data = {}) {
+            const isJob = kind === "job";
+            const isIllegal = kind === "illegal";
+            const currentTitle = data.titulo || data.nome || "Sem título";
+            document.getElementById("edit-entity-kind").value = kind;
+            document.getElementById("edit-entity-id").value = id;
+            document.getElementById("edit-entity-title").innerText = isJob ? `Editar Vaga: ${currentTitle}` : isIllegal ? `Editar Item Ilegal: ${currentTitle}` : `Editar Item: ${currentTitle}`;
+            document.getElementById("edit-entity-current").innerText = `Editando: ${currentTitle}`;
+            document.getElementById("edit-entity-name").placeholder = isJob ? "Título da vaga" : "Nome do item";
+            document.getElementById("edit-entity-name").value = data.titulo || data.nome || "";
+            document.getElementById("edit-entity-images").value = isJob ? (data.img || "") : getItemImages(data).join("\n");
+            document.getElementById("edit-entity-desc").value = data.descricao || "";
+            document.getElementById("edit-entity-price").value = Number(data.preco || 0);
+            document.getElementById("edit-entity-stock").value = Number(data.estoque || 0);
+            document.getElementById("edit-entity-limit").value = Number(data.maxPorAluno || 0);
+            document.getElementById("edit-entity-discount").value = Number(data.desconto || 0);
+            document.getElementById("edit-entity-duration").value = Number(data.duracao || 0);
+            document.getElementById("edit-entity-uses").value = Math.max(1, Number(data.usosPorCompra || 1));
+            document.getElementById("edit-entity-tag").value = data.tag || "";
+            document.getElementById("edit-entity-color").value = data.cor || (isIllegal ? "#8B0000" : "#C0C0C0");
+            document.getElementById("edit-entity-salary").value = Number(data.salario || 0);
+            document.getElementById("edit-item-fields").classList.toggle("hidden", isJob);
+            document.getElementById("edit-job-fields").classList.toggle("hidden", !isJob);
+            document.getElementById("edit-entity-limit").classList.toggle("hidden", isIllegal || isJob);
+            document.getElementById("edit-entity-discount").classList.toggle("hidden", isIllegal || isJob);
+            document.querySelector('label[for="edit-entity-limit"]')?.classList.toggle("hidden", isIllegal || isJob);
+            document.querySelector('label[for="edit-entity-discount"]')?.classList.toggle("hidden", isIllegal || isJob);
+            document.getElementById("edit-entity-feedback").classList.add("hidden");
+            document.getElementById("edit-entity-modal").style.display = "flex";
+            document.getElementById("edit-entity-name").focus();
         }
 
         function renderAdmLists() {
@@ -2393,7 +3107,7 @@
                     ? `<strong>Conta trancada.</strong> Jogador não consegue executar ações financeiras comuns.`
                     : `<strong>Conta ativa.</strong> Jogador liberado para ações comuns.`;
                 document.getElementById("adm-p-tags").innerHTML = renderTags(d.tags);
-                document.getElementById("adm-p-inv").innerHTML = renderInventory(d.mochila);
+                document.getElementById("adm-p-inv").innerHTML = renderInventory(d.mochila, { ownerId: pId, admin: true });
                 document.getElementById("adm-p-fixos").innerHTML = renderFixeds(d.fixos);
                 document.getElementById("adm-p-vars").innerHTML = renderVariables(d.variaveis);
                 document.getElementById("adm-p-percentuais").innerHTML = renderPercentuais(d.percentuais);
@@ -2431,6 +3145,7 @@
                 const fratList = document.getElementById("frat-list");
                 if (fratList) fratList.innerHTML = renderFratList(latestFratsCache);
                 renderFraternityDetail(selectedFratId);
+                renderInventoryManagementView(document.getElementById("adm-inventory-player")?.value || "");
             });
 
             listen(ref(db, "fraternidades"), snap => {
@@ -2488,8 +3203,9 @@
                         <div class="list-item">
                             <strong>${esc(i.nome || "")}</strong> · ${money(effectivePrice(i))}<br>
                             <span class="subtle">${esc(i.descricao || "")}</span>
-                            <div class="subtle">Estoque: ${i.estoque || 0} | Limite por aluno: ${i.maxPorAluno || "sem limite"} | Desconto: ${i.desconto || 0}%</div>
+                            <div class="subtle">Estoque: ${i.estoque || 0} | Limite por aluno: ${i.maxPorAluno || "sem limite"} | Desconto: ${i.desconto || 0}% | Usos: ${i.usosPorCompra || 1} por compra</div>
                             <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                                <button class="btn-sec small-btn" onclick="app.editMarketItem('${id}')">Editar</button>
                                 <button class="btn-red small-btn" onclick="app.deleteMarketItem('${id}')">Excluir</button>
                             </div>
                         </div>
@@ -2514,7 +3230,9 @@
                         <div class="list-item">
                             <strong>${esc(i.nome || "")}</strong> · ${money(i.preco || 0)}<br>
                             <span class="subtle">${esc(i.descricao || "")}</span>
+                            <div class="subtle">Estoque: ${i.estoque || 0} | Usos: ${i.usosPorCompra || 1} por compra</div>
                             <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                                <button class="btn-sec small-btn" onclick="app.editIllegalItem('${id}')">Editar</button>
                                 <button class="btn-red small-btn" onclick="app.deleteIllegalItem('${id}')">Excluir</button>
                             </div>
                         </div>
@@ -2524,9 +3242,10 @@
             });
 
             listen(ref(db, "vagas"), snap => {
+                latestJobsCache = snap.val() || {};
                 const jobsEl = document.getElementById("jobs-list");
-                if (jobsEl) jobsEl.innerHTML = renderJobs(snap.val());
-                const jobs = snap.val() || {};
+                if (jobsEl) jobsEl.innerHTML = renderJobs(latestJobsCache);
+                const jobs = latestJobsCache;
                 const admJobs = document.getElementById("adm-jobs-list");
                 if (admJobs) {
                     admJobs.innerHTML = Object.entries(jobs).reverse().map(([id, j]) => `
@@ -2534,6 +3253,7 @@
                             <strong>${esc(j.titulo || "")}</strong> · ${money(j.salario || 0)}<br>
                             <span class="subtle">${esc(j.descricao || "")}</span>
                             <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                                <button class="btn-sec small-btn" onclick="app.editJob('${id}')">Editar</button>
                                 <button class="btn-red small-btn" onclick="app.deleteJob('${id}')">Excluir</button>
                             </div>
                         </div>
@@ -2543,18 +3263,41 @@
 
             listen(ref(db, "candidaturas"), snap => {
                 const apps = snap.val() || {};
+                latestApplicationsCache = apps;
+                const jobsEl = document.getElementById("jobs-list");
+                if (jobsEl) jobsEl.innerHTML = renderJobs(latestJobsCache);
                 const box = document.getElementById("adm-applications");
                 if (!box) return;
                 box.innerHTML = Object.entries(apps).reverse().map(([id, c]) => `
                     <div class="list-item">
-                        <strong>${esc(c.user || "")}</strong> para ${esc(c.titulo || "")}<br>
-                        <span class="subtle">${esc(c.texto || "")}</span>
+                        <strong>${esc(c.nome || c.user || "")}</strong> para ${esc(c.titulo || "")}<br>
+                        <span class="subtle">Curso: ${esc(c.curso || "não informado")} | Fraternidade: ${esc(c.fraternidade || "não informada")}</span><br>
+                        <span class="subtle">Atributos: ${esc(c.atributos || "não informados")}</span><br>
+                        <span class="subtle">Experiências: ${esc(c.experiencias || c.texto || "não informadas")}</span><br>
+                        <span class="subtle">${new Date(c.ts || Date.now()).toLocaleString("pt-BR")}</span>
                         <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
                             <button class="btn-gold small-btn" onclick="app.approveApplication('${id}')">Aceitar</button>
                             <button class="btn-red small-btn" onclick="app.denyApplication('${id}')">Negar</button>
                         </div>
                     </div>
                 `).join("") || `<div class="subtle">Sem candidaturas.</div>`;
+            });
+
+            listen(ref(db, "usos_itens"), snap => {
+                const uses = snap.val() || {};
+                latestItemUsesCache = uses;
+                const box = document.getElementById("adm-item-uses");
+                if (box) {
+                    box.innerHTML = Object.entries(uses).reverse().slice(0, 50).map(([, use]) => `
+                        <div class="list-item mini">
+                            <strong>${esc(use.itemNome || "Item")}</strong><br>
+                            Usuário: ${esc(use.user || "Jogador")}<br>
+                            Quantidade usada: ${Number(use.quantidade || 0)} | Restante: ${Number(use.usosRestantes || 0)}<br>
+                            <span class="subtle">${new Date(use.ts || Date.now()).toLocaleString("pt-BR")}</span>
+                        </div>
+                    `).join("") || `<div class="subtle">Nenhum uso registrado.</div>`;
+                }
+                renderInventoryManagementView(document.getElementById("adm-inventory-player")?.value || "");
             });
 
             listen(ref(db, "emprestimos_pendentes"), snap => {
@@ -2598,12 +3341,7 @@
                 const notifs = s.val() || {};
                 const box = document.getElementById("notif-list");
                 if (!box) return;
-                box.innerHTML = Object.entries(notifs).reverse().map(([, n]) => `
-                    <div class="comment-box">
-                        <div class="comment-meta">${new Date(n.ts || Date.now()).toLocaleString("pt-BR")}</div>
-                        ${esc(narrateNotification(n.msg || ""))}
-                    </div>
-                `).join("") || `<div class="subtle">Nenhuma notificação.</div>`;
+                box.innerHTML = renderNotifications(notifs);
             });
 
             listen(ref(db, `jogadores/${uid}/historico`), s => {
@@ -2614,8 +3352,15 @@
             listen(ref(db, `jogadores/${uid}/mochila`), s => {
                 const mochila = s.val();
                 const box = document.getElementById("u-inv");
-                if (box) box.innerHTML = renderInventory(mochila);
+                if (box) box.innerHTML = renderInventory(mochila, { ownerId: uid, canUse: true, hideDepleted: true, emptyText: "Nenhum item ativo." });
+                const itemHistory = document.getElementById("u-item-history");
+                if (itemHistory) itemHistory.innerHTML = renderItemHistory(mochila);
                 refreshItemTransferOptions(mochila);
+            });
+
+            listen(ref(db, `jogadores/${uid}/mural`), s => {
+                const box = document.getElementById("u-profile-comments");
+                if (box) box.innerHTML = renderMural(s.val(), uid);
             });
 
             listen(ref(db, `jogadores/${uid}/emprestimos`), s => {
@@ -2628,7 +3373,8 @@
             document.getElementById("u-nome").innerText = d.nome || "---";
             document.getElementById("u-saldo").innerText = money(d.saldo || 0);
             document.getElementById("u-foto").src = d.foto || "https://placehold.co/150/0A192F/C0C0C0?text=ERA";
-            document.getElementById("u-bio").innerText = d.bio || "Membro da Sovereign Society.";
+            setCoverImage("u-capa", d.capa || "");
+            renderExpandableText("u-bio", d.bio || "Membro da Sovereign Society.");
             document.getElementById("u-title").innerText = autoTitle(d);
             document.getElementById("u-tags").innerHTML = renderTags(d.tags);
             document.getElementById("fin-divida").innerText = money(d.divida || 0);
@@ -2671,8 +3417,10 @@
                         return;
                     }
                     refreshMyProfileUI(d);
+                    setupAdmCollapsibles();
                     document.getElementById("set-nome").value = d.nome || "";
                     document.getElementById("set-foto").value = d.foto || "";
+                    document.getElementById("set-capa").value = d.capa || "";
                     document.getElementById("set-bio").value = d.bio || "";
                     if (!sessionBootstrapped) {
                         sessionBootstrapped = true;
@@ -2718,6 +3466,56 @@
                 if (btn) btn.classList.add("active");
             },
 
+            toggleAdmBlock: (bodyId, btn) => {
+                const body = document.getElementById(bodyId);
+                if (!body) return;
+                body.classList.toggle("hidden");
+                if (btn) btn.textContent = body.classList.contains("hidden") ? "Expandir" : "Minimizar";
+            },
+
+            moveAdmBlock: (key, direction) => {
+                const cards = getAdmCards()
+                    .map((card, idx) => ({ card, key: admCardKey(card, idx), order: Number(card.style.order || idx) }))
+                    .sort((a, b) => a.order - b.order);
+                const keys = cards.map(item => item.key);
+                const idx = keys.indexOf(key);
+                const next = idx + direction;
+                if (idx < 0 || next < 0 || next >= keys.length) return;
+                [keys[idx], keys[next]] = [keys[next], keys[idx]];
+                saveAdmOrder(keys);
+                applyAdmBlockOrder();
+            },
+
+            renderAdmInventoryManagement: () => {
+                renderInventoryManagementView(document.getElementById("adm-inventory-player")?.value || "");
+            },
+
+            toggleTextBlock: (id) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const full = el.dataset.fullText || "";
+                const limit = Number(el.dataset.limit || 160);
+                const expanded = el.dataset.expanded === "true";
+                el.dataset.expanded = expanded ? "false" : "true";
+                el.innerHTML = expanded
+                    ? `${esc(full.slice(0, limit))}... <button class="text-link-btn" onclick="app.toggleTextBlock('${id}')">Expandir</button>`
+                    : `${esc(full)} <button class="text-link-btn" onclick="app.toggleTextBlock('${id}')">Recolher</button>`;
+            },
+
+            toggleCollapsedText: (id, btn, openLabel = "Ver mais") => {
+                const box = document.getElementById(id);
+                if (!box) return;
+                box.classList.toggle("hidden");
+                if (btn) btn.textContent = box.classList.contains("hidden") ? openLabel : "Recolher";
+            },
+
+            toggleUseControls: (domId, btn) => {
+                const box = document.getElementById(`use-controls-${domId}`);
+                if (!box) return;
+                box.classList.toggle("hidden");
+                if (btn) btn.textContent = box.classList.contains("hidden") ? "Usar" : "Cancelar";
+            },
+
             toggleSettings: () => document.getElementById("settings-area").classList.toggle("hidden"),
 
             closeModal: (id) => {
@@ -2740,6 +3538,14 @@
                 if (event.target.id === "image-modal") app.closeModal("image-modal");
             },
 
+            handleJobApplicationBackdrop: (event) => {
+                if (event.target.id === "job-application-modal") app.closeModal("job-application-modal");
+            },
+
+            handleEditEntityBackdrop: (event) => {
+                if (event.target.id === "edit-entity-modal") app.closeModal("edit-entity-modal");
+            },
+
             swapCardImage: (thumb, src) => {
                 const card = thumb.closest(".card");
                 const main = card?.querySelector(".market-main-image");
@@ -2749,6 +3555,58 @@
                 }
                 thumb.parentElement?.querySelectorAll("img").forEach(i => i.classList.remove("active"));
                 thumb.classList.add("active");
+            },
+
+            saveEditEntity: async () => {
+                const kind = document.getElementById("edit-entity-kind").value;
+                const id = document.getElementById("edit-entity-id").value;
+                const nome = document.getElementById("edit-entity-name").value.trim();
+                const descricao = document.getElementById("edit-entity-desc").value.trim();
+                if (!kind || !id || !nome) {
+                    return showInlineFeedback("edit-entity-feedback", "Informe nome/título antes de salvar.", "warning");
+                }
+                if (kind === "job") {
+                    const img = document.getElementById("edit-entity-images").value.trim();
+                    const salario = parseInt(document.getElementById("edit-entity-salary").value) || 0;
+                    await update(ref(db, `vagas/${id}`), {
+                        titulo: nome,
+                        img,
+                        descricao,
+                        salario,
+                        atualizadoEm: Date.now()
+                    });
+                    await pushAudit({ tipo: "vaga", user: uLog?.nome || "REITORIA", vaga: nome, msg: "Vaga editada" });
+                    app.closeModal("edit-entity-modal");
+                    return alert("Vaga atualizada.");
+                }
+                const imgsList = parseLines(document.getElementById("edit-entity-images").value);
+                const preco = parseInt(document.getElementById("edit-entity-price").value) || 0;
+                const estoque = parseInt(document.getElementById("edit-entity-stock").value) || 0;
+                const duracao = parseInt(document.getElementById("edit-entity-duration").value) || 0;
+                const usosPorCompra = Math.max(1, parseInt(document.getElementById("edit-entity-uses").value) || 1);
+                const tag = document.getElementById("edit-entity-tag").value.trim();
+                const cor = document.getElementById("edit-entity-color").value;
+                const path = kind === "illegal" ? "loja_clandestina" : "loja";
+                const updateData = {
+                    nome,
+                    preco,
+                    img: imgsList[0] || "",
+                    imgs: imgsList,
+                    descricao,
+                    estoque,
+                    duracao,
+                    usosPorCompra,
+                    tag,
+                    cor
+                };
+                if (kind === "market") {
+                    updateData.maxPorAluno = parseInt(document.getElementById("edit-entity-limit").value) || 0;
+                    updateData.desconto = clamp(parseInt(document.getElementById("edit-entity-discount").value) || 0, 0, 95);
+                }
+                await update(ref(db, `${path}/${id}`), updateData);
+                await pushAudit({ tipo: kind === "illegal" ? "mercado_ilegal" : "mercado", user: uLog?.nome || "REITORIA", item: nome, msg: kind === "illegal" ? "Item ilegal editado" : "Item editado no mercado" });
+                app.closeModal("edit-entity-modal");
+                alert("Item atualizado.");
             },
 
             handleLogin: async () => {
@@ -2832,9 +3690,11 @@
                 const up = {};
                 const nome = document.getElementById("set-nome").value.trim();
                 const fotoUrl = document.getElementById("set-foto").value.trim();
+                const capaUrl = document.getElementById("set-capa").value.trim();
                 const bio = document.getElementById("set-bio").value.trim();
                 if (nome) up.nome = nome;
                 if (fotoUrl) up.foto = fotoUrl;
+                up.capa = capaUrl;
                 if (bio) up.bio = bio;
                 await update(ref(db, `jogadores/${auth.currentUser.uid}`), up);
                 await pushAudit({ tipo: "perfil", user: uLog?.nome || auth.currentUser.email, msg: "Perfil atualizado" });
@@ -2933,6 +3793,38 @@
                 showInlineFeedback("market-sell-feedback", "Item anunciado no mercado.", "good");
             },
 
+            useInventoryItem: async (ownerId, itemId, domId = "") => {
+                if (!uLog || !ensureAccountOpen()) return;
+                if (ownerId !== uLog.id) return alert("Você só pode usar itens do seu próprio inventário.");
+                const input = document.getElementById(`item-use-${domId || itemId}`);
+                const requested = Math.max(1, parseInt(input?.value) || 1);
+                const itemSnap = await get(ref(db, `jogadores/${ownerId}/mochila/${itemId}`));
+                const item = itemSnap.val();
+                if (!item) return alert("Esse item não está mais no seu inventário.");
+                const usesLeft = itemUsesLeft(item);
+                if (usesLeft <= 0) return alert("Este item não possui usos restantes.");
+                const quantidade = Math.min(requested, usesLeft);
+                const usosRestantes = usesLeft - quantidade;
+                const ts = Date.now();
+                const useRef = push(ref(db, "usos_itens"));
+                await update(ref(db), {
+                    [`jogadores/${ownerId}/mochila/${itemId}/usosRestantes`]: usosRestantes,
+                    [`jogadores/${ownerId}/mochila/${itemId}/ultimoUsoEm`]: ts,
+                    [`usos_itens/${useRef.key}`]: {
+                        uid: ownerId,
+                        user: uLog.nome,
+                        itemId,
+                        itemNome: item.nome || "Item",
+                        quantidade,
+                        usosRestantes,
+                        ts
+                    }
+                });
+                await pushHistory(ownerId, "uso de item", 0, `${item.nome || "Item"} usado em quantidade ${quantidade}`);
+                await pushAudit({ tipo: "uso_item", user: uLog.nome, item: item.nome || "Item", valor: quantidade, msg: `Uso registrado. Restante: ${usosRestantes}` });
+                alert(usosRestantes > 0 ? `Uso registrado. Restam ${usosRestantes}.` : "Uso registrado. Item sem usos restantes.");
+            },
+
             buyPlayerMarketItem: async (id) => {
                 if (!uLog || !ensureAccountOpen()) return;
                 const listingSnap = await get(ref(db, `mercado_jogadores/${id}`));
@@ -2957,6 +3849,9 @@
                         cor: listing.cor || "#C0C0C0",
                         condicao: listing.condicao || "usado",
                         sellerName: listing.sellerName || "Aluno",
+                        usosRestantes: itemUsesLeft(listing),
+                        usosTotais: Number(listing.usosTotais || listing.usosPorCompra || itemUsesLeft(listing) || 0),
+                        compradoEm: Date.now(),
                         expiresAt: listing.expiresAt || null
                     },
                     [`mercado_jogadores/${id}`]: null
@@ -2984,6 +3879,9 @@
                         tag: listing.tag || "Revenda",
                         cor: listing.cor || "#C0C0C0",
                         condicao: listing.condicao || "usado",
+                        usosRestantes: itemUsesLeft(listing),
+                        usosTotais: Number(listing.usosTotais || listing.usosPorCompra || itemUsesLeft(listing) || 0),
+                        compradoEm: listing.compradoEm || listing.ts || Date.now(),
                         expiresAt: listing.expiresAt || null
                     },
                     [`mercado_jogadores/${id}`]: null
@@ -3090,6 +3988,7 @@
                 if (maxPorAluno && boughtByMe >= maxPorAluno) return alert("Você já atingiu o limite de compra deste item.");
                 if (Number(uLog.saldo || 0) < price) return alert("Saldo insuficiente.");
                 const expiresAt = Date.now() + (Number(item.duracao || 0) * 7 * 24 * 60 * 60 * 1000);
+                const usosPorCompra = Math.max(1, Number(item.usosPorCompra || 1));
                 const invId = push(ref(db, `jogadores/${uLog.id}/mochila`)).key;
                 await update(ref(db, `jogadores/${uLog.id}`), { saldo: Number(uLog.saldo || 0) - price });
                 await update(ref(db, `loja/${id}`), { estoque: stock - 1, [`comprasPorAluno/${uLog.id}`]: boughtByMe + 1 });
@@ -3102,6 +4001,9 @@
                     cor: item.cor || "#C0C0C0",
                     condicao: "novo institucional",
                     sellerName: "ERA Academy",
+                    usosRestantes: usosPorCompra,
+                    usosTotais: usosPorCompra,
+                    compradoEm: Date.now(),
                     expiresAt
                 });
                 await pushHistory(uLog.id, "compra", -price, `Compra de ${item.nome}`);
@@ -3120,6 +4022,7 @@
                 if (stock <= 0) return alert("Item esgotado.");
                 if (Number(uLog.saldo || 0) < price) return alert("Saldo insuficiente.");
                 const expiresAt = Date.now() + (Number(item.duracao || 0) * 7 * 24 * 60 * 60 * 1000);
+                const usosPorCompra = Math.max(1, Number(item.usosPorCompra || 1));
                 const invId = push(ref(db, `jogadores/${uLog.id}/mochila`)).key;
                 await update(ref(db, `jogadores/${uLog.id}`), { saldo: Number(uLog.saldo || 0) - price });
                 await update(ref(db, `loja_clandestina/${id}`), { estoque: stock - 1 });
@@ -3132,6 +4035,9 @@
                     cor: item.cor || "#8B0000",
                     condicao: item.condicao || "proibido",
                     sellerName: item.sellerName || "Rede restrita",
+                    usosRestantes: usosPorCompra,
+                    usosTotais: usosPorCompra,
+                    compradoEm: Date.now(),
                     expiresAt
                 });
                 await pushHistory(uLog.id, "compra restrita", -price, `Compra de ${item.nome}`);
@@ -3266,16 +4172,17 @@
                 const p = s.val();
                 if (!p) return;
                 document.getElementById("pub-foto").src = p.foto || "https://placehold.co/150/0A192F/C0C0C0?text=ERA";
+                setCoverImage("pub-capa", p.capa || "");
                 document.getElementById("pub-nome").innerText = p.nome || "Sem nome";
                 document.getElementById("pub-tags").innerHTML = renderTags(p.tags);
                 document.getElementById("pub-title").innerText = autoTitle(p);
-                document.getElementById("pub-bio").innerText = p.bio || "Sem descrição.";
+                renderExpandableText("pub-bio", p.bio || "Sem descrição.");
                 document.getElementById("pub-msg").value = "";
                 document.getElementById("pub-mural").innerHTML = "Carregando...";
                 document.getElementById("profile-modal").style.display = "flex";
                 if (profileMuralUnsub) profileMuralUnsub();
                 profileMuralUnsub = onValue(ref(db, `jogadores/${id}/mural`), snap => {
-                    document.getElementById("pub-mural").innerHTML = renderMural(snap.val());
+                    document.getElementById("pub-mural").innerHTML = renderMural(snap.val(), id);
                 });
             },
 
@@ -3289,10 +4196,12 @@
                 document.getElementById("pub-msg").value = "";
             },
 
-            deleteMuralComment: async (cid) => {
-                if (!currentProfileId) return;
-                await remove(ref(db, `jogadores/${currentProfileId}/mural/${cid}`));
-                await pushAudit({ tipo: "exclusao_comentario_perfil", user: uLog?.nome || "", alvo: currentProfileId, msg: "Comentário do perfil removido" });
+            deleteMuralComment: async (profileIdOrCid, cidMaybe = "") => {
+                const targetId = cidMaybe ? profileIdOrCid : currentProfileId;
+                const cid = cidMaybe || profileIdOrCid;
+                if (!targetId || !cid) return;
+                await remove(ref(db, `jogadores/${targetId}/mural/${cid}`));
+                await pushAudit({ tipo: "exclusao_comentario_perfil", user: uLog?.nome || "", alvo: targetId, msg: "Comentário do perfil removido" });
             },
 
             addNewsComment: async (postId) => {
@@ -3343,15 +4252,57 @@
             },
 
             applyJob: async (jobId) => {
-                if (!ensureAccountOpen()) return;
-                const txt = prompt("Escreva sua candidatura:");
-                if (!txt || !uLog) return;
+                if (!uLog || !ensureAccountOpen()) return;
+                const existing = Object.values(latestApplicationsCache || {}).some(appData => appData.uid === uLog.id && appData.jobId === jobId);
+                if (existing) return alert("Você já se candidatou para esta vaga.");
                 const s = await get(ref(db, `vagas/${jobId}`));
                 const job = s.val();
                 if (!job) return;
-                await push(ref(db, `candidaturas`), { uid: uLog.id, user: uLog.nome, jobId, titulo: job.titulo, salario: Number(job.salario || 0), texto: txt, status: "pendente", ts: Date.now() });
+                document.getElementById("job-app-id").value = jobId;
+                document.getElementById("job-app-title").innerText = `${job.titulo || "Vaga"} · ${money(job.salario || 0)} / ciclo`;
+                document.getElementById("job-app-name").value = uLog.nome || "";
+                document.getElementById("job-app-attrs").value = "";
+                document.getElementById("job-app-course").value = uLog.curso || "";
+                document.getElementById("job-app-frat").value = getFraternityName(uLog.fraternidade);
+                document.getElementById("job-app-exp").value = "";
+                document.getElementById("job-app-feedback").classList.add("hidden");
+                document.getElementById("job-application-modal").style.display = "flex";
+                document.getElementById("job-app-attrs").focus();
+            },
+
+            submitJobApplication: async () => {
+                if (!uLog || !ensureAccountOpen()) return;
+                const jobId = document.getElementById("job-app-id").value;
+                const nome = document.getElementById("job-app-name").value.trim();
+                const atributos = document.getElementById("job-app-attrs").value.trim();
+                const curso = document.getElementById("job-app-course").value.trim();
+                const fraternidade = document.getElementById("job-app-frat").value.trim();
+                const experiencias = document.getElementById("job-app-exp").value.trim();
+                if (!jobId || !nome || !atributos || !curso || !fraternidade || !experiencias) {
+                    return showInlineFeedback("job-app-feedback", "Preencha nome, atributos, curso, fraternidade e experiências.", "warning");
+                }
+                const s = await get(ref(db, `vagas/${jobId}`));
+                const job = s.val();
+                if (!job) return showInlineFeedback("job-app-feedback", "Essa vaga não está mais disponível.", "danger");
+                const texto = `Nome: ${nome}\nAtributos: ${atributos}\nCurso: ${curso}\nFraternidade: ${fraternidade}\nExperiências: ${experiencias}`;
+                await push(ref(db, `candidaturas`), {
+                    uid: uLog.id,
+                    user: uLog.nome,
+                    nome,
+                    atributos,
+                    curso,
+                    fraternidade,
+                    experiencias,
+                    jobId,
+                    titulo: job.titulo,
+                    salario: Number(job.salario || 0),
+                    texto,
+                    status: "pendente",
+                    ts: Date.now()
+                });
                 await pushNotif(uLog.id, `Candidatura enviada para "${job.titulo}".`);
                 await pushAudit({ tipo: "candidatura", user: uLog.nome, vaga: job.titulo, msg: "Candidatura enviada" });
+                app.closeModal("job-application-modal");
                 alert("Candidatura enviada.");
             },
 
@@ -3525,20 +4476,56 @@
                 const descricao = document.getElementById("adm-inv-d").value.trim();
                 const valid = parseInt(document.getElementById("adm-inv-v").value) || 0;
                 const img = document.getElementById("adm-inv-img").value.trim();
+                const usos = Math.max(0, parseInt(document.getElementById("adm-inv-usos").value) || 0);
                 if (!id || !nome) return;
-                await push(ref(db, `jogadores/${id}/mochila`), { nome, descricao, img, expiresAt: Date.now() + valid * 7 * 24 * 60 * 60 * 1000 });
+                const item = { nome, descricao, img, compradoEm: Date.now(), expiresAt: valid ? Date.now() + valid * 7 * 24 * 60 * 60 * 1000 : null };
+                if (usos > 0) {
+                    item.usosRestantes = usos;
+                    item.usosTotais = usos;
+                }
+                await push(ref(db, `jogadores/${id}/mochila`), item);
                 await pushAudit({ tipo: "inventario", user: uLog?.nome || "REITORIA", alvo: id, item: nome, msg: "Item adicionado ao inventário" });
                 renderAdmLists();
             },
 
-            admRemoveInventory: async () => {
+            admEditInventory: async (itemId = "") => {
                 const id = document.getElementById("adm-p-sel").value;
                 if (!id) return;
                 const snap = await get(ref(db, `jogadores/${id}/mochila`));
                 const inv = snap.val() || {};
                 const keys = Object.keys(inv);
                 if (!keys.length) return alert("Sem itens.");
-                const selected = prompt(`Chave do item para excluir:\n${keys.join(", ")}`);
+                const selected = itemId || (document.getElementById("adm-p-sel").dataset.selectedType === "inventario" ? document.getElementById("adm-p-sel").dataset.selectedId : "") || prompt(`Chave do item para editar:\n${keys.join(", ")}`);
+                if (!selected || !inv[selected]) return;
+                const item = inv[selected];
+                const currentWeeks = item.expiresAt ? Math.max(0, Math.ceil((Number(item.expiresAt) - Date.now()) / (7 * 24 * 60 * 60 * 1000))) : 0;
+                const nome = prompt("Nome do item:", item.nome || "");
+                const descricao = prompt("Descrição do item:", item.descricao || "");
+                const img = prompt("Imagem / URL:", item.img || "");
+                const valid = prompt("Validade em semanas (0 para sem validade):", String(currentWeeks));
+                const usos = prompt("Usos disponíveis para este item:", String(itemUsesLeft(item)));
+                if (nome === null || descricao === null || img === null || valid === null || usos === null) return;
+                const usosRestantes = Math.max(0, parseInt(usos) || 0);
+                await update(ref(db, `jogadores/${id}/mochila/${selected}`), {
+                    nome: nome || item.nome || "Item",
+                    descricao: descricao || "",
+                    img: img || "",
+                    expiresAt: Number(valid) > 0 ? Date.now() + Number(valid) * 7 * 24 * 60 * 60 * 1000 : null,
+                    usosRestantes,
+                    usosTotais: Math.max(usosRestantes, Number(item.usosTotais || item.usosPorCompra || 0))
+                });
+                await pushAudit({ tipo: "inventario", user: uLog?.nome || "REITORIA", alvo: id, item: nome || item.nome, msg: "Item editado no inventário" });
+                renderAdmLists();
+            },
+
+            admRemoveInventory: async (itemId = "") => {
+                const id = document.getElementById("adm-p-sel").value;
+                if (!id) return;
+                const snap = await get(ref(db, `jogadores/${id}/mochila`));
+                const inv = snap.val() || {};
+                const keys = Object.keys(inv);
+                if (!keys.length) return alert("Sem itens.");
+                const selected = itemId || (document.getElementById("adm-p-sel").dataset.selectedType === "inventario" ? document.getElementById("adm-p-sel").dataset.selectedId : "") || prompt(`Chave do item para excluir:\n${keys.join(", ")}`);
                 if (!selected || !inv[selected]) return;
                 await remove(ref(db, `jogadores/${id}/mochila/${selected}`));
                 await pushAudit({ tipo: "inventario", user: uLog?.nome || "REITORIA", alvo: id, msg: "Item removido do inventário" });
@@ -3697,6 +4684,7 @@
                 const maxPorAluno = parseInt(document.getElementById("adm-m-lim").value) || 0;
                 const desconto = clamp(parseInt(document.getElementById("adm-m-desc").value) || 0, 0, 95);
                 const duracao = parseInt(document.getElementById("adm-m-v").value) || 0;
+                const usosPorCompra = Math.max(1, parseInt(document.getElementById("adm-m-usos").value) || 1);
                 const tag = document.getElementById("adm-m-t").value.trim();
                 const cor = document.getElementById("adm-m-c").value;
                 if (!nome) return;
@@ -3710,6 +4698,7 @@
                     descricao,
                     estoque,
                     duracao,
+                    usosPorCompra,
                     tag,
                     cor,
                     sellerName: "ERA Academy",
@@ -3727,6 +4716,13 @@
                 alert("Item criado e notificações enviadas.");
             },
 
+            editMarketItem: async (id) => {
+                const snap = await get(ref(db, `loja/${id}`));
+                const item = snap.val();
+                if (!item) return alert("Item não encontrado.");
+                openEditEntityModal("market", id, item);
+            },
+
             admAddIllegal: async () => {
                 const nome = document.getElementById("adm-c-n").value.trim();
                 const preco = parseInt(document.getElementById("adm-c-p").value) || 0;
@@ -3734,6 +4730,7 @@
                 const descricao = document.getElementById("adm-c-d").value.trim();
                 const estoque = parseInt(document.getElementById("adm-c-q").value) || 0;
                 const duracao = parseInt(document.getElementById("adm-c-v").value) || 0;
+                const usosPorCompra = Math.max(1, parseInt(document.getElementById("adm-c-usos").value) || 1);
                 const tag = document.getElementById("adm-c-t").value.trim();
                 const cor = document.getElementById("adm-c-cor").value;
                 const checkedUsers = Array.from(document.querySelectorAll('#adm-illegal-user-list input[name="illegal-allowed-user"]:checked')).map(el => el.value);
@@ -3748,6 +4745,7 @@
                     descricao,
                     estoque,
                     duracao,
+                    usosPorCompra,
                     tag,
                     cor,
                     sellerName: "Rede restrita",
@@ -3758,6 +4756,13 @@
                 });
                 await pushAudit({ tipo: "mercado_ilegal", user: uLog?.nome || "REITORIA", item: nome, valor: preco, msg: "Item criado no mercado ilegal" });
                 alert("Item ilegal criado.");
+            },
+
+            editIllegalItem: async (id) => {
+                const snap = await get(ref(db, `loja_clandestina/${id}`));
+                const item = snap.val();
+                if (!item) return alert("Item ilegal não encontrado.");
+                openEditEntityModal("illegal", id, item);
             },
 
             markIllegalAccess: (selectAll) => {
@@ -3808,6 +4813,14 @@
                 btn.textContent = wrap.classList.contains("hidden") ? "Expandir" : "Minimizar";
             },
 
+            toggleMarketAdmin: () => {
+                const wrap = document.getElementById("adm-market-wrap");
+                const btn = document.getElementById("market-toggle-btn");
+                if (!wrap || !btn) return;
+                wrap.classList.toggle("hidden");
+                btn.textContent = wrap.classList.contains("hidden") ? "Expandir" : "Minimizar";
+            },
+
             admPostNews: async () => {
                 const titulo = document.getElementById("adm-n-t").value.trim();
                 const img = document.getElementById("adm-n-i").value.trim();
@@ -3826,9 +4839,16 @@
                 const descricao = document.getElementById("adm-j-d").value.trim();
                 const salario = parseInt(document.getElementById("adm-j-s").value) || 0;
                 if (!titulo) return;
-                await push(ref(db, "vagas"), { titulo, img, descricao, salario, candidaturas: {} });
+                await push(ref(db, "vagas"), { titulo, img, descricao, salario, candidaturas: {}, ts: Date.now() });
                 await pushAudit({ tipo: "vaga", user: uLog?.nome || "REITORIA", vaga: titulo, msg: "Vaga criada" });
                 alert("Vaga criada.");
+            },
+
+            editJob: async (id) => {
+                const snap = await get(ref(db, `vagas/${id}`));
+                const job = snap.val();
+                if (!job) return alert("Vaga não encontrada.");
+                openEditEntityModal("job", id, job);
             },
 
             approveLoan: async (loanId) => {
@@ -3917,10 +4937,14 @@
             }
         };
 
+        setupAdmCollapsibles();
+
         window.addEventListener("keydown", (e) => {
             if (e.key === "Escape") {
                 document.getElementById("profile-modal").style.display = "none";
                 document.getElementById("image-modal").style.display = "none";
+                document.getElementById("job-application-modal").style.display = "none";
+                document.getElementById("edit-entity-modal").style.display = "none";
                 currentProfileId = null;
                 if (profileMuralUnsub) {
                     profileMuralUnsub();
