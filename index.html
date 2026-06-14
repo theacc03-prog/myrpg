@@ -622,6 +622,36 @@
             position: relative;
         }
 
+        .freelance-author {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 8px;
+            font-size: 10px;
+        }
+
+        .freelance-author img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.22);
+        }
+
+        .freelance-title {
+            font-size: 1.35rem;
+            margin: 8px 0 7px;
+        }
+
+        .freelance-image {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.12);
+            margin-bottom: 12px;
+        }
+
         .market-labels {
             display: flex;
             flex-wrap: wrap;
@@ -1071,6 +1101,7 @@
         <button class="nav-btn" onclick="app.showTab('tab-fin', this)">Financiamento</button>
         <button class="nav-btn" onclick="app.showTab('tab-transf', this)">Transferir</button>
         <button class="nav-btn" onclick="app.showTab('tab-mercado', this)">Mercado</button>
+        <button class="nav-btn" onclick="app.showTab('tab-marketplace', this)">Marketplace</button>
         <button class="nav-btn hidden" id="btn-mercado-ilegal" onclick="app.showTab('tab-mercado-ilegal', this)">Mercado Ilegal</button>
         <button class="nav-btn" onclick="app.showTab('tab-frat', this)">Fraternidades</button>
         <button class="nav-btn" onclick="app.showTab('tab-rank', this)">Ranking</button>
@@ -1095,8 +1126,8 @@
             <label class="form-label" for="reg-class">Origem financeira</label>
             <select id="reg-class">
                 <option value="">Selecione a origem financeira</option>
-                <option value="herdeiro">Herdeiro:</option>
-                <option value="bolsista">Bolsista:</option>
+                <option value="herdeiro">Herdeiro</option>
+                <option value="bolsista">Bolsista</option>
             </select>
             <label class="form-label" for="reg-frat">Fraternidade inicial</label>
             <select id="reg-frat"></select>
@@ -1113,7 +1144,7 @@
             <div id="profile-card" class="card soft profile-shell">
                 <div id="u-capa" class="profile-cover"></div>
                 <div style="text-align:right">
-                    <button class="btn-sec small-btn" onclick="app.toggleSettings()">Settings</button>
+                    <button class="small-btn" onclick="app.toggleSettings()">Settings</button>
                 </div>
 
                 <div id="clock" class="sticky-note">00:00:00</div>
@@ -1289,6 +1320,41 @@
             </div>
         </div>
 
+        <div id="tab-marketplace" class="tab-content hidden">
+            <div class="card left">
+                <h2 class="tab-title">Marketplace</h2>
+                <div class="subtle">Freelances publicados por alunos, com comentários e demonstração de interesse.</div>
+                <div class="row-actions" style="justify-content:flex-start; margin-top:12px">
+                    <button class="btn-sec small-btn" onclick="app.showMarketplacePanel('list')">Freelances</button>
+                    <button class="btn-gold small-btn" onclick="app.showMarketplacePanel('submit')">Submeter freelance</button>
+                </div>
+                <div id="marketplace-list-view">
+                    <div id="freelance-list" class="grid"></div>
+                </div>
+                <div id="marketplace-submit-view" class="hidden" style="margin-top:14px">
+                    <label class="form-label" for="freelance-title">Título</label>
+                    <input type="text" id="freelance-title" placeholder="Título do freelance">
+                    <label class="form-label" for="freelance-price">Valor por trabalho</label>
+                    <input type="number" id="freelance-price" placeholder="Valor por trabalho">
+                    <label class="form-label" for="freelance-img">Foto do freelance</label>
+                    <input type="text" id="freelance-img" placeholder="Link da imagem do freelance">
+                    <label class="form-label" for="freelance-desc">Descrição</label>
+                    <textarea id="freelance-desc" placeholder="Descreva o freelance, prazo, entrega e condições"></textarea>
+                    <div id="freelance-feedback" class="inline-feedback hidden"></div>
+                    <button class="btn-gold" onclick="app.submitFreelance()">Enviar para Aprovação</button>
+                </div>
+            </div>
+            <div class="card left">
+                <h3 class="tab-title">Meus envios pendentes</h3>
+                <div id="my-pending-freelances" class="mini">Nenhum freelance pendente.</div>
+            </div>
+            <div id="marketplace-approval-panel" class="card left hidden">
+                <h3 class="tab-title">Aprovação da Reitoria</h3>
+                <div class="subtle">Freelances enviados aparecem aqui antes de irem para a página pública.</div>
+                <div id="adm-freelance-approvals"></div>
+            </div>
+        </div>
+
         <div id="tab-mercado-ilegal" class="tab-content hidden">
             <div class="card left illegal-page">
                 <h2 class="tab-title illegal-title">Mercado Ilegal</h2>
@@ -1380,7 +1446,7 @@
                         <label class="form-label" for="adm-inv-d">Descrição</label>
                         <input type="text" id="adm-inv-d" placeholder="Descrição do item">
                         <label class="form-label" for="adm-inv-v">Validade</label>
-                        <input type="number" id="adm-inv-v" placeholder="Validade em semanas">
+                        <input type="number" id="adm-inv-v" placeholder="Validade em ciclos">
                         <label class="form-label" for="adm-inv-img">Imagem</label>
                         <input type="text" id="adm-inv-img" placeholder="Link da imagem">
                         <label class="form-label" for="adm-inv-usos">Quantidade de usos</label>
@@ -1497,7 +1563,7 @@
                         <label class="form-label" for="adm-m-desc">Desconto</label>
                         <input type="number" id="adm-m-desc" placeholder="Desconto em %, opcional">
                         <label class="form-label" for="adm-m-v">Validade</label>
-                        <input type="number" id="adm-m-v" placeholder="Validade em semanas">
+                        <input type="number" id="adm-m-v" placeholder="Validade em ciclos">
                         <label class="form-label" for="adm-m-usos">Quantidade de usos</label>
                         <input type="number" id="adm-m-usos" placeholder="Usos por compra">
                         <label class="form-label" for="adm-m-t">Tag</label>
@@ -1561,9 +1627,6 @@
                     <div class="hr"></div>
                     <strong>Candidaturas</strong>
                     <div id="adm-applications"></div>
-                    <div class="hr"></div>
-                    <strong>Uso de Itens</strong>
-                    <div id="adm-item-uses"></div>
                 </div>
             </div>
 
@@ -1581,7 +1644,7 @@
                     <label class="form-label" for="adm-c-q">Quantidade</label>
                     <input type="number" id="adm-c-q" placeholder="Quantidade disponível">
                     <label class="form-label" for="adm-c-v">Validade</label>
-                    <input type="number" id="adm-c-v" placeholder="Validade em semanas">
+                    <input type="number" id="adm-c-v" placeholder="Validade em ciclos">
                     <label class="form-label" for="adm-c-usos">Quantidade de usos</label>
                     <input type="number" id="adm-c-usos" placeholder="Usos por compra">
                     <label class="form-label" for="adm-c-t">Tag</label>
@@ -1712,7 +1775,7 @@
                 <label class="form-label" for="edit-entity-discount">Desconto</label>
                 <input type="number" id="edit-entity-discount" placeholder="Desconto em %, opcional">
                 <label class="form-label" for="edit-entity-duration">Validade</label>
-                <input type="number" id="edit-entity-duration" placeholder="Validade em semanas">
+                <input type="number" id="edit-entity-duration" placeholder="Validade em ciclos">
                 <label class="form-label" for="edit-entity-uses">Quantidade de usos</label>
                 <input type="number" id="edit-entity-uses" placeholder="Usos por compra">
                 <label class="form-label" for="edit-entity-tag">Tag</label>
@@ -1839,6 +1902,7 @@
         let latestItemUsesCache = {};
         let latestJobsCache = {};
         let latestApplicationsCache = {};
+        let latestFreelancesCache = {};
         let draggedAdmKey = "";
 
         const esc = (s = "") => String(s)
@@ -1865,11 +1929,34 @@
             }
         };
 
-        const daysLeft = (expiresAt) => {
-            if (!expiresAt) return "sem validade";
-            const diff = Math.ceil((expiresAt - Date.now()) / (1000 * 60 * 60 * 24));
-            return diff > 0 ? `${diff} dia(s)` : "expirado";
+        const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
+
+        const legacyCyclesLeftFromExpiresAt = (expiresAt) => {
+            if (!expiresAt) return null;
+            return Math.max(0, Math.ceil((Number(expiresAt) - Date.now()) / MS_PER_WEEK));
         };
+
+        function itemValidityCycles(item = {}) {
+            return Math.max(0, Number(item.validadeCiclos ?? item.duracao ?? 0) || 0);
+        }
+
+        function itemCyclesLeft(item = {}) {
+            if (item.ciclosRestantes !== undefined && item.ciclosRestantes !== null && item.ciclosRestantes !== "") {
+                return Math.max(0, Number(item.ciclosRestantes) || 0);
+            }
+            if (item.expiresAt) {
+                const boughtAt = Number(item.compradoEm || item.createdAt || 0);
+                if (boughtAt && Number(item.expiresAt) <= boughtAt + 60000) return null;
+                return legacyCyclesLeftFromExpiresAt(item.expiresAt);
+            }
+            return null;
+        }
+
+        function cyclesLeftText(item = {}) {
+            const cycles = itemCyclesLeft(item);
+            if (cycles === null) return "sem validade";
+            return cycles > 0 ? `${cycles} ciclo(s)` : "expirado";
+        }
 
         const getItemImages = (item = {}) => {
             if (Array.isArray(item.imgs) && item.imgs.length) return item.imgs.filter(Boolean);
@@ -1885,8 +1972,9 @@
         }
 
         function marketValidityText(item = {}) {
-            if (item.expiresAt) return `Validade restante: ${daysLeft(item.expiresAt)}`;
-            return `Validade após compra: ${Number(item.duracao || 0)} semana(s)`;
+            if (itemCyclesLeft(item) !== null) return `Validade restante: ${cyclesLeftText(item)}`;
+            const cycles = itemValidityCycles(item);
+            return cycles > 0 ? `Validade apos compra: ${cycles} ciclo(s)` : "Validade apos compra: sem validade";
         }
 
         function itemUsesLeft(item = {}) {
@@ -2107,19 +2195,21 @@
             );
             kept[`classe_${profile || "bolsista"}`] = classTag(profile || "bolsista");
             if (fraternityId) kept[`fraternidade_${fraternityId}`] = fraternityTag(fraternityId);
+            else kept.fraternidade_sem = { texto: "Sem Fraternidade", cor: "#C0C0C0", textoCor: "#111", origem: "fraternidade", fraternidade: "" };
             return kept;
         }
 
-        function renderFraternityOptions(selected = "", includeBlank = false) {
+        function renderFraternityOptions(selected = "", includeBlank = false, includeNone = false) {
             const blank = includeBlank ? `<option value="">Sem fraternidade</option>` : `<option value="">Selecione a fraternidade</option>`;
-            return blank + Object.entries(FRATERNITIES).map(([id, f]) => (
+            const none = includeNone ? `<option value="sem-fraternidade" ${selected === "sem-fraternidade" ? "selected" : ""}>Sem Fraternidade</option>` : "";
+            return blank + none + Object.entries(FRATERNITIES).map(([id, f]) => (
                 `<option value="${id}" ${selected === id ? "selected" : ""}>${esc(f.nome)}</option>`
             )).join("");
         }
 
         function fillStaticFraternitySelects() {
             const reg = document.getElementById("reg-frat");
-            if (reg) reg.innerHTML = renderFraternityOptions("", false);
+            if (reg) reg.innerHTML = renderFraternityOptions("", false, true);
             const admPlayerFrat = document.getElementById("adm-player-frat");
             if (admPlayerFrat) admPlayerFrat.innerHTML = renderFraternityOptions("", true);
             const admFrat = document.getElementById("adm-frat-sel");
@@ -2236,7 +2326,7 @@
                         ${renderCollapsedTextBlock(`desc-${domId}`, item.descricao || "", "Ver descrição")}
                         <span class="pill" style="background: rgba(192,192,192,0.18)">${esc(item.tag || "Inventário")}</span>
                         <div class="subtle">Comprou: ${itemBoughtText(item)}</div>
-                        <div class="subtle">Validade: ${daysLeft(item.expiresAt)}</div>
+                        <div class="subtle">Validade: ${cyclesLeftText(item)}</div>
                         ${usesTotal ? `<div class="subtle">Usos restantes: ${usesLeft}/${usesTotal}</div>` : ""}
                         ${item.ultimoUsoEm ? `<div class="subtle">Último uso: ${new Date(item.ultimoUsoEm).toLocaleString("pt-BR")}</div>` : ""}
                         ${useControls}
@@ -2246,15 +2336,34 @@
             }).join("");
         }
 
-        function renderHistory(histObj) {
-            if (!histObj || !Object.keys(histObj).length) return "Nenhuma ação registrada.";
-            return Object.values(histObj).reverse().map(h => `
+        function renderHistoryItem(h = {}) {
+            return `
                 <div class="list-item mini">
                     <strong>${esc(h.tipo || "movimento")}</strong> · ${money(h.valor || 0)}<br>
                     ${esc(h.desc || "")}<br>
                     <span class="subtle">${new Date(h.ts || Date.now()).toLocaleString("pt-BR")}</span>
                 </div>
-            `).join("");
+            `;
+        }
+
+        function renderHistory(histObj) {
+            const entries = Object.values(histObj || {})
+                .map(h => ({ ...h, ts: Number(h.ts || 0) }))
+                .sort((a, b) => b.ts - a.ts);
+            if (!entries.length) return "Nenhuma ação registrada.";
+            const weekLimit = Date.now() - (7 * 24 * 60 * 60 * 1000);
+            const recent = entries.filter(h => (h.ts || Date.now()) >= weekLimit);
+            const older = entries.filter(h => (h.ts || Date.now()) < weekLimit);
+            const recentHtml = recent.map(renderHistoryItem).join("") || `<div class="subtle">Sem ações nos últimos 7 dias.</div>`;
+            const olderHtml = older.length ? `
+                <div class="hr"></div>
+                <div class="row-actions" style="justify-content:flex-start">
+                    <strong>Histórico anterior (${older.length})</strong>
+                    <button class="btn-sec small-btn" onclick="app.toggleCollapsedText('u-history-old-list', this, 'Ver mais')">Ver mais</button>
+                </div>
+                <div id="u-history-old-list" class="hidden">${older.map(renderHistoryItem).join("")}</div>
+            ` : "";
+            return `${recentHtml}${olderHtml}`;
         }
 
         function renderLoans(loansObj) {
@@ -2394,6 +2503,14 @@
                             <button class="btn-red small-btn" onclick="app.deleteNews('${id}')">Excluir</button>
                        </div>`
                     : "";
+                const commentsBlock = commentCount ? `
+                    <div class="hr"></div>
+                    <div class="row-actions" style="justify-content:flex-start">
+                        <strong>Comentários (${commentCount})</strong>
+                        <button class="btn-sec small-btn" onclick="app.toggleCollapsedText('${commentsDomId}', this, 'Ver todos')">Ver todos</button>
+                    </div>
+                    <div id="${commentsDomId}" class="hidden">${commentHtml}</div>
+                ` : "";
                 return `
                     <div class="card left">
                         ${n.img ? `<img src="${esc(n.img)}" alt="" style="width:100%; border-radius:10px; margin-bottom:12px">` : ""}
@@ -2404,12 +2521,7 @@
                             <button class="btn-sec small-btn" onclick="app.addNewsComment('${id}')">Comentar</button>
                         </div>
                         ${adminBtns}
-                        <div class="hr"></div>
-                        <div class="row-actions" style="justify-content:flex-start">
-                            <strong>Comentários (${commentCount})</strong>
-                            <button class="btn-sec small-btn" onclick="app.toggleCollapsedText('${commentsDomId}', this, 'Ver todos')">Ver todos</button>
-                        </div>
-                        <div id="${commentsDomId}" class="hidden">${commentHtml || "<div class='subtle'>Sem comentários.</div>"}</div>
+                        ${commentsBlock}
                     </div>
                 `;
             }).join("");
@@ -2460,6 +2572,79 @@
             const all = [...eraItems, ...playerItems].sort((a, b) => Number(b.item.ts || 0) - Number(a.item.ts || 0));
             if (!all.length) return `<div class="subtle">Nenhum item no mercado.</div>`;
             return all.map(({ id, item, source, buy }) => renderItemCard(item, id, buy, source)).join("");
+        }
+
+        function renderFreelanceComments(commentsObj) {
+            const comments = Object.entries(commentsObj || {}).sort(([, a], [, b]) => Number(b.ts || 0) - Number(a.ts || 0));
+            if (!comments.length) return `<div class="subtle">Sem comentários.</div>`;
+            return comments.map(([, c]) => `
+                <div class="comment-box">
+                    <div class="comment-meta">${esc(c.user || "Anônimo")} · ${new Date(c.ts || Date.now()).toLocaleString("pt-BR")}</div>
+                    <div>${esc(c.texto || "")}</div>
+                </div>
+            `).join("");
+        }
+
+        function renderFreelances(freelancesObj) {
+            const entries = Object.entries(freelancesObj || {}).sort(([, a], [, b]) => Number(b.ts || 0) - Number(a.ts || 0));
+            if (!entries.length) return `<div class="subtle">Nenhum freelance publicado.</div>`;
+            return entries.map(([id, f]) => {
+                const comments = f.comentarios || {};
+                const commentCount = Object.keys(comments).length;
+                const commentsDomId = safeDomId("freelance-comments", id);
+                const interested = !!f.interessados?.[uLog?.id];
+                const owner = !!uLog && f.uid === uLog.id;
+                const commentsBlock = commentCount ? `
+                    <div class="hr"></div>
+                    <div class="row-actions" style="justify-content:flex-start">
+                        <strong>Comentários (${commentCount})</strong>
+                        <button class="btn-sec small-btn" onclick="app.toggleCollapsedText('${commentsDomId}', this, 'Ver todos')">Ver todos</button>
+                    </div>
+                    <div id="${commentsDomId}" class="hidden">${renderFreelanceComments(comments)}</div>
+                ` : "";
+                return `
+                    <div class="card left market-card" style="margin-bottom:0">
+                        ${f.img ? `<img src="${esc(f.img)}" alt="" class="freelance-image" onclick="app.openImageModal('${esc(f.img)}')">` : ""}
+                        <h3 class="freelance-title">${esc(f.titulo || "Freelance")}</h3>
+                        <div class="freelance-author">
+                            <img src="${esc(f.userFoto || "https://placehold.co/60/0A192F/C0C0C0?text=ERA")}" alt="" onerror="this.src='https://placehold.co/60/0A192F/C0C0C0?text=ERA'">
+                            <div>
+                                <strong>${esc(f.userNome || "Aluno")}</strong><br>
+                                <span class="subtle">${new Date(f.ts || Date.now()).toLocaleString("pt-BR")}</span>
+                            </div>
+                        </div>
+                        <div><span class="price-new">${money(f.valor || 0)}</span> <span class="subtle">por trabalho</span></div>
+                        ${renderCollapsedTextBlock(safeDomId("freelance-desc", id), f.descricao || "", "Ver descrição")}
+                        <div class="row-actions" style="justify-content:flex-start; margin-top:12px">
+                            <button class="btn-sec small-btn" onclick="app.addFreelanceComment('${id}')">Comentar</button>
+                            ${owner
+                                ? `<button class="btn-sec small-btn" disabled>Seu freelance</button>`
+                                : interested
+                                    ? `<button class="btn-sec small-btn" disabled>Interesse enviado</button>`
+                                    : `<button class="btn-gold small-btn" onclick="app.wantFreelance('${id}')">EU QUERO</button>`}
+                            ${owner ? `<button class="btn-red small-btn" onclick="app.deleteFreelance('${id}', 'publicado')">Excluir meu freelance</button>` : ""}
+                            ${isAdmin() && !owner ? `<button class="btn-red small-btn" onclick="app.deleteFreelance('${id}', 'publicado')">Excluir pela Reitoria</button>` : ""}
+                        </div>
+                        ${commentsBlock}
+                    </div>
+                `;
+            }).join("");
+        }
+
+        function renderMyPendingFreelances(pendingObj) {
+            const entries = Object.entries(pendingObj || {})
+                .filter(([, f]) => !!uLog && f.uid === uLog.id)
+                .sort(([, a], [, b]) => Number(b.ts || 0) - Number(a.ts || 0));
+            if (!entries.length) return `<div class="subtle">Nenhum freelance pendente.</div>`;
+            return entries.map(([id, f]) => `
+                <div class="list-item mini">
+                    <strong>${esc(f.titulo || "Freelance")}</strong> · ${money(f.valor || 0)}<br>
+                    <span class="subtle">Aguardando aprovação desde ${new Date(f.ts || Date.now()).toLocaleString("pt-BR")}</span>
+                    <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                        <button class="btn-red small-btn" onclick="app.deleteFreelance('${id}', 'pendente')">Excluir meu envio</button>
+                    </div>
+                </div>
+            `).join("");
         }
 
         function userCanSeeRestrictedItem(item, user) {
@@ -2711,7 +2896,7 @@
             }
             const sellSelect = document.getElementById("sell-item");
             if (sellSelect) {
-                sellSelect.innerHTML = `<option value="">Item do inventário para vender...</option>` + items.map(([id, item]) => `<option value="${id}">${esc(item.nome || "Item")} · ${daysLeft(item.expiresAt)}</option>`).join("");
+                sellSelect.innerHTML = `<option value="">Item do inventário para vender...</option>` + items.map(([id, item]) => `<option value="${id}">${esc(item.nome || "Item")} · ${cyclesLeftText(item)}</option>`).join("");
             }
         }
 
@@ -3078,7 +3263,7 @@
             document.getElementById("edit-entity-stock").value = Number(data.estoque || 0);
             document.getElementById("edit-entity-limit").value = Number(data.maxPorAluno || 0);
             document.getElementById("edit-entity-discount").value = Number(data.desconto || 0);
-            document.getElementById("edit-entity-duration").value = Number(data.duracao || 0);
+            document.getElementById("edit-entity-duration").value = itemValidityCycles(data);
             document.getElementById("edit-entity-uses").value = Math.max(1, Number(data.usosPorCompra || 1));
             document.getElementById("edit-entity-tag").value = data.tag || "";
             document.getElementById("edit-entity-color").value = data.cor || (isIllegal ? "#8B0000" : "#C0C0C0");
@@ -3203,7 +3388,7 @@
                         <div class="list-item">
                             <strong>${esc(i.nome || "")}</strong> · ${money(effectivePrice(i))}<br>
                             <span class="subtle">${esc(i.descricao || "")}</span>
-                            <div class="subtle">Estoque: ${i.estoque || 0} | Limite por aluno: ${i.maxPorAluno || "sem limite"} | Desconto: ${i.desconto || 0}% | Usos: ${i.usosPorCompra || 1} por compra</div>
+                            <div class="subtle">Estoque: ${i.estoque || 0} | Limite por aluno: ${i.maxPorAluno || "sem limite"} | Desconto: ${i.desconto || 0}% | ${marketValidityText(i)} | Usos: ${i.usosPorCompra || 1} por compra</div>
                             <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
                                 <button class="btn-sec small-btn" onclick="app.editMarketItem('${id}')">Editar</button>
                                 <button class="btn-red small-btn" onclick="app.deleteMarketItem('${id}')">Excluir</button>
@@ -3219,6 +3404,35 @@
                 if (marketEl) marketEl.innerHTML = renderMarket();
             });
 
+            listen(ref(db, "freelances"), snap => {
+                latestFreelancesCache = snap.val() || {};
+                const freelanceEl = document.getElementById("freelance-list");
+                if (freelanceEl) freelanceEl.innerHTML = renderFreelances(latestFreelancesCache);
+            });
+
+            listen(ref(db, "freelances_pendentes"), snap => {
+                const pending = snap.val() || {};
+                const mineBox = document.getElementById("my-pending-freelances");
+                if (mineBox) mineBox.innerHTML = renderMyPendingFreelances(pending);
+                const box = document.getElementById("adm-freelance-approvals");
+                if (!box) return;
+                box.innerHTML = Object.entries(pending)
+                    .sort(([, a], [, b]) => Number(b.ts || 0) - Number(a.ts || 0))
+                    .map(([id, f]) => `
+                        <div class="list-item">
+                            ${f.img ? `<img src="${esc(f.img)}" alt="" class="freelance-image">` : ""}
+                            <strong>${esc(f.titulo || "Freelance")}</strong> · ${money(f.valor || 0)}<br>
+                            <span class="subtle">Enviado por ${esc(f.userNome || "Aluno")} em ${new Date(f.ts || Date.now()).toLocaleString("pt-BR")}</span><br>
+                            <span class="subtle">${esc(f.descricao || "")}</span>
+                            <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
+                                <button class="btn-gold small-btn" onclick="app.approveFreelance('${id}')">Aprovar</button>
+                                <button class="btn-red small-btn" onclick="app.denyFreelance('${id}')">Negar</button>
+                                <button class="btn-red small-btn" onclick="app.deleteFreelance('${id}', 'pendente')">Excluir pela Reitoria</button>
+                            </div>
+                        </div>
+                    `).join("") || `<div class="subtle">Sem freelances pendentes.</div>`;
+            });
+
             listen(ref(db, "loja_clandestina"), snap => {
                 const items = snap.val() || {};
                 latestIllegalStore = items;
@@ -3230,7 +3444,7 @@
                         <div class="list-item">
                             <strong>${esc(i.nome || "")}</strong> · ${money(i.preco || 0)}<br>
                             <span class="subtle">${esc(i.descricao || "")}</span>
-                            <div class="subtle">Estoque: ${i.estoque || 0} | Usos: ${i.usosPorCompra || 1} por compra</div>
+                            <div class="subtle">Estoque: ${i.estoque || 0} | ${marketValidityText(i)} | Usos: ${i.usosPorCompra || 1} por compra</div>
                             <div class="row-actions" style="justify-content:flex-start; margin-top:8px">
                                 <button class="btn-sec small-btn" onclick="app.editIllegalItem('${id}')">Editar</button>
                                 <button class="btn-red small-btn" onclick="app.deleteIllegalItem('${id}')">Excluir</button>
@@ -3286,17 +3500,6 @@
             listen(ref(db, "usos_itens"), snap => {
                 const uses = snap.val() || {};
                 latestItemUsesCache = uses;
-                const box = document.getElementById("adm-item-uses");
-                if (box) {
-                    box.innerHTML = Object.entries(uses).reverse().slice(0, 50).map(([, use]) => `
-                        <div class="list-item mini">
-                            <strong>${esc(use.itemNome || "Item")}</strong><br>
-                            Usuário: ${esc(use.user || "Jogador")}<br>
-                            Quantidade usada: ${Number(use.quantidade || 0)} | Restante: ${Number(use.usosRestantes || 0)}<br>
-                            <span class="subtle">${new Date(use.ts || Date.now()).toLocaleString("pt-BR")}</span>
-                        </div>
-                    `).join("") || `<div class="subtle">Nenhum uso registrado.</div>`;
-                }
                 renderInventoryManagementView(document.getElementById("adm-inventory-player")?.value || "");
             });
 
@@ -3383,7 +3586,9 @@
             document.getElementById("u-frat-mini").innerText = getFraternityName(d.fraternidade);
             setStatusBanner(d);
             updateFinanceHealth(d);
-            document.getElementById("btn-adm").style.display = isAdmin({ ...d, id: auth.currentUser?.uid }) ? "inline-block" : "none";
+            const adminUser = isAdmin({ ...d, id: auth.currentUser?.uid });
+            document.getElementById("btn-adm").style.display = adminUser ? "inline-block" : "none";
+            document.getElementById("marketplace-approval-panel")?.classList.toggle("hidden", !adminUser);
             syncRestrictedTabVisibility();
         }
 
@@ -3516,6 +3721,11 @@
                 if (btn) btn.textContent = box.classList.contains("hidden") ? "Usar" : "Cancelar";
             },
 
+            showMarketplacePanel: (view = "list") => {
+                document.getElementById("marketplace-list-view")?.classList.toggle("hidden", view !== "list");
+                document.getElementById("marketplace-submit-view")?.classList.toggle("hidden", view !== "submit");
+            },
+
             toggleSettings: () => document.getElementById("settings-area").classList.toggle("hidden"),
 
             closeModal: (id) => {
@@ -3582,7 +3792,7 @@
                 const imgsList = parseLines(document.getElementById("edit-entity-images").value);
                 const preco = parseInt(document.getElementById("edit-entity-price").value) || 0;
                 const estoque = parseInt(document.getElementById("edit-entity-stock").value) || 0;
-                const duracao = parseInt(document.getElementById("edit-entity-duration").value) || 0;
+                const validadeCiclos = Math.max(0, parseInt(document.getElementById("edit-entity-duration").value) || 0);
                 const usosPorCompra = Math.max(1, parseInt(document.getElementById("edit-entity-uses").value) || 1);
                 const tag = document.getElementById("edit-entity-tag").value.trim();
                 const cor = document.getElementById("edit-entity-color").value;
@@ -3594,7 +3804,8 @@
                     imgs: imgsList,
                     descricao,
                     estoque,
-                    duracao,
+                    duracao: validadeCiclos,
+                    validadeCiclos,
                     usosPorCompra,
                     tag,
                     cor
@@ -3625,8 +3836,9 @@
                 const e = document.getElementById("reg-email").value.trim();
                 const p = document.getElementById("reg-pass").value.trim();
                 const socialClass = document.getElementById("reg-class").value;
-                const fraternityId = document.getElementById("reg-frat").value;
-                if (!n || !e || !p || !socialClass || !fraternityId) {
+                const rawFraternityId = document.getElementById("reg-frat").value;
+                const fraternityId = rawFraternityId === "sem-fraternidade" ? "" : rawFraternityId;
+                if (!n || !e || !p || !socialClass || !rawFraternityId) {
                     return alert("Preencha nome, e-mail, senha, origem financeira e fraternidade.");
                 }
                 try {
@@ -3660,11 +3872,13 @@
                     await set(ref(db, `jogadores/${uid}`), playerData);
 
                     ensureFraternitiesSeeded();
-                    update(ref(db, `fraternidades/${fraternityId}/membros`), {
-                        [uid]: true
-                    }).catch(err => {
-                        console.warn("Membro da fraternidade nao registrado:", err);
-                    });
+                    if (fraternityId) {
+                        update(ref(db, `fraternidades/${fraternityId}/membros`), {
+                            [uid]: true
+                        }).catch(err => {
+                            console.warn("Membro da fraternidade nao registrado:", err);
+                        });
+                    }
 
                     await pushAudit({
                         tipo: "registro",
@@ -3752,7 +3966,12 @@
                 const d = dSnap.val();
                 if (!d) return showInlineFeedback("transfer-feedback", "Destinatário inválido.", "danger");
                 const newItemRef = push(ref(db, `jogadores/${dId}/mochila`));
-                await set(newItemRef, item);
+                await set(newItemRef, {
+                    ...item,
+                    ciclosRestantes: itemCyclesLeft(item),
+                    validadeCiclos: itemValidityCycles(item) || itemCyclesLeft(item) || null,
+                    expiresAt: null
+                });
                 await remove(ref(db, `jogadores/${uLog.id}/mochila/${itemId}`));
                 await pushHistory(uLog.id, "item enviado", 0, `${item.nome} enviado para ${d.nome}`);
                 await pushHistory(dId, "item recebido", 0, `${item.nome} recebido de ${uLog.nome}`);
@@ -3783,6 +4002,9 @@
                     condicao: condition,
                     tag: item.tag || "Revenda",
                     cor: item.cor || "#C0C0C0",
+                    ciclosRestantes: itemCyclesLeft(item),
+                    validadeCiclos: itemValidityCycles(item) || itemCyclesLeft(item) || null,
+                    expiresAt: null,
                     listedFromItemId: itemId,
                     ts: Date.now()
                 });
@@ -3852,7 +4074,9 @@
                         usosRestantes: itemUsesLeft(listing),
                         usosTotais: Number(listing.usosTotais || listing.usosPorCompra || itemUsesLeft(listing) || 0),
                         compradoEm: Date.now(),
-                        expiresAt: listing.expiresAt || null
+                        ciclosRestantes: itemCyclesLeft(listing),
+                        validadeCiclos: itemValidityCycles(listing) || itemCyclesLeft(listing) || null,
+                        expiresAt: null
                     },
                     [`mercado_jogadores/${id}`]: null
                 });
@@ -3882,7 +4106,9 @@
                         usosRestantes: itemUsesLeft(listing),
                         usosTotais: Number(listing.usosTotais || listing.usosPorCompra || itemUsesLeft(listing) || 0),
                         compradoEm: listing.compradoEm || listing.ts || Date.now(),
-                        expiresAt: listing.expiresAt || null
+                        ciclosRestantes: itemCyclesLeft(listing),
+                        validadeCiclos: itemValidityCycles(listing) || itemCyclesLeft(listing) || null,
+                        expiresAt: null
                     },
                     [`mercado_jogadores/${id}`]: null
                 });
@@ -3987,7 +4213,7 @@
                 if (stock <= 0) return alert("Item esgotado.");
                 if (maxPorAluno && boughtByMe >= maxPorAluno) return alert("Você já atingiu o limite de compra deste item.");
                 if (Number(uLog.saldo || 0) < price) return alert("Saldo insuficiente.");
-                const expiresAt = Date.now() + (Number(item.duracao || 0) * 7 * 24 * 60 * 60 * 1000);
+                const validadeCiclos = itemValidityCycles(item);
                 const usosPorCompra = Math.max(1, Number(item.usosPorCompra || 1));
                 const invId = push(ref(db, `jogadores/${uLog.id}/mochila`)).key;
                 await update(ref(db, `jogadores/${uLog.id}`), { saldo: Number(uLog.saldo || 0) - price });
@@ -4004,7 +4230,8 @@
                     usosRestantes: usosPorCompra,
                     usosTotais: usosPorCompra,
                     compradoEm: Date.now(),
-                    expiresAt
+                    ciclosRestantes: validadeCiclos > 0 ? validadeCiclos : null,
+                    validadeCiclos: validadeCiclos > 0 ? validadeCiclos : null
                 });
                 await pushHistory(uLog.id, "compra", -price, `Compra de ${item.nome}`);
                 await pushNotif(uLog.id, `Você comprou ${item.nome}.`);
@@ -4021,7 +4248,7 @@
                 const price = effectivePrice(item);
                 if (stock <= 0) return alert("Item esgotado.");
                 if (Number(uLog.saldo || 0) < price) return alert("Saldo insuficiente.");
-                const expiresAt = Date.now() + (Number(item.duracao || 0) * 7 * 24 * 60 * 60 * 1000);
+                const validadeCiclos = itemValidityCycles(item);
                 const usosPorCompra = Math.max(1, Number(item.usosPorCompra || 1));
                 const invId = push(ref(db, `jogadores/${uLog.id}/mochila`)).key;
                 await update(ref(db, `jogadores/${uLog.id}`), { saldo: Number(uLog.saldo || 0) - price });
@@ -4038,7 +4265,8 @@
                     usosRestantes: usosPorCompra,
                     usosTotais: usosPorCompra,
                     compradoEm: Date.now(),
-                    expiresAt
+                    ciclosRestantes: validadeCiclos > 0 ? validadeCiclos : null,
+                    validadeCiclos: validadeCiclos > 0 ? validadeCiclos : null
                 });
                 await pushHistory(uLog.id, "compra restrita", -price, `Compra de ${item.nome}`);
                 await pushNotif(uLog.id, `Você adquiriu ${item.nome} no mercado restrito.`);
@@ -4223,6 +4451,93 @@
                 await pushAudit({ tipo: "exclusao_comentario_noticia", user: uLog?.nome || "", noticia: postId, msg: "Comentário removido da notícia" });
             },
 
+            submitFreelance: async () => {
+                if (!uLog || !ensureAccountOpen()) return;
+                const titulo = document.getElementById("freelance-title").value.trim();
+                const valor = parseInt(document.getElementById("freelance-price").value) || 0;
+                const img = document.getElementById("freelance-img").value.trim();
+                const descricao = document.getElementById("freelance-desc").value.trim();
+                if (!titulo || valor <= 0 || !descricao) {
+                    return showInlineFeedback("freelance-feedback", "Preencha título, valor por trabalho e descrição.", "warning");
+                }
+                await push(ref(db, "freelances_pendentes"), {
+                    uid: uLog.id,
+                    userNome: uLog.nome || "Aluno",
+                    userFoto: uLog.foto || "",
+                    titulo,
+                    valor,
+                    img,
+                    descricao,
+                    comentarios: {},
+                    interessados: {},
+                    status: "pendente",
+                    ts: Date.now()
+                });
+                await pushAudit({ tipo: "freelance_pendente", user: uLog.nome, valor, msg: `Freelance enviado para aprovação: ${titulo}` });
+                document.getElementById("freelance-title").value = "";
+                document.getElementById("freelance-price").value = "";
+                document.getElementById("freelance-img").value = "";
+                document.getElementById("freelance-desc").value = "";
+                showInlineFeedback("freelance-feedback", "Freelance enviado para aprovação da Reitoria.", "good");
+                alert("Freelance enviado para aprovação da Reitoria.");
+                app.showMarketplacePanel("list");
+            },
+
+            addFreelanceComment: async (freelanceId) => {
+                if (!uLog || !ensureAccountOpen()) return;
+                const txt = prompt("Escreva seu comentário:");
+                if (!txt) return;
+                const freelance = latestFreelancesCache[freelanceId] || {};
+                await push(ref(db, `freelances/${freelanceId}/comentarios`), {
+                    uid: uLog.id,
+                    user: uLog.nome,
+                    texto: txt,
+                    ts: Date.now()
+                });
+                if (freelance.uid && freelance.uid !== uLog.id) {
+                    await pushNotif(freelance.uid, `${uLog.nome} comentou no seu freelance "${freelance.titulo || "Freelance"}".`);
+                }
+                await pushAudit({ tipo: "comentario_freelance", user: uLog.nome, freelance: freelanceId, msg: "Comentário adicionado em freelance" });
+            },
+
+            wantFreelance: async (freelanceId) => {
+                if (!uLog || !ensureAccountOpen()) return;
+                let freelance = latestFreelancesCache[freelanceId];
+                if (!freelance) {
+                    const snap = await get(ref(db, `freelances/${freelanceId}`));
+                    freelance = snap.val();
+                }
+                if (!freelance) return alert("Freelance não encontrado.");
+                if (freelance.uid === uLog.id) return alert("Esse freelance é seu.");
+                if (freelance.interessados?.[uLog.id]) return alert("Seu interesse já foi enviado.");
+                await set(ref(db, `freelances/${freelanceId}/interessados/${uLog.id}`), {
+                    uid: uLog.id,
+                    nome: uLog.nome,
+                    foto: uLog.foto || "",
+                    ts: Date.now()
+                });
+                if (freelance.uid) await pushNotif(freelance.uid, `${uLog.nome} clicou EU QUERO no seu freelance "${freelance.titulo || "Freelance"}".`);
+                await pushAudit({ tipo: "interesse_freelance", user: uLog.nome, freelance: freelance.titulo || freelanceId, msg: "Interesse enviado em freelance" });
+                alert("Interesse enviado.");
+            },
+
+            deleteFreelance: async (freelanceId, status = "publicado") => {
+                if (!uLog) return;
+                const path = status === "pendente" ? "freelances_pendentes" : "freelances";
+                const snap = await get(ref(db, `${path}/${freelanceId}`));
+                const freelance = snap.val();
+                if (!freelance) return alert("Freelance não encontrado.");
+                const owner = freelance.uid === uLog.id;
+                const admin = isAdmin();
+                if (!owner && !admin) return alert("Você só pode excluir seus próprios freelances.");
+                const label = admin && !owner ? "pela Reitoria" : "meu freelance";
+                if (!confirm(`Excluir ${label}?`)) return;
+                await remove(ref(db, `${path}/${freelanceId}`));
+                if (admin && !owner && freelance.uid) await pushNotif(freelance.uid, `A Reitoria excluiu seu freelance "${freelance.titulo || "Freelance"}".`);
+                await pushAudit({ tipo: "freelance_excluido", user: uLog.nome || "REITORIA", freelance: freelance.titulo || freelanceId, msg: owner ? "Freelance excluído pelo autor" : "Freelance excluído pela reitoria" });
+                alert("Freelance excluído.");
+            },
+
             editNews: async (postId) => {
                 const snap = await get(ref(db, `editorial/${postId}`));
                 const n = snap.val();
@@ -4359,7 +4674,15 @@
 
                     if (p.mochila) {
                         for (const [itemId, item] of Object.entries(p.mochila)) {
-                            if (item.expiresAt && item.expiresAt <= Date.now()) batch[`jogadores/${uid}/mochila/${itemId}`] = null;
+                            const cyclesLeft = itemCyclesLeft(item);
+                            if (cyclesLeft === null) continue;
+                            const nextCycles = cyclesLeft - 1;
+                            if (nextCycles <= 0) {
+                                batch[`jogadores/${uid}/mochila/${itemId}`] = null;
+                            } else {
+                                batch[`jogadores/${uid}/mochila/${itemId}/ciclosRestantes`] = nextCycles;
+                                batch[`jogadores/${uid}/mochila/${itemId}/expiresAt`] = null;
+                            }
                         }
                     }
 
@@ -4474,11 +4797,18 @@
                 const id = document.getElementById("adm-p-sel").value;
                 const nome = document.getElementById("adm-inv-n").value.trim();
                 const descricao = document.getElementById("adm-inv-d").value.trim();
-                const valid = parseInt(document.getElementById("adm-inv-v").value) || 0;
+                const validadeCiclos = Math.max(0, parseInt(document.getElementById("adm-inv-v").value) || 0);
                 const img = document.getElementById("adm-inv-img").value.trim();
                 const usos = Math.max(0, parseInt(document.getElementById("adm-inv-usos").value) || 0);
                 if (!id || !nome) return;
-                const item = { nome, descricao, img, compradoEm: Date.now(), expiresAt: valid ? Date.now() + valid * 7 * 24 * 60 * 60 * 1000 : null };
+                const item = {
+                    nome,
+                    descricao,
+                    img,
+                    compradoEm: Date.now(),
+                    ciclosRestantes: validadeCiclos > 0 ? validadeCiclos : null,
+                    validadeCiclos: validadeCiclos > 0 ? validadeCiclos : null
+                };
                 if (usos > 0) {
                     item.usosRestantes = usos;
                     item.usosTotais = usos;
@@ -4498,19 +4828,22 @@
                 const selected = itemId || (document.getElementById("adm-p-sel").dataset.selectedType === "inventario" ? document.getElementById("adm-p-sel").dataset.selectedId : "") || prompt(`Chave do item para editar:\n${keys.join(", ")}`);
                 if (!selected || !inv[selected]) return;
                 const item = inv[selected];
-                const currentWeeks = item.expiresAt ? Math.max(0, Math.ceil((Number(item.expiresAt) - Date.now()) / (7 * 24 * 60 * 60 * 1000))) : 0;
+                const currentCycles = itemCyclesLeft(item) ?? 0;
                 const nome = prompt("Nome do item:", item.nome || "");
                 const descricao = prompt("Descrição do item:", item.descricao || "");
                 const img = prompt("Imagem / URL:", item.img || "");
-                const valid = prompt("Validade em semanas (0 para sem validade):", String(currentWeeks));
+                const valid = prompt("Validade em ciclos (0 para sem validade):", String(currentCycles));
                 const usos = prompt("Usos disponíveis para este item:", String(itemUsesLeft(item)));
                 if (nome === null || descricao === null || img === null || valid === null || usos === null) return;
                 const usosRestantes = Math.max(0, parseInt(usos) || 0);
+                const validadeCiclos = Math.max(0, parseInt(valid) || 0);
                 await update(ref(db, `jogadores/${id}/mochila/${selected}`), {
                     nome: nome || item.nome || "Item",
                     descricao: descricao || "",
                     img: img || "",
-                    expiresAt: Number(valid) > 0 ? Date.now() + Number(valid) * 7 * 24 * 60 * 60 * 1000 : null,
+                    ciclosRestantes: validadeCiclos > 0 ? validadeCiclos : null,
+                    validadeCiclos: validadeCiclos > 0 ? validadeCiclos : null,
+                    expiresAt: null,
                     usosRestantes,
                     usosTotais: Math.max(usosRestantes, Number(item.usosTotais || item.usosPorCompra || 0))
                 });
@@ -4683,7 +5016,7 @@
                 const estoque = parseInt(document.getElementById("adm-m-q").value) || 0;
                 const maxPorAluno = parseInt(document.getElementById("adm-m-lim").value) || 0;
                 const desconto = clamp(parseInt(document.getElementById("adm-m-desc").value) || 0, 0, 95);
-                const duracao = parseInt(document.getElementById("adm-m-v").value) || 0;
+                const validadeCiclos = Math.max(0, parseInt(document.getElementById("adm-m-v").value) || 0);
                 const usosPorCompra = Math.max(1, parseInt(document.getElementById("adm-m-usos").value) || 1);
                 const tag = document.getElementById("adm-m-t").value.trim();
                 const cor = document.getElementById("adm-m-c").value;
@@ -4697,7 +5030,8 @@
                     imgs: imgsList,
                     descricao,
                     estoque,
-                    duracao,
+                    duracao: validadeCiclos,
+                    validadeCiclos,
                     usosPorCompra,
                     tag,
                     cor,
@@ -4729,7 +5063,7 @@
                 const imgsList = parseLines(document.getElementById("adm-c-i").value);
                 const descricao = document.getElementById("adm-c-d").value.trim();
                 const estoque = parseInt(document.getElementById("adm-c-q").value) || 0;
-                const duracao = parseInt(document.getElementById("adm-c-v").value) || 0;
+                const validadeCiclos = Math.max(0, parseInt(document.getElementById("adm-c-v").value) || 0);
                 const usosPorCompra = Math.max(1, parseInt(document.getElementById("adm-c-usos").value) || 1);
                 const tag = document.getElementById("adm-c-t").value.trim();
                 const cor = document.getElementById("adm-c-cor").value;
@@ -4744,7 +5078,8 @@
                     imgs: imgsList,
                     descricao,
                     estoque,
-                    duracao,
+                    duracao: validadeCiclos,
+                    validadeCiclos,
                     usosPorCompra,
                     tag,
                     cor,
@@ -4889,6 +5224,35 @@
                 await pushNotif(loan.uid, "Seu empréstimo foi negado pela reitoria.");
                 await pushAudit({ tipo: "emprestimo_negado", user: loan.nome, valor: loan.valor, msg: "Empréstimo negado pela reitoria" });
                 await remove(ref(db, `emprestimos_pendentes/${loanId}`));
+            },
+
+            approveFreelance: async (freelanceId) => {
+                if (!isAdmin()) return alert("Apenas a Reitoria pode aprovar freelances.");
+                const snap = await get(ref(db, `freelances_pendentes/${freelanceId}`));
+                const freelance = snap.val();
+                if (!freelance) return alert("Freelance não encontrado.");
+                await set(ref(db, `freelances/${freelanceId}`), {
+                    ...freelance,
+                    status: "publicado",
+                    aprovadoEm: Date.now(),
+                    aprovadoPor: uLog?.id || "",
+                    aprovadoPorNome: uLog?.nome || "REITORIA"
+                });
+                await remove(ref(db, `freelances_pendentes/${freelanceId}`));
+                if (freelance.uid) await pushNotif(freelance.uid, `Seu freelance "${freelance.titulo || "Freelance"}" foi aprovado e publicado.`);
+                await pushAudit({ tipo: "freelance_aprovado", user: uLog?.nome || "REITORIA", freelance: freelance.titulo || freelanceId, msg: "Freelance aprovado pela reitoria" });
+                alert("Freelance aprovado e publicado.");
+            },
+
+            denyFreelance: async (freelanceId) => {
+                if (!isAdmin()) return alert("Apenas a Reitoria pode negar freelances.");
+                const snap = await get(ref(db, `freelances_pendentes/${freelanceId}`));
+                const freelance = snap.val();
+                if (!freelance) return alert("Freelance não encontrado.");
+                await remove(ref(db, `freelances_pendentes/${freelanceId}`));
+                if (freelance.uid) await pushNotif(freelance.uid, `Seu freelance "${freelance.titulo || "Freelance"}" não foi aprovado pela Reitoria.`);
+                await pushAudit({ tipo: "freelance_negado", user: uLog?.nome || "REITORIA", freelance: freelance.titulo || freelanceId, msg: "Freelance negado pela reitoria" });
+                alert("Freelance negado.");
             },
 
             approveApplication: async (appId) => {
